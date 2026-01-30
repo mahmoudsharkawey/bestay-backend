@@ -1,4 +1,5 @@
 import responseMessage from "../constants/responseMessage.js";
+import logger from "./logger.js";
 
 export default function httpError(nextFunc, err, req, errorStatusCode) {
   // Error structure
@@ -12,7 +13,7 @@ export default function httpError(nextFunc, err, req, errorStatusCode) {
     timestamp: new Date().toISOString(),
   };
   // Log the response for debugging
-  console.error("Controller Error:", { meta: errorObject });
+  logger.error(errorObject);
 
   return nextFunc(errorObject);
 }

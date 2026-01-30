@@ -1,3 +1,5 @@
+import logger from "./logger.js"
+
 export default function httpResponse(
   req,
   res,
@@ -6,7 +8,7 @@ export default function httpResponse(
   data = null,
 ) {
   // Response structure
-  const response = {
+  const responseObject = {
     success: "true",
     statusCode: responseStatusCode,
     message: responseMessage,
@@ -14,7 +16,8 @@ export default function httpResponse(
     data: data,
   };
   // Log the response for debugging
-  console.info("Controller Response:", { meta: response });
+ // logger.info(responseObject);
+ logger.info(responseObject)
   // Send the response
-  res.status(responseStatusCode).json(response);
+  res.status(responseStatusCode).json(responseObject);
 }

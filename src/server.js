@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-dotenv.config(); // 👈 FIRST LINE
+dotenv.config(); // 👈 SHOULD BE FIRST LINE
 import { env } from "./config/env.js";
 import app from "./app.js";
+import logger from "./utils/logger.js";
 
 app.listen(env.PORT, () => {
-  console.log(`🚀 Server running on port ${env.PORT}`);
+  logger.info(`Server is running on port ${env.PORT}`);
 });

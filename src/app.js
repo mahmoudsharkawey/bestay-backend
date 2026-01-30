@@ -7,7 +7,6 @@ const app = express();
 
 // Middlewares setup
 app.use(express.json());
-
 // Route setup
 app.use("/api/v1", router);
 // 404 Handler
