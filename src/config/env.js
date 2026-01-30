@@ -4,6 +4,7 @@ dotenv.config();
 
 export const env = {
   NODE_ENV: process.env.NODE_ENV,
+  APP_VERSION: process.env.APP_VERSION,
   INFO_LEVEL: process.env.INFO_LEVEL,
   PORT: process.env.PORT,
   DATABASE_URL: process.env.DATABASE_URL,

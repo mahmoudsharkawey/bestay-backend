@@ -1,4 +1,4 @@
-import logger from "./logger.js"
+import logger from "./logger.js";
 
 export default function httpResponse(
   req,
@@ -16,8 +16,10 @@ export default function httpResponse(
     data: data,
   };
   // Log the response for debugging
- // logger.info(responseObject);
- logger.info(responseObject)
-  // Send the response
+  // Avoid passing the original object to the logger because some loggers (e.g. winston) mutate
+  // the object by adding internal fields like `level` or `timestamp`. Log a deep clone instead.
+  const logCopy = JSON.parse(JSON.stringify(responseObject));
+  logger.info(logCopy);
+  // Send the response without logger-added fields
   res.status(responseStatusCode).json(responseObject);
 }
