@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//////////////////////////////////////////////////
+// ENUMS
+//////////////////////////////////////////////////
+
+enum Role {
+  USER
+  LANDLORD
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+//////////////////////////////////////////////////
+// USER
+//////////////////////////////////////////////////
+
+model User {
+  id           Int              @id @default(autoincrement())
+  name         String
+  email        String           @unique
+  phone        String?
+  role         Role             @default(USER)
+  createdAt    DateTime         @default(now())
+
+  units        Unit[]            @relation("OwnerUnits")
+  bookings     Booking[]
+  preferences  UserPreference?
+  reviews      Review[]
+}
+
+//////////////////////////////////////////////////
+// USER PREFERENCES (AI INPUT)
+//////////////////////////////////////////////////
+
+model UserPreference {
+  id            Int     @id @default(autoincrement())
+  userId        Int     @unique
+
+  budgetMin     Float
+  budgetMax     Float
+  city          String
+  rooms         Int
+  furnished     Boolean
+  maxDistance   Float?   // optional
+
+  user          User    @relation(fields: [userId], references: [id])
+}
+
+//////////////////////////////////////////////////
+// UNIT (PROPERTY LISTING)
+//////////////////////////////////////////////////
+
+model Unit {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+  price         Float
+  city          String
+  address       String
+  rooms         Int
+  furnished     Boolean
+  distance      Float    // distance from university (km)
+  available     Boolean  @default(true)
+
+  ownerId       Int
+  owner         User     @relation("OwnerUnits", fields: [ownerId], references: [id])
+
+  bookings      Booking[]
+  reviews       Review[]
+
+  createdAt     DateTime @default(now())
+}
+
+//////////////////////////////////////////////////
+// BOOKING
+//////////////////////////////////////////////////
+
+model Booking {
+  id          Int            @id @default(autoincrement())
+  userId      Int
+  unitId      Int
+  startDate   DateTime
+  endDate     DateTime
+  status      BookingStatus @default(PENDING)
+
+  user        User           @relation(fields: [userId], references: [id])
+  unit        Unit           @relation(fields: [unitId], references: [id])
+  payment     Payment?
+
+  createdAt   DateTime       @default(now())
+}
+
+//////////////////////////////////////////////////
+// PAYMENT
+//////////////////////////////////////////////////
+
+model Payment {
+  id          Int            @id @default(autoincrement())
+  bookingId  Int            @unique
+  amount     Float
+  status     PaymentStatus
+  method     String         // card, wallet, etc
+
+  booking    Booking        @relation(fields: [bookingId], references: [id])
+  createdAt  DateTime       @default(now())
+}
+
+//////////////////////////////////////////////////
+// REVIEW
+//////////////////////////////////////////////////
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int      // 1–5
+  comment   String?
+
+  userId    Int
+  unitId    Int
+
+  user      User     @relation(fields: [userId], references: [id])
+  unit      Unit     @relation(fields: [unitId], references: [id])
+
+  createdAt DateTime @default(now())
+}
