@@ -69,15 +69,6 @@ export const signIn = async (req, res, next) => {
   }
 };
 
-export const signOut = async (req, res, next) => {
-  try {
-    // If using cookies in future, clear them here (e.g. res.clearCookie('token'))
-    httpResponse(req, res, 200, "Signed out successfully");
-  } catch (err) {
-    httpError(next, err, req, 500);
-  }
-};
-
 export const forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;

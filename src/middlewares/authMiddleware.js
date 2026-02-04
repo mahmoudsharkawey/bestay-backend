@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
+import { httpError } from "../utils/httpError.js";
 
-export const authMiddleware = (req, res, next) => {
+export const Authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
-
   if (!token) return res.status(401).json({ message: "No token provided" });
-
   try {
-    req.user = jwt.verify(token, env.JWT_SECRET);
+    const decoded = jwt.verify(token, env.JWT_SECRET);
+    req.user = decoded;
     next();
-  } catch {
-    res.status(401).json({ message: "Invalid token" });
+  } catch (error) {
+    httpError(next, error, req, 401);
   }
 };

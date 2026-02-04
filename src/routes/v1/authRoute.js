@@ -1,8 +1,8 @@
 import { Router } from "express";
+import { authLimiter } from "../../middlewares/rateLimiterMiddleware.js";
 import {
   signUp,
   signIn,
-  signOut,
   forgotPassword,
   verifyResetCode,
   resetPassword,
@@ -10,10 +10,9 @@ import {
 
 const router = Router();
 
-router.post("/signup", signUp);
-router.post("/signin", signIn);
-router.post("/signout", signOut);
-router.post("/forgot-password", forgotPassword);
+router.post("/sign-up", signUp);
+router.post("/sign-in", authLimiter, signIn);
+router.post("/forgot-password", authLimiter, forgotPassword);
 router.post("/verify-reset-code", verifyResetCode);
 router.post("/reset-password", resetPassword);
 
