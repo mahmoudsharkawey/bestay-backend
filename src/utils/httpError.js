@@ -12,8 +12,12 @@ export default function httpError(nextFunc, err, req, errorStatusCode) {
     trace: err instanceof Error ? { error: err.stack } : null,
     timestamp: new Date().toISOString(),
   };
-  // Log the response for debugging
-  logger.error(errorObject);
+
+  // Log the error for debugging
+  // Avoid passing the original object to the logger because some loggers (e.g. winston) mutate
+  // the object by adding internal fields like `level` or `timestamp`. Log a deep clone instead.
+  const logCopy = JSON.parse(JSON.stringify(errorObject));
+  logger.error(logCopy);
 
   return nextFunc(errorObject);
 }

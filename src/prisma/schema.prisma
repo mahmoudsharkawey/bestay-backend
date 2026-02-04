@@ -34,18 +34,20 @@ enum PaymentStatus {
 //////////////////////////////////////////////////
 
 model User {
-  id           Int              @id @default(autoincrement())
-  name         String
-  email        String           @unique
-  password     String?
-  phone        String?
-  role         Role             @default(USER)
-  createdAt    DateTime         @default(now())
-
-  units        Unit[]            @relation("OwnerUnits")
-  bookings     Booking[]
-  preferences  UserPreference?
-  reviews      Review[]
+  id                    Int             @id @default(autoincrement())
+  name                  String
+  email                 String          @unique
+  password              String?
+  phone                 String?
+  role                  Role            @default(USER)
+  createdAt             DateTime        @default(now())
+  passwordResetCode     String?
+  passwordResetExpiry   DateTime?
+  passwordResetVerified Boolean         @default(false)
+  units                 Unit[]          @relation("OwnerUnits")
+  bookings              Booking[]
+  preferences           UserPreference?
+  reviews               Review[]
 }
 
 //////////////////////////////////////////////////
@@ -53,17 +55,17 @@ model User {
 //////////////////////////////////////////////////
 
 model UserPreference {
-  id            Int     @id @default(autoincrement())
-  userId        Int     @unique
+  id     Int @id @default(autoincrement())
+  userId Int @unique
 
-  budgetMin     Float
-  budgetMax     Float
-  city          String
-  rooms         Int
-  furnished     Boolean
-  maxDistance   Float?   // optional
+  budgetMin   Float
+  budgetMax   Float
+  city        String
+  rooms       Int
+  furnished   Boolean
+  maxDistance Float? // optional
 
-  user          User    @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 //////////////////////////////////////////////////
@@ -71,24 +73,24 @@ model UserPreference {
 //////////////////////////////////////////////////
 
 model Unit {
-  id            Int      @id @default(autoincrement())
-  title         String
-  description   String
-  price         Float
-  city          String
-  address       String
-  rooms         Int
-  furnished     Boolean
-  distance      Float    // distance from university (km)
-  available     Boolean  @default(true)
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  city        String
+  address     String
+  rooms       Int
+  furnished   Boolean
+  distance    Float // distance from university (km)
+  available   Boolean @default(true)
 
-  ownerId       Int
-  owner         User     @relation("OwnerUnits", fields: [ownerId], references: [id])
+  ownerId Int
+  owner   User @relation("OwnerUnits", fields: [ownerId], references: [id])
 
-  bookings      Booking[]
-  reviews       Review[]
+  bookings Booking[]
+  reviews  Review[]
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 //////////////////////////////////////////////////
@@ -96,18 +98,18 @@ model Unit {
 //////////////////////////////////////////////////
 
 model Booking {
-  id          Int            @id @default(autoincrement())
-  userId      Int
-  unitId      Int
-  startDate   DateTime
-  endDate     DateTime
-  status      BookingStatus @default(PENDING)
+  id        Int           @id @default(autoincrement())
+  userId    Int
+  unitId    Int
+  startDate DateTime
+  endDate   DateTime
+  status    BookingStatus @default(PENDING)
 
-  user        User           @relation(fields: [userId], references: [id])
-  unit        Unit           @relation(fields: [unitId], references: [id])
-  payment     Payment?
+  user    User     @relation(fields: [userId], references: [id])
+  unit    Unit     @relation(fields: [unitId], references: [id])
+  payment Payment?
 
-  createdAt   DateTime       @default(now())
+  createdAt DateTime @default(now())
 }
 
 //////////////////////////////////////////////////
@@ -115,14 +117,14 @@ model Booking {
 //////////////////////////////////////////////////
 
 model Payment {
-  id          Int            @id @default(autoincrement())
-  bookingId  Int            @unique
-  amount     Float
-  status     PaymentStatus
-  method     String         // card, wallet, etc
+  id        Int           @id @default(autoincrement())
+  bookingId Int           @unique
+  amount    Float
+  status    PaymentStatus
+  method    String // card, wallet, etc
 
-  booking    Booking        @relation(fields: [bookingId], references: [id])
-  createdAt  DateTime       @default(now())
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 //////////////////////////////////////////////////
@@ -130,15 +132,15 @@ model Payment {
 //////////////////////////////////////////////////
 
 model Review {
-  id        Int      @id @default(autoincrement())
-  rating    Int      // 1–5
-  comment   String?
+  id      Int     @id @default(autoincrement())
+  rating  Int // 1–5
+  comment String?
 
-  userId    Int
-  unitId    Int
+  userId Int
+  unitId Int
 
-  user      User     @relation(fields: [userId], references: [id])
-  unit      Unit     @relation(fields: [unitId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  unit Unit @relation(fields: [unitId], references: [id])
 
   createdAt DateTime @default(now())
 }
