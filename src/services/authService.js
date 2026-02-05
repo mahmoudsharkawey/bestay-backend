@@ -1,6 +1,8 @@
 import prisma from "../prisma/client.js";
+import { signToken } from "../utils/jwt.js";
 import { hashPassword, comparePassword } from "../utils/password.js";
 import { sendEmail } from "../utils/sendEmail.js";
+import { verifyGoogleToken } from "../utils/verifyGoogleToken.js";
 
 export const signUp = async ({ name, email, password, phone, role }) => {
   // check existing
@@ -126,4 +128,39 @@ export const resetPassword = async (email, newPassword) => {
     },
   });
   return user;
+};
+
+export const googleLogin = async (token) => {
+  // 1. verify google token
+  const { email, name } = await verifyGoogleToken(token);
+
+  // 2. find or create user
+  let user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        email,
+        name,
+        provider: "GOOGLE",
+      },
+    });
+  }
+
+  // 3. generate JWT
+  const accessToken = signToken({
+    userId: user.id,
+    role: user.role,
+  });
+
+  return {
+    accessToken,
+    user: {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    },
+  };
 };

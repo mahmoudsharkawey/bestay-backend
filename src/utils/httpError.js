@@ -5,7 +5,7 @@ export default function httpError(nextFunc, err, req, errorStatusCode) {
   // Error structure
   const errorObject = {
     success: "false",
-    statusCode: errorStatusCode,
+    statusCode: Number.isInteger(errorStatusCode) ? errorStatusCode : 500,
     message:
       err instanceof Error ? err.message : responseMessage.SOMETHING_WENT_WRONG,
     request: { ip: req.ip || null, method: req.method, url: req.originalUrl },

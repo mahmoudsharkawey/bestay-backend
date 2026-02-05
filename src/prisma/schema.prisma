@@ -29,25 +29,37 @@ enum PaymentStatus {
   FAILED
 }
 
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+}
+
 //////////////////////////////////////////////////
 // USER
 //////////////////////////////////////////////////
 
 model User {
-  id                    Int             @id @default(autoincrement())
-  name                  String
-  email                 String          @unique
-  password              String?
-  phone                 String?
-  role                  Role            @default(USER)
-  createdAt             DateTime        @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String?
+  phone     String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+
+  provider   AuthProvider @default(LOCAL)
+  providerId String?
+
   passwordResetCode     String?
   passwordResetExpiry   DateTime?
-  passwordResetVerified Boolean         @default(false)
-  units                 Unit[]          @relation("OwnerUnits")
-  bookings              Booking[]
-  preferences           UserPreference?
-  reviews               Review[]
+  passwordResetVerified Boolean   @default(false)
+
+  units       Unit[]          @relation("OwnerUnits")
+  bookings    Booking[]
+  preferences UserPreference?
+  reviews     Review[]
+
+  @@unique([provider, providerId])
 }
 
 //////////////////////////////////////////////////

@@ -274,3 +274,60 @@ Error: Invalid login: 535 5.7.8 Authentication failed
 2026-02-04 03:00:06 [ERROR]: Invalid or expired reset code {"success":"false","statusCode":400,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/verify-reset-code"},"trace":{"error":"Error: Invalid or expired reset code\n    at Module.verifyResetCode (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:94:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async verifyResetCode (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:102:5)"}}
 2026-02-04 03:00:17 [ERROR]: Invalid or expired reset code {"success":"false","statusCode":400,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/verify-reset-code"},"trace":{"error":"Error: Invalid or expired reset code\n    at Module.verifyResetCode (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:94:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async verifyResetCode (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:102:5)"}}
 2026-02-04 03:04:09 [ERROR]: Email and reset code are required {"success":"false","statusCode":400,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/verify-reset-code"},"trace":{"error":"Error: Email and reset code are required\n    at verifyResetCode (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:99:23)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at router.handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:186:3)"}}
+2026-02-04 21:10:39 [ERROR]: Something went wrong. {"success":"false","statusCode":"Google authentication failed","request":{"ip":null},"trace":null}
+2026-02-05 17:38:30 [ERROR]: Something went wrong. {"success":"false","statusCode":"Google authentication failed","request":{"ip":null},"trace":null}
+2026-02-05 17:39:51 [ERROR]: Something went wrong. {"success":"false","statusCode":"Google authentication failed","request":{"ip":null},"trace":null}
+2026-02-05 17:41:25 [ERROR]: Something went wrong. {"success":"false","statusCode":"Google authentication failed","request":{"ip":null},"trace":null}
+2026-02-05 18:04:17 [ERROR]: Wrong recipient, payload audience != requiredAudience {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/google-login"},"trace":{"error":"Error: Wrong recipient, payload audience != requiredAudience\n    at OAuth2Client.verifySignedJwtWithCertsAsync (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\google-auth-library\\build\\src\\auth\\oauth2client.js:787:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async OAuth2Client.verifyIdTokenAsync (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\google-auth-library\\build\\src\\auth\\oauth2client.js:541:23)\n    at async verifyGoogleToken (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/utils/verifyGoogleToken.js:7:18)\n    at async Module.googleLogin (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:135:27)\n    at async googleLogin (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:127:20)"}}
+2026-02-05 18:27:50 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/auth/google-login"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\body-parser\\lib\\read.js:171:5\n    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)\n    at invokeCallback (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\raw-body\\index.js:238:16)\n    at done (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\raw-body\\index.js:227:7)"}}
+2026-02-05 18:31:37 [ERROR]: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    email: "mahmood.sharkawey@gmail.com",
+    name: "Mahmoud Gamal",
+    provider: "GOOGLE",
+    ~~~~~~~~
+    isVerified: true,
+?   password?: String | Null,
+?   phone?: String | Null,
+?   role?: Role,
+?   createdAt?: DateTime,
+?   passwordResetCode?: String | Null,
+?   passwordResetExpiry?: DateTime | Null,
+?   passwordResetVerified?: Boolean,
+?   units?: UnitCreateNestedManyWithoutOwnerInput,
+?   bookings?: BookingCreateNestedManyWithoutUserInput,
+?   preferences?: UserPreferenceCreateNestedOneWithoutUserInput,
+?   reviews?: ReviewCreateNestedManyWithoutUserInput
+  }
+}
+
+Unknown argument `provider`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/google-login"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.create()` invocation:\n\n{\n  data: {\n    email: \"mahmood.sharkawey@gmail.com\",\n    name: \"Mahmoud Gamal\",\n    provider: \"GOOGLE\",\n    ~~~~~~~~\n    isVerified: true,\n?   password?: String | Null,\n?   phone?: String | Null,\n?   role?: Role,\n?   createdAt?: DateTime,\n?   passwordResetCode?: String | Null,\n?   passwordResetExpiry?: DateTime | Null,\n?   passwordResetVerified?: Boolean,\n?   units?: UnitCreateNestedManyWithoutOwnerInput,\n?   bookings?: BookingCreateNestedManyWithoutUserInput,\n?   preferences?: UserPreferenceCreateNestedOneWithoutUserInput,\n?   reviews?: ReviewCreateNestedManyWithoutUserInput\n  }\n}\n\nUnknown argument `provider`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.googleLogin (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:143:12)\n    at async googleLogin (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:127:20)"}}
+2026-02-05 18:40:18 [ERROR]: 
+Invalid `prisma.user.create()` invocation:
+
+{
+  data: {
+    email: "mahmood.sharkawey@gmail.com",
+    name: "Mahmoud Gamal",
+    provider: "GOOGLE",
+    isVerified: true,
+    ~~~~~~~~~~
+?   password?: String | Null,
+?   phone?: String | Null,
+?   role?: Role,
+?   createdAt?: DateTime,
+?   providerId?: String | Null,
+?   passwordResetCode?: String | Null,
+?   passwordResetExpiry?: DateTime | Null,
+?   passwordResetVerified?: Boolean,
+?   units?: UnitCreateNestedManyWithoutOwnerInput,
+?   bookings?: BookingCreateNestedManyWithoutUserInput,
+?   preferences?: UserPreferenceCreateNestedOneWithoutUserInput,
+?   reviews?: ReviewCreateNestedManyWithoutUserInput
+  }
+}
+
+Unknown argument `isVerified`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/google-login"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.create()` invocation:\n\n{\n  data: {\n    email: \"mahmood.sharkawey@gmail.com\",\n    name: \"Mahmoud Gamal\",\n    provider: \"GOOGLE\",\n    isVerified: true,\n    ~~~~~~~~~~\n?   password?: String | Null,\n?   phone?: String | Null,\n?   role?: Role,\n?   createdAt?: DateTime,\n?   providerId?: String | Null,\n?   passwordResetCode?: String | Null,\n?   passwordResetExpiry?: DateTime | Null,\n?   passwordResetVerified?: Boolean,\n?   units?: UnitCreateNestedManyWithoutOwnerInput,\n?   bookings?: BookingCreateNestedManyWithoutUserInput,\n?   preferences?: UserPreferenceCreateNestedOneWithoutUserInput,\n?   reviews?: ReviewCreateNestedManyWithoutUserInput\n  }\n}\n\nUnknown argument `isVerified`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.googleLogin (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:143:12)\n    at async googleLogin (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:127:20)"}}

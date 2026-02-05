@@ -115,3 +115,19 @@ export const resetPassword = async (req, res, next) => {
     httpError(next, err, req, 500);
   }
 };
+
+export const googleLogin = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return httpError(next, new Error("Google token is required"), req, 400);
+    }
+
+    const result = await authService.googleLogin(token);
+
+    httpResponse(req, res, 200, "Google login successful", result);
+  } catch (error) {
+    httpError(next, error, req, 500);
+  }
+};

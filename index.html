@@ -1,0 +1,88 @@
+<!DOCTYPE >
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Login Test</title>
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f5f5f5;
+      }
+      .box {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 350px;
+      }
+      pre {
+        background: #eee;
+        padding: 10px;
+        text-align: left;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <h2>Google Login Test</h2>
+
+      <!-- Google Button -->
+      <div
+        id="g_id_onload"
+        data-client_id="344024729572-qa47cf7mscrnhh2hj9c6tgp4cdllbgq9.apps.googleusercontent.com"
+        data-callback="handleGoogleLogin"
+        data-auto_prompt="false"
+      ></div>
+
+      <div
+        class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+      ></div>
+
+      <h4>Backend Response</h4>
+      <pre id="result">Waiting...</pre>
+    </div>
+
+    <script>
+      async function handleGoogleLogin(response) {
+        try {
+          const res = await fetch("http://localhost:3000/api/v1/auth/google-login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: response.credential,
+            }),
+          });
+
+          const data = await res.json();
+          document.getElementById("result").textContent = JSON.stringify(
+            data,
+            null,
+            2,
+          );
+        } catch (err) {
+          document.getElementById("result").textContent =
+            "Error: " + err.message;
+        }
+      }
+    </script>
+  </body>
+</html>
