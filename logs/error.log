@@ -331,3 +331,187 @@ Invalid `prisma.user.create()` invocation:
 }
 
 Unknown argument `isVerified`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/google-login"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.create()` invocation:\n\n{\n  data: {\n    email: \"mahmood.sharkawey@gmail.com\",\n    name: \"Mahmoud Gamal\",\n    provider: \"GOOGLE\",\n    isVerified: true,\n    ~~~~~~~~~~\n?   password?: String | Null,\n?   phone?: String | Null,\n?   role?: Role,\n?   createdAt?: DateTime,\n?   providerId?: String | Null,\n?   passwordResetCode?: String | Null,\n?   passwordResetExpiry?: DateTime | Null,\n?   passwordResetVerified?: Boolean,\n?   units?: UnitCreateNestedManyWithoutOwnerInput,\n?   bookings?: BookingCreateNestedManyWithoutUserInput,\n?   preferences?: UserPreferenceCreateNestedOneWithoutUserInput,\n?   reviews?: ReviewCreateNestedManyWithoutUserInput\n  }\n}\n\nUnknown argument `isVerified`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.googleLogin (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:143:12)\n    at async googleLogin (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:127:20)"}}
+2026-02-06 00:44:09 [ERROR]: prisma is not defined {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me"},"trace":{"error":"ReferenceError: prisma is not defined\n    at Module.getUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:3:16)\n    at getUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:12:30)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)"}}
+2026-02-06 00:55:29 [ERROR]: id is not defined {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me"},"trace":{"error":"ReferenceError: id is not defined\n    at Module.getUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:8:7)\n    at getUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:12:30)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)"}}
+2026-02-06 00:56:12 [ERROR]: name is not defined {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me"},"trace":{"error":"ReferenceError: name is not defined\n    at Module.getUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:9:7)\n    at getUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:12:30)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)"}}
+2026-02-06 00:56:18 [ERROR]: password is not defined {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me"},"trace":{"error":"ReferenceError: password is not defined\n    at Module.getUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:11:7)\n    at getUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:12:30)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)"}}
+2026-02-06 00:56:25 [ERROR]: phone is not defined {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me"},"trace":{"error":"ReferenceError: phone is not defined\n    at Module.getUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:12:7)\n    at getUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:12:30)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)"}}
+2026-02-06 01:02:40 [ERROR]: 
+Invalid `prisma.user.findUnique()` invocation:
+
+{
+  where: {
+    email: "houdaw761@gmail.com"
+  },
+  select: {
+  ~~~~~~
+    id: true,
+    name: true,
+    email: true,
+    phone: true,
+    role: true,
+    createdAt: true,
+    providers: true,
+    pictures: true
+  },
+  include: {
+  ~~~~~~~
+    userPreference: true
+  }
+}
+
+Please either use `include` or `select`, but not both at the same time. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.findUnique()` invocation:\n\n{\n  where: {\n    email: \"houdaw761@gmail.com\"\n  },\n  select: {\n  ~~~~~~\n    id: true,\n    name: true,\n    email: true,\n    phone: true,\n    role: true,\n    createdAt: true,\n    providers: true,\n    pictures: true\n  },\n  include: {\n  ~~~~~~~\n    userPreference: true\n  }\n}\n\nPlease either use `include` or `select`, but not both at the same time.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at e.throwValidationError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:10132)\n    at zc (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:5948)\n    at ft (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:5900)\n    at sr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:5784)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:6369\n    at Object.runInChildSpan (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:2516)\n    at ri.runInChildSpan (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:2850)\n    at t._executeRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:6348)\n    at Vo (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:11:9620)"}}
+2026-02-06 01:03:15 [ERROR]: 
+Invalid `prisma.user.findUnique()` invocation:
+
+{
+  where: {
+    email: "houdaw761@gmail.com"
+  },
+  select: {
+    id: true,
+    name: true,
+    email: true,
+    phone: true,
+    role: true,
+    createdAt: true,
+    providers: true,
+    ~~~~~~~~~
+    pictures: true,
+    preferences: true,
+?   password?: true,
+?   provider?: true,
+?   providerId?: true,
+?   picture?: true,
+?   passwordResetCode?: true,
+?   passwordResetExpiry?: true,
+?   passwordResetVerified?: true,
+?   units?: true,
+?   bookings?: true,
+?   reviews?: true,
+?   _count?: true
+  }
+}
+
+Unknown field `providers` for select statement on model `User`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.findUnique()` invocation:\n\n{\n  where: {\n    email: \"houdaw761@gmail.com\"\n  },\n  select: {\n    id: true,\n    name: true,\n    email: true,\n    phone: true,\n    role: true,\n    createdAt: true,\n    providers: true,\n    ~~~~~~~~~\n    pictures: true,\n    preferences: true,\n?   password?: true,\n?   provider?: true,\n?   providerId?: true,\n?   picture?: true,\n?   passwordResetCode?: true,\n?   passwordResetExpiry?: true,\n?   passwordResetVerified?: true,\n?   units?: true,\n?   bookings?: true,\n?   reviews?: true,\n?   _count?: true\n  }\n}\n\nUnknown field `providers` for select statement on model `User`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.getUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:5:16)\n    at async getUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:12:18)"}}
+2026-02-06 01:04:19 [ERROR]: 
+Invalid `prisma.user.findUnique()` invocation:
+
+{
+  where: {
+    email: "houdaw761@gmail.com"
+  },
+  include: {
+    userPreference: true,
+    ~~~~~~~~~~~~~~
+?   units?: true,
+?   bookings?: true,
+?   preferences?: true,
+?   reviews?: true
+  }
+}
+
+Unknown field `userPreference` for include statement on model `User`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.findUnique()` invocation:\n\n{\n  where: {\n    email: \"houdaw761@gmail.com\"\n  },\n  include: {\n    userPreference: true,\n    ~~~~~~~~~~~~~~\n?   units?: true,\n?   bookings?: true,\n?   preferences?: true,\n?   reviews?: true\n  }\n}\n\nUnknown field `userPreference` for include statement on model `User`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.getUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:5:16)\n    at async getUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:12:18)"}}
+2026-02-06 01:14:28 [ERROR]: User ID is required {"success":"false","statusCode":400,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me/preferences"},"trace":{"error":"Error: User ID is required\n    at getUserPreferences (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:25:30)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at router.handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:186:3)"}}
+2026-02-06 01:15:09 [ERROR]: User preferences not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/user/me/preferences"},"trace":{"error":"Error: User preferences not found\n    at Module.getUserPreference (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:21:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUserPreferences (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:27:18)"}}
+2026-02-06 01:23:27 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/user/me/preferences"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-06 01:58:41 [ERROR]: ID   is required {"success":"false","statusCode":400,"request":{"ip":"::1","method":"POST","url":"/api/v1/user/me"},"trace":{"error":"Error: ID   is required\n    at getUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:10:30)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at router.handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:186:3)"}}
+2026-02-06 01:59:46 [ERROR]: ID and user details are required {"success":"false","statusCode":400,"request":{"ip":"::1","method":"PUT","url":"/api/v1/user/me"},"trace":{"error":"Error: ID and user details are required\n    at updateUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:25:23)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at router.handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:186:3)"}}
+2026-02-06 01:59:46 [ERROR]: 
+Invalid `prisma.user.update()` invocation:
+
+{
+  where: {
+    id: undefined
+  },
+  data: {
+    name: "Ali Ahmed",
+    email: "ali@example.com",
+    password: "secret123",
+    address: "123 Main St",
+    ~~~~~~~
+    city: "Cairo",
+    country: "EG",
+    dateOfBirth: "1995-04-12",
+?   phone?: String | NullableStringFieldUpdateOperationsInput | Null,
+?   role?: Role | EnumRoleFieldUpdateOperationsInput,
+?   createdAt?: DateTime | DateTimeFieldUpdateOperationsInput,
+?   provider?: AuthProvider | EnumAuthProviderFieldUpdateOperationsInput,
+?   providerId?: String | NullableStringFieldUpdateOperationsInput | Null,
+?   picture?: String | NullableStringFieldUpdateOperationsInput | Null,
+?   passwordResetCode?: String | NullableStringFieldUpdateOperationsInput | Null,
+?   passwordResetExpiry?: DateTime | NullableDateTimeFieldUpdateOperationsInput | Null,
+?   passwordResetVerified?: Boolean | BoolFieldUpdateOperationsInput,
+?   units?: UnitUpdateManyWithoutOwnerNestedInput,
+?   bookings?: BookingUpdateManyWithoutUserNestedInput,
+?   preferences?: UserPreferenceUpdateOneWithoutUserNestedInput,
+?   reviews?: ReviewUpdateManyWithoutUserNestedInput
+  }
+}
+
+Unknown argument `address`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/user/me"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.update()` invocation:\n\n{\n  where: {\n    id: undefined\n  },\n  data: {\n    name: \"Ali Ahmed\",\n    email: \"ali@example.com\",\n    password: \"secret123\",\n    address: \"123 Main St\",\n    ~~~~~~~\n    city: \"Cairo\",\n    country: \"EG\",\n    dateOfBirth: \"1995-04-12\",\n?   phone?: String | NullableStringFieldUpdateOperationsInput | Null,\n?   role?: Role | EnumRoleFieldUpdateOperationsInput,\n?   createdAt?: DateTime | DateTimeFieldUpdateOperationsInput,\n?   provider?: AuthProvider | EnumAuthProviderFieldUpdateOperationsInput,\n?   providerId?: String | NullableStringFieldUpdateOperationsInput | Null,\n?   picture?: String | NullableStringFieldUpdateOperationsInput | Null,\n?   passwordResetCode?: String | NullableStringFieldUpdateOperationsInput | Null,\n?   passwordResetExpiry?: DateTime | NullableDateTimeFieldUpdateOperationsInput | Null,\n?   passwordResetVerified?: Boolean | BoolFieldUpdateOperationsInput,\n?   units?: UnitUpdateManyWithoutOwnerNestedInput,\n?   bookings?: BookingUpdateManyWithoutUserNestedInput,\n?   preferences?: UserPreferenceUpdateOneWithoutUserNestedInput,\n?   reviews?: ReviewUpdateManyWithoutUserNestedInput\n  }\n}\n\nUnknown argument `address`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.updateUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:17:16)\n    at async updateUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:27:18)"}}
+2026-02-06 02:00:46 [ERROR]: 
+Invalid `prisma.user.update()` invocation:
+
+{
+  where: {
+    id: 8
+  },
+  data: {
+    name: "Ali Ahmed",
+    email: "ali@example.com",
+    password: "secret123",
+    address: "123 Main St",
+    ~~~~~~~
+    city: "Cairo",
+    country: "EG",
+    dateOfBirth: "1995-04-12",
+?   phone?: String | NullableStringFieldUpdateOperationsInput | Null,
+?   role?: Role | EnumRoleFieldUpdateOperationsInput,
+?   createdAt?: DateTime | DateTimeFieldUpdateOperationsInput,
+?   provider?: AuthProvider | EnumAuthProviderFieldUpdateOperationsInput,
+?   providerId?: String | NullableStringFieldUpdateOperationsInput | Null,
+?   picture?: String | NullableStringFieldUpdateOperationsInput | Null,
+?   passwordResetCode?: String | NullableStringFieldUpdateOperationsInput | Null,
+?   passwordResetExpiry?: DateTime | NullableDateTimeFieldUpdateOperationsInput | Null,
+?   passwordResetVerified?: Boolean | BoolFieldUpdateOperationsInput,
+?   units?: UnitUpdateManyWithoutOwnerNestedInput,
+?   bookings?: BookingUpdateManyWithoutUserNestedInput,
+?   preferences?: UserPreferenceUpdateOneWithoutUserNestedInput,
+?   reviews?: ReviewUpdateManyWithoutUserNestedInput
+  }
+}
+
+Unknown argument `address`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/user/me"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.update()` invocation:\n\n{\n  where: {\n    id: 8\n  },\n  data: {\n    name: \"Ali Ahmed\",\n    email: \"ali@example.com\",\n    password: \"secret123\",\n    address: \"123 Main St\",\n    ~~~~~~~\n    city: \"Cairo\",\n    country: \"EG\",\n    dateOfBirth: \"1995-04-12\",\n?   phone?: String | NullableStringFieldUpdateOperationsInput | Null,\n?   role?: Role | EnumRoleFieldUpdateOperationsInput,\n?   createdAt?: DateTime | DateTimeFieldUpdateOperationsInput,\n?   provider?: AuthProvider | EnumAuthProviderFieldUpdateOperationsInput,\n?   providerId?: String | NullableStringFieldUpdateOperationsInput | Null,\n?   picture?: String | NullableStringFieldUpdateOperationsInput | Null,\n?   passwordResetCode?: String | NullableStringFieldUpdateOperationsInput | Null,\n?   passwordResetExpiry?: DateTime | NullableDateTimeFieldUpdateOperationsInput | Null,\n?   passwordResetVerified?: Boolean | BoolFieldUpdateOperationsInput,\n?   units?: UnitUpdateManyWithoutOwnerNestedInput,\n?   bookings?: BookingUpdateManyWithoutUserNestedInput,\n?   preferences?: UserPreferenceUpdateOneWithoutUserNestedInput,\n?   reviews?: ReviewUpdateManyWithoutUserNestedInput\n  }\n}\n\nUnknown argument `address`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.updateUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:17:16)\n    at async updateUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:27:18)"}}
+2026-02-06 02:13:07 [ERROR]: Invalid credentials {"success":"false","statusCode":401,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/sign-in"},"trace":{"error":"Error: Invalid credentials\n    at Module.signIn (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:26:21)\n    at async signIn (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:53:18)"}}
+2026-02-06 02:17:19 [ERROR]: User already exists with this email {"success":"false","statusCode":400,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/sign-up"},"trace":{"error":"Error: User already exists with this email\n    at Module.signUp (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:10:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async signUp (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:23:18)"}}
+2026-02-06 02:19:56 [ERROR]: 
+Invalid `prisma.user.update()` invocation:
+
+{
+  where: {
+    id: 8
+  },
+  select: {
+    id: true,
+    name: true,
+    email: true,
+    createdAt: true,
+    phone: true,
+    role: true,
+    provider: true,
+    providerId: true,
+    picture: true
+  },
++ data: UserUpdateInput | UserUncheckedUpdateInput
+}
+
+Argument `data` is missing. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/user/me"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.user.update()` invocation:\n\n{\n  where: {\n    id: 8\n  },\n  select: {\n    id: true,\n    name: true,\n    email: true,\n    createdAt: true,\n    phone: true,\n    role: true,\n    provider: true,\n    providerId: true,\n    picture: true\n  },\n+ data: UserUpdateInput | UserUncheckedUpdateInput\n}\n\nArgument `data` is missing.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.updateUserDetails (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:28:16)\n    at async updateUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:27:18)"}}
+2026-02-06 04:00:31 [ERROR]: 
+Invalid `prisma.user.delete()` invocation:
+
+
+Foreign key constraint violated on the constraint: `UserPreference_userId_fkey` {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/user/me"},"trace":{"error":"PrismaClientKnownRequestError: \nInvalid `prisma.user.delete()` invocation:\n\n\nForeign key constraint violated on the constraint: `UserPreference_userId_fkey`\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:8172)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.deleteUser (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:51:16)\n    at async deleteUserProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:42:18)"}}
+2026-02-06 04:14:19 [ERROR]: Old password is incorrect {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/user/change-password"},"trace":{"error":"Error: Old password is incorrect\n    at Module.changePassword (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:69:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async changeUserPassword (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:61:18)"}}
+2026-02-06 04:22:31 [ERROR]: comparePassword is not defined {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/user/change-password"},"trace":{"error":"ReferenceError: comparePassword is not defined\n    at Module.changePassword (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:70:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async changeUserPassword (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:61:18)"}}
+2026-02-06 04:23:27 [ERROR]: Invalid credentials {"success":"false","statusCode":401,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/sign-in"},"trace":{"error":"Error: Invalid credentials\n    at Module.signIn (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:26:21)\n    at async signIn (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:53:18)"}}

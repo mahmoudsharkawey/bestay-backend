@@ -132,8 +132,7 @@ export const resetPassword = async (email, newPassword) => {
 
 export const googleLogin = async (token) => {
   // 1. verify google token
-  const { email, name } = await verifyGoogleToken(token);
-
+  const { email, name, sub, picture } = await verifyGoogleToken(token);
   // 2. find or create user
   let user = await prisma.user.findUnique({
     where: { email },
@@ -145,6 +144,8 @@ export const googleLogin = async (token) => {
         email,
         name,
         provider: "GOOGLE",
+        providerId: sub,
+        picture: picture ,
       },
     });
   }

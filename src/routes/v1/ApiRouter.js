@@ -2,6 +2,7 @@ import { Router } from "express";
 import { WelcomController } from "../../controllers/welcomController.js";
 import { HealthController } from "../../controllers/healthController.js";
 import authRoute from "./authRoute.js";
+import userRoute from "./userRoute.js";
 const router = Router();
 
 // Example route
@@ -10,5 +11,6 @@ router.get("/health", HealthController);
 
 // Auth routes
 router.use("/auth", authRoute);
+router.use("/user", userRoute);
 
 export default router;

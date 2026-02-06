@@ -34,12 +34,18 @@ enum AuthProvider {
   GOOGLE
 }
 
+enum UnitType {
+  ROOM
+  APARTMENT
+  STUDIO
+}
+
 //////////////////////////////////////////////////
 // USER
 //////////////////////////////////////////////////
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
   email     String   @unique
   password  String?
@@ -49,6 +55,7 @@ model User {
 
   provider   AuthProvider @default(LOCAL)
   providerId String?
+  picture    String?
 
   passwordResetCode     String?
   passwordResetExpiry   DateTime?
@@ -67,15 +74,20 @@ model User {
 //////////////////////////////////////////////////
 
 model UserPreference {
-  id     Int @id @default(autoincrement())
-  userId Int @unique
+  id       String   @id @default(uuid())
+  userId   String   @unique
+  unitType UnitType
 
-  budgetMin   Float
-  budgetMax   Float
+  minBudget   Float
+  maxBudget   Float
   city        String
-  rooms       Int
-  furnished   Boolean
-  maxDistance Float? // optional
+  university  String?
+  maxDistance Float? // optional distance from university (km)
+
+  rooms      Int
+  furnished  Boolean
+  genderType String // e.g., "male only", "female only"
+  facilities String[] // e.g., ["wifi", "parking", "gym"]
 
   user User @relation(fields: [userId], references: [id])
 }
@@ -85,7 +97,7 @@ model UserPreference {
 //////////////////////////////////////////////////
 
 model Unit {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(uuid())
   title       String
   description String
   price       Float
@@ -96,8 +108,8 @@ model Unit {
   distance    Float // distance from university (km)
   available   Boolean @default(true)
 
-  ownerId Int
-  owner   User @relation("OwnerUnits", fields: [ownerId], references: [id])
+  ownerId String
+  owner   User   @relation("OwnerUnits", fields: [ownerId], references: [id])
 
   bookings Booking[]
   reviews  Review[]
@@ -110,9 +122,9 @@ model Unit {
 //////////////////////////////////////////////////
 
 model Booking {
-  id        Int           @id @default(autoincrement())
-  userId    Int
-  unitId    Int
+  id        String        @id @default(uuid())
+  userId    String
+  unitId    String
   startDate DateTime
   endDate   DateTime
   status    BookingStatus @default(PENDING)
@@ -129,8 +141,8 @@ model Booking {
 //////////////////////////////////////////////////
 
 model Payment {
-  id        Int           @id @default(autoincrement())
-  bookingId Int           @unique
+  id        String        @id @default(uuid())
+  bookingId String        @unique
   amount    Float
   status    PaymentStatus
   method    String // card, wallet, etc
@@ -144,12 +156,12 @@ model Payment {
 //////////////////////////////////////////////////
 
 model Review {
-  id      Int     @id @default(autoincrement())
+  id      String  @id @default(uuid())
   rating  Int // 1–5
   comment String?
 
-  userId Int
-  unitId Int
+  userId String
+  unitId String
 
   user User @relation(fields: [userId], references: [id])
   unit Unit @relation(fields: [unitId], references: [id])

@@ -10,6 +10,7 @@ export async function verifyGoogleToken(token) {
   });
 
   const payload = ticket.getPayload();
+  console.log("Google token payload:", payload);
 
   if (!payload?.email) {
     throw new Error("Invalid Google token");
@@ -18,5 +19,7 @@ export async function verifyGoogleToken(token) {
   return {
     email: payload.email,
     name: payload.name,
+    sub: payload.sub,
+    picture: payload.picture,
   };
 }
