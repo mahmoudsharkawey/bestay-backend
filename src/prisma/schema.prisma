@@ -40,6 +40,17 @@ enum UnitType {
   STUDIO
 }
 
+enum RoomType {
+  SINGLE
+  DOUBLE
+  SHARED
+}
+
+enum GenderPreference {
+  MALE_ONLY
+  FEMALE_ONLY
+}
+
 //////////////////////////////////////////////////
 // USER
 //////////////////////////////////////////////////
@@ -105,11 +116,23 @@ model Unit {
   address     String
   rooms       Int
   furnished   Boolean
-  distance    Float // distance from university (km)
-  available   Boolean @default(true)
+
+  university String?
+  distance   Float? // distance from university (km)
+
+  isAvailable Boolean @default(true)
+
+  roomType   RoomType
+  genderType GenderPreference
+
+  facilities String[] // e.g., ["wifi", "parking", "gym"]
+  images     String[] // URLs of unit images
 
   ownerId String
   owner   User   @relation("OwnerUnits", fields: [ownerId], references: [id])
+
+  latitude  Float?
+  longitude Float?
 
   bookings Booking[]
   reviews  Review[]

@@ -515,3 +515,852 @@ Foreign key constraint violated on the constraint: `UserPreference_userId_fkey` 
 2026-02-06 04:14:19 [ERROR]: Old password is incorrect {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/user/change-password"},"trace":{"error":"Error: Old password is incorrect\n    at Module.changePassword (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:69:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async changeUserPassword (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:61:18)"}}
 2026-02-06 04:22:31 [ERROR]: comparePassword is not defined {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/user/change-password"},"trace":{"error":"ReferenceError: comparePassword is not defined\n    at Module.changePassword (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/userService.js:70:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async changeUserPassword (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/userController.js:61:18)"}}
 2026-02-06 04:23:27 [ERROR]: Invalid credentials {"success":"false","statusCode":401,"request":{"ip":"::1","method":"POST","url":"/api/v1/auth/sign-in"},"trace":{"error":"Error: Invalid credentials\n    at Module.signIn (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/authService.js:26:21)\n    at async signIn (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/authController.js:53:18)"}}
+2026-02-06 21:01:02 [ERROR]: prisma is not defined {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"ReferenceError: prisma is not defined\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:20:23)\n    at createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:36)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)"}}
+2026-02-06 21:01:48 [ERROR]: 
+Invalid `prisma.unit.create()` invocation:
+
+{
+  data: {
+    title: "Affordable Shared Room for Female Students",
+    description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+    price: 1200,
+    city: "Cairo",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: "Ain Shams University",
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    images: [
+      "https://example.com/images/shared-room.jpg"
+    ],
+    latitude: 30.0715,
+    longitude: 31.3269,
++   owner: {
++     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,
++     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,
++     connect: UserWhereUniqueInput
++   }
+  }
+}
+
+Argument `owner` is missing. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.create()` invocation:\n\n{\n  data: {\n    title: \"Affordable Shared Room for Female Students\",\n    description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n    price: 1200,\n    city: \"Cairo\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \"Ain Shams University\",\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    images: [\n      \"https://example.com/images/shared-room.jpg\"\n    ],\n    latitude: 30.0715,\n    longitude: 31.3269,\n+   owner: {\n+     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,\n+     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,\n+     connect: UserWhereUniqueInput\n+   }\n  }\n}\n\nArgument `owner` is missing.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:22:23)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:02:10 [ERROR]: 
+Invalid `prisma.unit.create()` invocation:
+
+{
+  data: {
+    title: "Affordable Shared Room for Female Students",
+    description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+    price: 1200,
+    city: "Cairo",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: "Ain Shams University",
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    images: [
+      "https://example.com/images/shared-room.jpg"
+    ],
+    latitude: 30.0715,
+    longitude: 31.3269,
++   owner: {
++     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,
++     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,
++     connect: UserWhereUniqueInput
++   }
+  }
+}
+
+Argument `owner` is missing. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.create()` invocation:\n\n{\n  data: {\n    title: \"Affordable Shared Room for Female Students\",\n    description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n    price: 1200,\n    city: \"Cairo\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \"Ain Shams University\",\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    images: [\n      \"https://example.com/images/shared-room.jpg\"\n    ],\n    latitude: 30.0715,\n    longitude: 31.3269,\n+   owner: {\n+     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,\n+     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,\n+     connect: UserWhereUniqueInput\n+   }\n  }\n}\n\nArgument `owner` is missing.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:22:23)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:07:11 [ERROR]: 
+Invalid `prisma.unit.create()` invocation:
+
+{
+  data: {
+    title: "Affordable Shared Room for Female Students",
+    description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+    price: 1200,
+    city: "Cairo",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: "Ain Shams University",
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    images: [
+      "https://example.com/images/shared-room.jpg"
+    ],
+    latitude: 30.0715,
+    longitude: 31.3269,
++   owner: {
++     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,
++     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,
++     connect: UserWhereUniqueInput
++   }
+  }
+}
+
+Argument `owner` is missing. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.create()` invocation:\n\n{\n  data: {\n    title: \"Affordable Shared Room for Female Students\",\n    description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n    price: 1200,\n    city: \"Cairo\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \"Ain Shams University\",\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    images: [\n      \"https://example.com/images/shared-room.jpg\"\n    ],\n    latitude: 30.0715,\n    longitude: 31.3269,\n+   owner: {\n+     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,\n+     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,\n+     connect: UserWhereUniqueInput\n+   }\n  }\n}\n\nArgument `owner` is missing.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:22:23)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:07:15 [ERROR]: 
+Invalid `prisma.unit.create()` invocation:
+
+{
+  data: {
+    title: "Affordable Shared Room for Female Students",
+    description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+    price: 1200,
+    city: "Cairo",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: "Ain Shams University",
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    images: [
+      "https://example.com/images/shared-room.jpg"
+    ],
+    latitude: 30.0715,
+    longitude: 31.3269,
++   owner: {
++     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,
++     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,
++     connect: UserWhereUniqueInput
++   }
+  }
+}
+
+Argument `owner` is missing. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.create()` invocation:\n\n{\n  data: {\n    title: \"Affordable Shared Room for Female Students\",\n    description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n    price: 1200,\n    city: \"Cairo\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \"Ain Shams University\",\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    images: [\n      \"https://example.com/images/shared-room.jpg\"\n    ],\n    latitude: 30.0715,\n    longitude: 31.3269,\n+   owner: {\n+     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,\n+     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,\n+     connect: UserWhereUniqueInput\n+   }\n  }\n}\n\nArgument `owner` is missing.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:22:23)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:07:16 [ERROR]: 
+Invalid `prisma.unit.create()` invocation:
+
+{
+  data: {
+    title: "Affordable Shared Room for Female Students",
+    description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+    price: 1200,
+    city: "Cairo",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: "Ain Shams University",
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    images: [
+      "https://example.com/images/shared-room.jpg"
+    ],
+    latitude: 30.0715,
+    longitude: 31.3269,
++   owner: {
++     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,
++     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,
++     connect: UserWhereUniqueInput
++   }
+  }
+}
+
+Argument `owner` is missing. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.create()` invocation:\n\n{\n  data: {\n    title: \"Affordable Shared Room for Female Students\",\n    description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n    price: 1200,\n    city: \"Cairo\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \"Ain Shams University\",\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    images: [\n      \"https://example.com/images/shared-room.jpg\"\n    ],\n    latitude: 30.0715,\n    longitude: 31.3269,\n+   owner: {\n+     create: UserCreateWithoutUnitsInput | UserUncheckedCreateWithoutUnitsInput,\n+     connectOrCreate: UserCreateOrConnectWithoutUnitsInput,\n+     connect: UserWhereUniqueInput\n+   }\n  }\n}\n\nArgument `owner` is missing.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:22:23)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:09:00 [ERROR]: 
+Invalid `prisma.unit.create()` invocation:
+
+{
+  data: {
+    title: "Affordable Shared Room for Female Students",
+    description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+    price: 1200,
+    city: "Cairo",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: "Ain Shams University",
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE",
+                ~~~~~~~~
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    images: [
+      "https://example.com/images/shared-room.jpg"
+    ],
+    owner: "Alice momo",
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269
+  }
+}
+
+Invalid value for argument `genderType`. Expected GenderPreference. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.create()` invocation:\n\n{\n  data: {\n    title: \"Affordable Shared Room for Female Students\",\n    description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n    price: 1200,\n    city: \"Cairo\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \"Ain Shams University\",\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE\",\n                ~~~~~~~~\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    images: [\n      \"https://example.com/images/shared-room.jpg\"\n    ],\n    owner: \"Alice momo\",\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269\n  }\n}\n\nInvalid value for argument `genderType`. Expected GenderPreference.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:23)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:10:28 [ERROR]: 
+Invalid `prisma.unit.create()` invocation:
+
+{
+  data: {
+    title: "Affordable Shared Room for Female Students",
+    description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+    price: 1200,
+    city: "Cairo",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: "Ain Shams University",
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE_ONLY",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    images: [
+      "https://example.com/images/shared-room.jpg"
+    ],
+    owner: "Alice momo",
+           ~~~~~~~~~~~~
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269
+  }
+}
+
+Argument `owner`: Invalid value provided. Expected UserCreateNestedOneWithoutUnitsInput, provided String. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.create()` invocation:\n\n{\n  data: {\n    title: \"Affordable Shared Room for Female Students\",\n    description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n    price: 1200,\n    city: \"Cairo\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \"Ain Shams University\",\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE_ONLY\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    images: [\n      \"https://example.com/images/shared-room.jpg\"\n    ],\n    owner: \"Alice momo\",\n           ~~~~~~~~~~~~\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269\n  }\n}\n\nArgument `owner`: Invalid value provided. Expected UserCreateNestedOneWithoutUnitsInput, provided String.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:23)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:22:35 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    title: "Affordable Shared Room for Female Students",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    city: "Cairo",
+    university: "Ain Shams University",
+    rooms: 1,
+    furnished: true,
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE_ONLY",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    ~~~~~~~~~~~~~~~~~~~
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269
+  }
+}
+
+Argument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String). {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    title: \"Affordable Shared Room for Female Students\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    city: \"Cairo\",\n    university: \"Ain Shams University\",\n    rooms: 1,\n    furnished: true,\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE_ONLY\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    ~~~~~~~~~~~~~~~~~~~\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269\n  }\n}\n\nArgument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String).\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:24:04 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    id: undefined,
+?   AND?: UnitWhereInput | UnitWhereInput[],
+?   OR?: UnitWhereInput[],
+?   NOT?: UnitWhereInput | UnitWhereInput[],
+?   title?: StringFilter | String,
+?   description?: StringFilter | String,
+?   price?: FloatFilter | Float,
+?   city?: StringFilter | String,
+?   address?: StringFilter | String,
+?   rooms?: IntFilter | Int,
+?   furnished?: BoolFilter | Boolean,
+?   university?: StringNullableFilter | String | Null,
+?   distance?: FloatNullableFilter | Float | Null,
+?   isAvailable?: BoolFilter | Boolean,
+?   roomType?: EnumRoomTypeFilter | RoomType,
+?   genderType?: EnumGenderPreferenceFilter | GenderPreference,
+?   facilities?: StringNullableListFilter,
+?   images?: StringNullableListFilter,
+?   ownerId?: StringFilter | String,
+?   latitude?: FloatNullableFilter | Float | Null,
+?   longitude?: FloatNullableFilter | Float | Null,
+?   createdAt?: DateTimeFilter | DateTime,
+?   owner?: UserScalarRelationFilter | UserWhereInput,
+?   bookings?: BookingListRelationFilter,
+?   reviews?: ReviewListRelationFilter
+  }
+}
+
+Argument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    id: undefined,\n?   AND?: UnitWhereInput | UnitWhereInput[],\n?   OR?: UnitWhereInput[],\n?   NOT?: UnitWhereInput | UnitWhereInput[],\n?   title?: StringFilter | String,\n?   description?: StringFilter | String,\n?   price?: FloatFilter | Float,\n?   city?: StringFilter | String,\n?   address?: StringFilter | String,\n?   rooms?: IntFilter | Int,\n?   furnished?: BoolFilter | Boolean,\n?   university?: StringNullableFilter | String | Null,\n?   distance?: FloatNullableFilter | Float | Null,\n?   isAvailable?: BoolFilter | Boolean,\n?   roomType?: EnumRoomTypeFilter | RoomType,\n?   genderType?: EnumGenderPreferenceFilter | GenderPreference,\n?   facilities?: StringNullableListFilter,\n?   images?: StringNullableListFilter,\n?   ownerId?: StringFilter | String,\n?   latitude?: FloatNullableFilter | Float | Null,\n?   longitude?: FloatNullableFilter | Float | Null,\n?   createdAt?: DateTimeFilter | DateTime,\n?   owner?: UserScalarRelationFilter | UserWhereInput,\n?   bookings?: BookingListRelationFilter,\n?   reviews?: ReviewListRelationFilter\n  }\n}\n\nArgument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:24:38 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    newUnit: {
+    ~~~~~~~
+      title: "Affordable Shared Room for Female Students",
+      description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+      price: 1200,
+      city: "Cairo",
+      address: "28 Gesr El Suez Street, Heliopolis",
+      rooms: 1,
+      furnished: true,
+      university: "Ain Shams University",
+      distance: 0.8,
+      roomType: "SHARED",
+      genderType: "FEMALE_ONLY",
+      facilities: [
+        "wifi",
+        "kitchen",
+        "washing_machine",
+        "balcony"
+      ],
+      images: [
+        "https://example.com/images/shared-room.jpg"
+      ],
+      ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+      latitude: 30.0715,
+      longitude: 31.3269
+    },
+?   id?: String,
+?   AND?: UnitWhereInput | UnitWhereInput[],
+?   OR?: UnitWhereInput[],
+?   NOT?: UnitWhereInput | UnitWhereInput[],
+?   title?: StringFilter | String,
+?   description?: StringFilter | String,
+?   price?: FloatFilter | Float,
+?   city?: StringFilter | String,
+?   address?: StringFilter | String,
+?   rooms?: IntFilter | Int,
+?   furnished?: BoolFilter | Boolean,
+?   university?: StringNullableFilter | String | Null,
+?   distance?: FloatNullableFilter | Float | Null,
+?   isAvailable?: BoolFilter | Boolean,
+?   roomType?: EnumRoomTypeFilter | RoomType,
+?   genderType?: EnumGenderPreferenceFilter | GenderPreference,
+?   facilities?: StringNullableListFilter,
+?   images?: StringNullableListFilter,
+?   ownerId?: StringFilter | String,
+?   latitude?: FloatNullableFilter | Float | Null,
+?   longitude?: FloatNullableFilter | Float | Null,
+?   createdAt?: DateTimeFilter | DateTime,
+?   owner?: UserScalarRelationFilter | UserWhereInput,
+?   bookings?: BookingListRelationFilter,
+?   reviews?: ReviewListRelationFilter
+  }
+}
+
+Unknown argument `newUnit`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    newUnit: {\n    ~~~~~~~\n      title: \"Affordable Shared Room for Female Students\",\n      description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n      price: 1200,\n      city: \"Cairo\",\n      address: \"28 Gesr El Suez Street, Heliopolis\",\n      rooms: 1,\n      furnished: true,\n      university: \"Ain Shams University\",\n      distance: 0.8,\n      roomType: \"SHARED\",\n      genderType: \"FEMALE_ONLY\",\n      facilities: [\n        \"wifi\",\n        \"kitchen\",\n        \"washing_machine\",\n        \"balcony\"\n      ],\n      images: [\n        \"https://example.com/images/shared-room.jpg\"\n      ],\n      ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n      latitude: 30.0715,\n      longitude: 31.3269\n    },\n?   id?: String,\n?   AND?: UnitWhereInput | UnitWhereInput[],\n?   OR?: UnitWhereInput[],\n?   NOT?: UnitWhereInput | UnitWhereInput[],\n?   title?: StringFilter | String,\n?   description?: StringFilter | String,\n?   price?: FloatFilter | Float,\n?   city?: StringFilter | String,\n?   address?: StringFilter | String,\n?   rooms?: IntFilter | Int,\n?   furnished?: BoolFilter | Boolean,\n?   university?: StringNullableFilter | String | Null,\n?   distance?: FloatNullableFilter | Float | Null,\n?   isAvailable?: BoolFilter | Boolean,\n?   roomType?: EnumRoomTypeFilter | RoomType,\n?   genderType?: EnumGenderPreferenceFilter | GenderPreference,\n?   facilities?: StringNullableListFilter,\n?   images?: StringNullableListFilter,\n?   ownerId?: StringFilter | String,\n?   latitude?: FloatNullableFilter | Float | Null,\n?   longitude?: FloatNullableFilter | Float | Null,\n?   createdAt?: DateTimeFilter | DateTime,\n?   owner?: UserScalarRelationFilter | UserWhereInput,\n?   bookings?: BookingListRelationFilter,\n?   reviews?: ReviewListRelationFilter\n  }\n}\n\nUnknown argument `newUnit`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:27:24 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    newUnit: {
+    ~~~~~~~
+      title: "Affordable Shared Room for Female Students",
+      description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+      price: 1200,
+      city: "Cairo",
+      address: "28 Gesr El Suez Street, Heliopolis",
+      rooms: 1,
+      furnished: true,
+      university: "Ain Shams University",
+      distance: 0.8,
+      roomType: "SHARED",
+      genderType: "FEMALE_ONLY",
+      facilities: [
+        "wifi",
+        "kitchen",
+        "washing_machine",
+        "balcony"
+      ],
+      images: [
+        "https://example.com/images/shared-room.jpg"
+      ],
+      ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+      latitude: 30.0715,
+      longitude: 31.3269
+    },
+?   id?: String,
+?   AND?: UnitWhereInput | UnitWhereInput[],
+?   OR?: UnitWhereInput[],
+?   NOT?: UnitWhereInput | UnitWhereInput[],
+?   title?: StringFilter | String,
+?   description?: StringFilter | String,
+?   price?: FloatFilter | Float,
+?   city?: StringFilter | String,
+?   address?: StringFilter | String,
+?   rooms?: IntFilter | Int,
+?   furnished?: BoolFilter | Boolean,
+?   university?: StringNullableFilter | String | Null,
+?   distance?: FloatNullableFilter | Float | Null,
+?   isAvailable?: BoolFilter | Boolean,
+?   roomType?: EnumRoomTypeFilter | RoomType,
+?   genderType?: EnumGenderPreferenceFilter | GenderPreference,
+?   facilities?: StringNullableListFilter,
+?   images?: StringNullableListFilter,
+?   ownerId?: StringFilter | String,
+?   latitude?: FloatNullableFilter | Float | Null,
+?   longitude?: FloatNullableFilter | Float | Null,
+?   createdAt?: DateTimeFilter | DateTime,
+?   owner?: UserScalarRelationFilter | UserWhereInput,
+?   bookings?: BookingListRelationFilter,
+?   reviews?: ReviewListRelationFilter
+  }
+}
+
+Unknown argument `newUnit`. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    newUnit: {\n    ~~~~~~~\n      title: \"Affordable Shared Room for Female Students\",\n      description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n      price: 1200,\n      city: \"Cairo\",\n      address: \"28 Gesr El Suez Street, Heliopolis\",\n      rooms: 1,\n      furnished: true,\n      university: \"Ain Shams University\",\n      distance: 0.8,\n      roomType: \"SHARED\",\n      genderType: \"FEMALE_ONLY\",\n      facilities: [\n        \"wifi\",\n        \"kitchen\",\n        \"washing_machine\",\n        \"balcony\"\n      ],\n      images: [\n        \"https://example.com/images/shared-room.jpg\"\n      ],\n      ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n      latitude: 30.0715,\n      longitude: 31.3269\n    },\n?   id?: String,\n?   AND?: UnitWhereInput | UnitWhereInput[],\n?   OR?: UnitWhereInput[],\n?   NOT?: UnitWhereInput | UnitWhereInput[],\n?   title?: StringFilter | String,\n?   description?: StringFilter | String,\n?   price?: FloatFilter | Float,\n?   city?: StringFilter | String,\n?   address?: StringFilter | String,\n?   rooms?: IntFilter | Int,\n?   furnished?: BoolFilter | Boolean,\n?   university?: StringNullableFilter | String | Null,\n?   distance?: FloatNullableFilter | Float | Null,\n?   isAvailable?: BoolFilter | Boolean,\n?   roomType?: EnumRoomTypeFilter | RoomType,\n?   genderType?: EnumGenderPreferenceFilter | GenderPreference,\n?   facilities?: StringNullableListFilter,\n?   images?: StringNullableListFilter,\n?   ownerId?: StringFilter | String,\n?   latitude?: FloatNullableFilter | Float | Null,\n?   longitude?: FloatNullableFilter | Float | Null,\n?   createdAt?: DateTimeFilter | DateTime,\n?   owner?: UserScalarRelationFilter | UserWhereInput,\n?   bookings?: BookingListRelationFilter,\n?   reviews?: ReviewListRelationFilter\n  }\n}\n\nUnknown argument `newUnit`. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:28:06 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    data: {
+    ~~~~
+      title: "Affordable Shared Room for Female Students",
+      description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+      price: 1200,
+      city: "Cairo",
+      address: "28 Gesr El Suez Street, Heliopolis",
+      rooms: 1,
+      furnished: true,
+      university: "Ain Shams University",
+      distance: 0.8,
+      roomType: "SHARED",
+      genderType: "FEMALE_ONLY",
+      facilities: [
+        "wifi",
+        "kitchen",
+        "washing_machine",
+        "balcony"
+      ],
+      images: [
+        "https://example.com/images/shared-room.jpg"
+      ],
+      ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+      latitude: 30.0715,
+      longitude: 31.3269
+    },
+?   id?: String,
+?   AND?: UnitWhereInput | UnitWhereInput[],
+?   OR?: UnitWhereInput[],
+?   NOT?: UnitWhereInput | UnitWhereInput[],
+?   title?: StringFilter | String,
+?   description?: StringFilter | String,
+?   price?: FloatFilter | Float,
+?   city?: StringFilter | String,
+?   address?: StringFilter | String,
+?   rooms?: IntFilter | Int,
+?   furnished?: BoolFilter | Boolean,
+?   university?: StringNullableFilter | String | Null,
+?   distance?: FloatNullableFilter | Float | Null,
+?   isAvailable?: BoolFilter | Boolean,
+?   roomType?: EnumRoomTypeFilter | RoomType,
+?   genderType?: EnumGenderPreferenceFilter | GenderPreference,
+?   facilities?: StringNullableListFilter,
+?   images?: StringNullableListFilter,
+?   ownerId?: StringFilter | String,
+?   latitude?: FloatNullableFilter | Float | Null,
+?   longitude?: FloatNullableFilter | Float | Null,
+?   createdAt?: DateTimeFilter | DateTime,
+?   owner?: UserScalarRelationFilter | UserWhereInput,
+?   bookings?: BookingListRelationFilter,
+?   reviews?: ReviewListRelationFilter
+  }
+}
+
+Unknown argument `data`. Did you mean `city`? Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    data: {\n    ~~~~\n      title: \"Affordable Shared Room for Female Students\",\n      description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n      price: 1200,\n      city: \"Cairo\",\n      address: \"28 Gesr El Suez Street, Heliopolis\",\n      rooms: 1,\n      furnished: true,\n      university: \"Ain Shams University\",\n      distance: 0.8,\n      roomType: \"SHARED\",\n      genderType: \"FEMALE_ONLY\",\n      facilities: [\n        \"wifi\",\n        \"kitchen\",\n        \"washing_machine\",\n        \"balcony\"\n      ],\n      images: [\n        \"https://example.com/images/shared-room.jpg\"\n      ],\n      ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n      latitude: 30.0715,\n      longitude: 31.3269\n    },\n?   id?: String,\n?   AND?: UnitWhereInput | UnitWhereInput[],\n?   OR?: UnitWhereInput[],\n?   NOT?: UnitWhereInput | UnitWhereInput[],\n?   title?: StringFilter | String,\n?   description?: StringFilter | String,\n?   price?: FloatFilter | Float,\n?   city?: StringFilter | String,\n?   address?: StringFilter | String,\n?   rooms?: IntFilter | Int,\n?   furnished?: BoolFilter | Boolean,\n?   university?: StringNullableFilter | String | Null,\n?   distance?: FloatNullableFilter | Float | Null,\n?   isAvailable?: BoolFilter | Boolean,\n?   roomType?: EnumRoomTypeFilter | RoomType,\n?   genderType?: EnumGenderPreferenceFilter | GenderPreference,\n?   facilities?: StringNullableListFilter,\n?   images?: StringNullableListFilter,\n?   ownerId?: StringFilter | String,\n?   latitude?: FloatNullableFilter | Float | Null,\n?   longitude?: FloatNullableFilter | Float | Null,\n?   createdAt?: DateTimeFilter | DateTime,\n?   owner?: UserScalarRelationFilter | UserWhereInput,\n?   bookings?: BookingListRelationFilter,\n?   reviews?: ReviewListRelationFilter\n  }\n}\n\nUnknown argument `data`. Did you mean `city`? Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:28:40 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    title: "Affordable Shared Room for Female Students",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    city: "Cairo",
+    university: "Ain Shams University",
+    rooms: 1,
+    furnished: true,
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE_ONLY",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    ~~~~~~~~~~~~~~~~~~~
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269
+  }
+}
+
+Argument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String). {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    title: \"Affordable Shared Room for Female Students\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    city: \"Cairo\",\n    university: \"Ain Shams University\",\n    rooms: 1,\n    furnished: true,\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE_ONLY\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    ~~~~~~~~~~~~~~~~~~~\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269\n  }\n}\n\nArgument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String).\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:25:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:29:58 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    title: "Affordable Shared Room for Female Students",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    city: "Cairo",
+    university: "Ain Shams University",
+    rooms: 1,
+    furnished: true,
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE_ONLY",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    ~~~~~~~~~~~~~~~~~~~
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269
+  }
+}
+
+Argument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String). {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    title: \"Affordable Shared Room for Female Students\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    city: \"Cairo\",\n    university: \"Ain Shams University\",\n    rooms: 1,\n    furnished: true,\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE_ONLY\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    ~~~~~~~~~~~~~~~~~~~\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269\n  }\n}\n\nArgument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String).\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:25:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:30:18 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    title: "Affordable Shared Room for Female Students",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    city: "Cairo",
+    university: "Ain Shams University",
+    rooms: 1,
+    furnished: true,
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE_ONLY",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    ~~~~~~~~~~~~~~~~~~~
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269
+  }
+}
+
+Argument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String). {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    title: \"Affordable Shared Room for Female Students\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    city: \"Cairo\",\n    university: \"Ain Shams University\",\n    rooms: 1,\n    furnished: true,\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE_ONLY\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    ~~~~~~~~~~~~~~~~~~~\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269\n  }\n}\n\nArgument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String).\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:25:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:31:05 [ERROR]: 
+Invalid `prisma.unit.findUnique()` invocation:
+
+{
+  where: {
+    title: "Affordable Shared Room for Female Students",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    city: "Cairo",
+    university: "Ain Shams University",
+    rooms: 1,
+    furnished: true,
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE_ONLY",
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269,
+?   id?: String,
+?   AND?: UnitWhereInput | UnitWhereInput[],
+?   OR?: UnitWhereInput[],
+?   NOT?: UnitWhereInput | UnitWhereInput[],
+?   description?: StringFilter | String,
+?   price?: FloatFilter | Float,
+?   isAvailable?: BoolFilter | Boolean,
+?   facilities?: StringNullableListFilter,
+?   images?: StringNullableListFilter,
+?   createdAt?: DateTimeFilter | DateTime,
+?   owner?: UserScalarRelationFilter | UserWhereInput,
+?   bookings?: BookingListRelationFilter,
+?   reviews?: ReviewListRelationFilter
+  }
+}
+
+Argument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findUnique()` invocation:\n\n{\n  where: {\n    title: \"Affordable Shared Room for Female Students\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    city: \"Cairo\",\n    university: \"Ain Shams University\",\n    rooms: 1,\n    furnished: true,\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE_ONLY\",\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269,\n?   id?: String,\n?   AND?: UnitWhereInput | UnitWhereInput[],\n?   OR?: UnitWhereInput[],\n?   NOT?: UnitWhereInput | UnitWhereInput[],\n?   description?: StringFilter | String,\n?   price?: FloatFilter | Float,\n?   isAvailable?: BoolFilter | Boolean,\n?   facilities?: StringNullableListFilter,\n?   images?: StringNullableListFilter,\n?   createdAt?: DateTimeFilter | DateTime,\n?   owner?: UserScalarRelationFilter | UserWhereInput,\n?   bookings?: BookingListRelationFilter,\n?   reviews?: ReviewListRelationFilter\n  }\n}\n\nArgument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:25:22)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:34:24 [ERROR]: Unit already exists at this address {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: Unit already exists at this address\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:29:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:37:57 [ERROR]: 
+Invalid `prisma.unit.findFirst()` invocation:
+
+{
+  where: {
+    title: "Affordable Shared Room for Female Students",
+    description: "Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.",
+    price: 1200,
+    city: "Cairo",
+    address: "28 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: "Ain Shams University",
+    distance: 0.8,
+    roomType: "SHARED",
+    genderType: "FEMALE_ONLY",
+    facilities: [
+      "wifi",
+      "kitchen",
+      "washing_machine",
+      "balcony"
+    ],
+    ~~~~~~~~~~~~~~~~~~~
+    images: [
+      "https://example.com/images/shared-room.jpg"
+    ],
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269
+  }
+}
+
+Argument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String). {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findFirst()` invocation:\n\n{\n  where: {\n    title: \"Affordable Shared Room for Female Students\",\n    description: \"Clean and comfortable shared room for 2 students near Ain Shams University. Includes all utilities and weekly cleaning service.\",\n    price: 1200,\n    city: \"Cairo\",\n    address: \"28 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \"Ain Shams University\",\n    distance: 0.8,\n    roomType: \"SHARED\",\n    genderType: \"FEMALE_ONLY\",\n    facilities: [\n      \"wifi\",\n      \"kitchen\",\n      \"washing_machine\",\n      \"balcony\"\n    ],\n    ~~~~~~~~~~~~~~~~~~~\n    images: [\n      \"https://example.com/images/shared-room.jpg\"\n    ],\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269\n  }\n}\n\nArgument `facilities`: Invalid value provided. Expected StringNullableListFilter, provided (String, String, String, String).\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:24)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-06 21:40:19 [ERROR]: Unit already exists at this address {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: Unit already exists at this address\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:51:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-07 04:31:20 [ERROR]: jwt expired {"success":"false","statusCode":401,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"TokenExpiredError: jwt expired\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:190:21\n    at getSecret (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:97:14)\n    at module.exports [as verify] (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:101:10)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:9:25)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15"}}
+2026-02-07 04:32:03 [ERROR]: All fields are required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: All fields are required\n    at validateUnitFields (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/utils/unitValidation.js:40:11)\n    at createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:8:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)"}}
+2026-02-07 04:34:05 [ERROR]: All fields are required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: All fields are required\n    at validateUnitFields (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/utils/unitValidation.js:40:11)\n    at createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:8:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)"}}
+2026-02-07 04:34:08 [ERROR]: All fields are required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: All fields are required\n    at validateUnitFields (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/utils/unitValidation.js:40:11)\n    at createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:8:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)"}}
+2026-02-07 04:35:07 [ERROR]: All fields are required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: All fields are required\n    at validateUnitFields (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/utils/unitValidation.js:40:11)\n    at createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:8:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)"}}
+2026-02-07 04:38:51 [ERROR]: Unit already exists at this address {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: Unit already exists at this address\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:50:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-07 04:38:53 [ERROR]: Unit already exists at this address {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: Unit already exists at this address\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:50:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-07 04:40:30 [ERROR]: Unit already exists at this address {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: Unit already exists at this address\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:50:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-07 04:42:05 [ERROR]: 
+Invalid `prisma.unit.findFirst()` invocation:
+
+{
+  where: {
+    title: " Shared Room for Female Students",
+    description: " and comfortable shared room for 2 ...<truncated>",
+    price: 1500,
+    city: "Giza",
+    address: "234 Gesr El Suez Street, Heliopolis",
+    rooms: 1,
+    furnished: true,
+    university: " Shams University",
+    distance: 0.8,
+    roomType: "PRIVAT",
+              ~~~~~~~~
+    genderType: "MALE_ONLY",
+    ownerId: "a69ac8a0-c16c-46f1-bb76-2abaa623f491",
+    latitude: 30.0715,
+    longitude: 31.3269,
+    facilities: {
+      equals: [
+        "wifi",
+        "kitchen",
+        "washing_machine",
+        "balcony"
+      ]
+    },
+    images: {
+      equals: [
+        "https://example.com/images/shared-room.j...<truncated>"
+      ]
+    }
+  }
+}
+
+Invalid value for argument `roomType`. Expected RoomType. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.findFirst()` invocation:\n\n{\n  where: {\n    title: \" Shared Room for Female Students\",\n    description: \" and comfortable shared room for 2 ...<truncated>\",\n    price: 1500,\n    city: \"Giza\",\n    address: \"234 Gesr El Suez Street, Heliopolis\",\n    rooms: 1,\n    furnished: true,\n    university: \" Shams University\",\n    distance: 0.8,\n    roomType: \"PRIVAT\",\n              ~~~~~~~~\n    genderType: \"MALE_ONLY\",\n    ownerId: \"a69ac8a0-c16c-46f1-bb76-2abaa623f491\",\n    latitude: 30.0715,\n    longitude: 31.3269,\n    facilities: {\n      equals: [\n        \"wifi\",\n        \"kitchen\",\n        \"washing_machine\",\n        \"balcony\"\n      ]\n    },\n    images: {\n      equals: [\n        \"https://example.com/images/shared-room.j...<truncated>\"\n      ]\n    }\n  }\n}\n\nInvalid value for argument `roomType`. Expected RoomType.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:24:24)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-07 04:42:44 [ERROR]: Unit already exists at this address {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: Unit already exists at this address\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:50:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-07 04:42:46 [ERROR]: Unit already exists at this address {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: Unit already exists at this address\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:50:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-07 04:53:16 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 04:53:48 [ERROR]: 
+Invalid `prisma.unit.delete()` invocation:
+
+{
+  where: {
+    id: undefined,
+?   AND?: UnitWhereInput | UnitWhereInput[],
+?   OR?: UnitWhereInput[],
+?   NOT?: UnitWhereInput | UnitWhereInput[],
+?   title?: StringFilter | String,
+?   description?: StringFilter | String,
+?   price?: FloatFilter | Float,
+?   city?: StringFilter | String,
+?   address?: StringFilter | String,
+?   rooms?: IntFilter | Int,
+?   furnished?: BoolFilter | Boolean,
+?   university?: StringNullableFilter | String | Null,
+?   distance?: FloatNullableFilter | Float | Null,
+?   isAvailable?: BoolFilter | Boolean,
+?   roomType?: EnumRoomTypeFilter | RoomType,
+?   genderType?: EnumGenderPreferenceFilter | GenderPreference,
+?   facilities?: StringNullableListFilter,
+?   images?: StringNullableListFilter,
+?   ownerId?: StringFilter | String,
+?   latitude?: FloatNullableFilter | Float | Null,
+?   longitude?: FloatNullableFilter | Float | Null,
+?   createdAt?: DateTimeFilter | DateTime,
+?   owner?: UserScalarRelationFilter | UserWhereInput,
+?   bookings?: BookingListRelationFilter,
+?   reviews?: ReviewListRelationFilter
+  }
+}
+
+Argument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.delete()` invocation:\n\n{\n  where: {\n    id: undefined,\n?   AND?: UnitWhereInput | UnitWhereInput[],\n?   OR?: UnitWhereInput[],\n?   NOT?: UnitWhereInput | UnitWhereInput[],\n?   title?: StringFilter | String,\n?   description?: StringFilter | String,\n?   price?: FloatFilter | Float,\n?   city?: StringFilter | String,\n?   address?: StringFilter | String,\n?   rooms?: IntFilter | Int,\n?   furnished?: BoolFilter | Boolean,\n?   university?: StringNullableFilter | String | Null,\n?   distance?: FloatNullableFilter | Float | Null,\n?   isAvailable?: BoolFilter | Boolean,\n?   roomType?: EnumRoomTypeFilter | RoomType,\n?   genderType?: EnumGenderPreferenceFilter | GenderPreference,\n?   facilities?: StringNullableListFilter,\n?   images?: StringNullableListFilter,\n?   ownerId?: StringFilter | String,\n?   latitude?: FloatNullableFilter | Float | Null,\n?   longitude?: FloatNullableFilter | Float | Null,\n?   createdAt?: DateTimeFilter | DateTime,\n?   owner?: UserScalarRelationFilter | UserWhereInput,\n?   bookings?: BookingListRelationFilter,\n?   reviews?: ReviewListRelationFilter\n  }\n}\n\nArgument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:64:23)\n    at async deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:50:25)"}}
+2026-02-07 04:54:41 [ERROR]: 
+Invalid `prisma.unit.delete()` invocation:
+
+{
+  where: {
+    id: undefined,
+?   AND?: UnitWhereInput | UnitWhereInput[],
+?   OR?: UnitWhereInput[],
+?   NOT?: UnitWhereInput | UnitWhereInput[],
+?   title?: StringFilter | String,
+?   description?: StringFilter | String,
+?   price?: FloatFilter | Float,
+?   city?: StringFilter | String,
+?   address?: StringFilter | String,
+?   rooms?: IntFilter | Int,
+?   furnished?: BoolFilter | Boolean,
+?   university?: StringNullableFilter | String | Null,
+?   distance?: FloatNullableFilter | Float | Null,
+?   isAvailable?: BoolFilter | Boolean,
+?   roomType?: EnumRoomTypeFilter | RoomType,
+?   genderType?: EnumGenderPreferenceFilter | GenderPreference,
+?   facilities?: StringNullableListFilter,
+?   images?: StringNullableListFilter,
+?   ownerId?: StringFilter | String,
+?   latitude?: FloatNullableFilter | Float | Null,
+?   longitude?: FloatNullableFilter | Float | Null,
+?   createdAt?: DateTimeFilter | DateTime,
+?   owner?: UserScalarRelationFilter | UserWhereInput,
+?   bookings?: BookingListRelationFilter,
+?   reviews?: ReviewListRelationFilter
+  }
+}
+
+Argument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.delete()` invocation:\n\n{\n  where: {\n    id: undefined,\n?   AND?: UnitWhereInput | UnitWhereInput[],\n?   OR?: UnitWhereInput[],\n?   NOT?: UnitWhereInput | UnitWhereInput[],\n?   title?: StringFilter | String,\n?   description?: StringFilter | String,\n?   price?: FloatFilter | Float,\n?   city?: StringFilter | String,\n?   address?: StringFilter | String,\n?   rooms?: IntFilter | Int,\n?   furnished?: BoolFilter | Boolean,\n?   university?: StringNullableFilter | String | Null,\n?   distance?: FloatNullableFilter | Float | Null,\n?   isAvailable?: BoolFilter | Boolean,\n?   roomType?: EnumRoomTypeFilter | RoomType,\n?   genderType?: EnumGenderPreferenceFilter | GenderPreference,\n?   facilities?: StringNullableListFilter,\n?   images?: StringNullableListFilter,\n?   ownerId?: StringFilter | String,\n?   latitude?: FloatNullableFilter | Float | Null,\n?   longitude?: FloatNullableFilter | Float | Null,\n?   createdAt?: DateTimeFilter | DateTime,\n?   owner?: UserScalarRelationFilter | UserWhereInput,\n?   bookings?: BookingListRelationFilter,\n?   reviews?: ReviewListRelationFilter\n  }\n}\n\nArgument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:64:23)\n    at async deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:50:25)"}}
+2026-02-07 04:55:39 [ERROR]: 
+Invalid `prisma.unit.delete()` invocation:
+
+{
+  where: {
+    id: undefined,
+?   AND?: UnitWhereInput | UnitWhereInput[],
+?   OR?: UnitWhereInput[],
+?   NOT?: UnitWhereInput | UnitWhereInput[],
+?   title?: StringFilter | String,
+?   description?: StringFilter | String,
+?   price?: FloatFilter | Float,
+?   city?: StringFilter | String,
+?   address?: StringFilter | String,
+?   rooms?: IntFilter | Int,
+?   furnished?: BoolFilter | Boolean,
+?   university?: StringNullableFilter | String | Null,
+?   distance?: FloatNullableFilter | Float | Null,
+?   isAvailable?: BoolFilter | Boolean,
+?   roomType?: EnumRoomTypeFilter | RoomType,
+?   genderType?: EnumGenderPreferenceFilter | GenderPreference,
+?   facilities?: StringNullableListFilter,
+?   images?: StringNullableListFilter,
+?   ownerId?: StringFilter | String,
+?   latitude?: FloatNullableFilter | Float | Null,
+?   longitude?: FloatNullableFilter | Float | Null,
+?   createdAt?: DateTimeFilter | DateTime,
+?   owner?: UserScalarRelationFilter | UserWhereInput,
+?   bookings?: BookingListRelationFilter,
+?   reviews?: ReviewListRelationFilter
+  }
+}
+
+Argument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.unit.delete()` invocation:\n\n{\n  where: {\n    id: undefined,\n?   AND?: UnitWhereInput | UnitWhereInput[],\n?   OR?: UnitWhereInput[],\n?   NOT?: UnitWhereInput | UnitWhereInput[],\n?   title?: StringFilter | String,\n?   description?: StringFilter | String,\n?   price?: FloatFilter | Float,\n?   city?: StringFilter | String,\n?   address?: StringFilter | String,\n?   rooms?: IntFilter | Int,\n?   furnished?: BoolFilter | Boolean,\n?   university?: StringNullableFilter | String | Null,\n?   distance?: FloatNullableFilter | Float | Null,\n?   isAvailable?: BoolFilter | Boolean,\n?   roomType?: EnumRoomTypeFilter | RoomType,\n?   genderType?: EnumGenderPreferenceFilter | GenderPreference,\n?   facilities?: StringNullableListFilter,\n?   images?: StringNullableListFilter,\n?   ownerId?: StringFilter | String,\n?   latitude?: FloatNullableFilter | Float | Null,\n?   longitude?: FloatNullableFilter | Float | Null,\n?   createdAt?: DateTimeFilter | DateTime,\n?   owner?: UserScalarRelationFilter | UserWhereInput,\n?   bookings?: BookingListRelationFilter,\n?   reviews?: ReviewListRelationFilter\n  }\n}\n\nArgument `where` of type UnitWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.\n    at rr (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:64:23)\n    at async deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:50:25)"}}
+2026-02-07 04:57:23 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at Module.deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:66:11)\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:50:43)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)"}}
+2026-02-07 04:57:49 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:51:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 04:57:51 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:51:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:00:17 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 05:01:18 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:51:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:01:27 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit/?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:51:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:02:39 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:52:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:02:58 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:52:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:03:02 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:52:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:04:48 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:52:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:05:21 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=%229b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350%22"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:52:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:05:29 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:52:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:05:55 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit ID is required\n    at deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:52:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:08:18 [ERROR]: Unit already exists at this address {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/add-unit"},"trace":{"error":"Error: Unit already exists at this address\n    at Module.createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:50:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createUnit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:10:18)"}}
+2026-02-07 05:08:27 [ERROR]: 
+Invalid `prisma.unit.delete()` invocation:
+
+
+An operation failed because it depends on one or more records that were required but not found. No record was found for a delete. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"PrismaClientKnownRequestError: \nInvalid `prisma.unit.delete()` invocation:\n\n\nAn operation failed because it depends on one or more records that were required but not found. No record was found for a delete.\n    at Vr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:8172)\n    at Vr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at Vr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:64:23)\n    at async deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:55:25)"}}
+2026-02-07 05:10:07 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/unit/delete-unit?id=9b6aa7d6-4bb4-41cf-a0cc-5cd2bb0d2350"},"trace":{"error":"Error: Unit not found\n    at Module.deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:72:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:55:25)"}}
+2026-02-07 05:17:00 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/update-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 05:17:25 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/update-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 05:17:28 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/update-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 05:17:46 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/update-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 05:18:20 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/update-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 05:18:29 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 05:18:37 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/unit/update-unit"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at Immediate.next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at Immediate._onImmediate (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15)\n    at process.processImmediate (node:internal/timers:506:21)"}}
+2026-02-07 05:18:59 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:34:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:19:50 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:34:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:19:52 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:34:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:20:02 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:34:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:20:19 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=%229d1012d5-911d-42e2-91cb-626b3a3766ea%22"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:34:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:20:27 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:34:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:20:50 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:34:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:21:16 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:34:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:21:37 [ERROR]: Cannot access 'id' before initialization {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"ReferenceError: Cannot access 'id' before initialization\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:33:17)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:22:07 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit/?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:37:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:23:02 [ERROR]: Unit ID is required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit ID is required\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:37:13)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)"}}
+2026-02-07 05:25:43 [ERROR]: All fields are required {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/update-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: All fields are required\n    at validateUnitFields (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/utils/unitValidation.js:40:11)\n    at updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:40:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:11:5)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)"}}
+2026-02-07 05:40:59 [ERROR]: jwt expired {"success":"false","statusCode":401,"request":{"ip":"::1","method":"GET","url":"/api/v1/unit/get-unit?id=9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"TokenExpiredError: jwt expired\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:190:21\n    at getSecret (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:97:14)\n    at module.exports [as verify] (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:101:10)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:9:25)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15"}}
+2026-02-07 06:29:08 [ERROR]: jwt expired {"success":"false","statusCode":401,"request":{"ip":"::1","method":"POST","url":"/api/v1/units"},"trace":{"error":"TokenExpiredError: jwt expired\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:190:21\n    at getSecret (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:97:14)\n    at module.exports [as verify] (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:101:10)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:9:25)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15"}}
+2026-02-07 06:30:48 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/all"},"trace":{"error":"Error: Unit not found\n    at Module.getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:115:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:24:18)"}}
+2026-02-07 06:31:41 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/all"},"trace":{"error":"Error: Unit not found\n    at Module.getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:115:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:24:18)"}}
+2026-02-07 06:34:00 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/all"},"trace":{"error":"Error: Unit not found\n    at Module.getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:115:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:24:18)"}}
+2026-02-07 06:35:57 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/all"},"trace":{"error":"Error: Unit not found\n    at Module.getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:115:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:24:18)"}}
+2026-02-07 06:36:27 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/all"},"trace":{"error":"Error: Unit not found\n    at Module.getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:115:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:24:18)"}}
+2026-02-07 06:37:43 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/all"},"trace":{"error":"Error: Unit not found\n    at Module.getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:115:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:24:18)"}}
+2026-02-07 06:39:08 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"DELETE","url":"/api/v1/units/cb909188-dce5-4292-9667-01f45d1d89c9"},"trace":{"error":"Error: Unit not found\n    at Module.deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:70:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async deleteUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:52:25)"}}
+2026-02-07 06:40:57 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"PUT","url":"/api/v1/unit/9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:276:14)\n    at router.handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:186:3)\n    at router (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:60:12)"}}
+2026-02-07 06:41:05 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"PUT","url":"/api/v1/units/9d1012d5-911d-42e2-91cb-626b3a3766ea"},"trace":{"error":"Error: Unit not found\n    at Module.updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:92:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async updateUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:39:18)"}}
+2026-02-07 06:41:48 [ERROR]: jwt expired {"success":"false","statusCode":401,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/a5ee882a-807f-41f5-b009-5b445128d630"},"trace":{"error":"TokenExpiredError: jwt expired\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:190:21\n    at getSecret (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:97:14)\n    at module.exports [as verify] (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:101:10)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:9:25)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15"}}
+2026-02-07 06:42:17 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/all"},"trace":{"error":"Error: Unit not found\n    at Module.getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:115:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:24:18)"}}
+2026-02-07 06:42:50 [ERROR]: Unit not found {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units/all"},"trace":{"error":"Error: Unit not found\n    at Module.getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/services/unitService.js:115:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getUnitById (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:24:18)"}}
+2026-02-07 22:28:04 [ERROR]: unitService.searchUnitsByFilter is not a function {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units?isAvailable%20"},"trace":{"error":"TypeError: unitService.searchUnitsByFilter is not a function\n    at searchUnitsByFilter (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:96:37)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at router.handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:186:3)"}}
+2026-02-07 22:29:31 [ERROR]: unitService.searchUnitsByFilter is not a function {"success":"false","statusCode":500,"request":{"ip":"::1","method":"GET","url":"/api/v1/units?isAvailable%20"},"trace":{"error":"TypeError: unitService.searchUnitsByFilter is not a function\n    at searchUnitsByFilter (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/controllers/unitController.js:96:37)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at router.handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:186:3)"}}
