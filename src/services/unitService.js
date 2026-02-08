@@ -109,12 +109,48 @@ export const getUnitById = async (id) => {
     where: {
       id: id,
     },
+    include: {
+      owner: {
+        select: {
+          name: true,
+          picture: true,
+        },
+      },
+      reviews: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              picture: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
+
 
   if (!unit) {
     throw new Error("Unit not found");
   }
-  return unit;
+
+  // Calculate average rating and review count
+  const reviewCount = unit.reviews.length;
+  const averageRating =
+    reviewCount > 0
+      ? unit.reviews.reduce((sum, review) => sum + review.rating, 0) /
+        reviewCount
+      : 0;
+
+  return {
+    ...unit,
+    reviewCount,
+    averageRating: parseFloat(averageRating.toFixed(1)),
+  };
 };
 
 export const getAllUnits = async () => {
@@ -152,7 +188,7 @@ export const searchUnitsByFilter = async (filters) => {
 
   if (facilities) {
     where.facilities = {
-      hasEvery: facilities.split(','),
+      hasEvery: facilities.split(","),
     };
   }
 
@@ -160,7 +196,7 @@ export const searchUnitsByFilter = async (filters) => {
     where,
     skip: (page - 1) * limit,
     take: limit,
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 
   const total = await prisma.unit.count({ where });

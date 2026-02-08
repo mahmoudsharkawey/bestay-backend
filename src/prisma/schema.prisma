@@ -76,6 +76,7 @@ model User {
   bookings    Booking[]
   preferences UserPreference?
   reviews     Review[]
+  favorites   Favorite[]
 
   @@unique([provider, providerId])
 }
@@ -134,8 +135,9 @@ model Unit {
   latitude  Float?
   longitude Float?
 
-  bookings Booking[]
-  reviews  Review[]
+  bookings  Booking[]
+  reviews   Review[]
+  favorites Favorite[]
 
   createdAt DateTime @default(now())
 }
@@ -188,6 +190,19 @@ model Review {
 
   user User @relation(fields: [userId], references: [id])
   unit Unit @relation(fields: [unitId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Favorite {
+  id     String @id @default(uuid())
+  userId String
+  unitId String
+
+  user User @relation(fields: [userId], references: [id])
+  unit Unit @relation(fields: [unitId], references: [id])
+
+  @@unique([userId, unitId])
 
   createdAt DateTime @default(now())
 }
