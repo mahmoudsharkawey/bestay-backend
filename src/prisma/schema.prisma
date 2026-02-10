@@ -16,13 +16,6 @@ enum Role {
   ADMIN
 }
 
-enum BookingStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  CANCELLED
-}
-
 enum PaymentStatus {
   PENDING
   PAID
@@ -49,6 +42,17 @@ enum RoomType {
 enum GenderPreference {
   MALE_ONLY
   FEMALE_ONLY
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  PAID
+  VISIT_SCHEDULED
+  VISIT_RESCHEDULED
+  CANCELLED_BY_USER
+  CANCELLED_BY_OWNER
+  COMPLETED
+  REFUNDED
 }
 
 //////////////////////////////////////////////////
@@ -147,18 +151,37 @@ model Unit {
 //////////////////////////////////////////////////
 
 model Booking {
-  id        String        @id @default(uuid())
-  userId    String
-  unitId    String
-  startDate DateTime
-  endDate   DateTime
-  status    BookingStatus @default(PENDING)
+  id String @id @default(uuid())
 
-  user    User     @relation(fields: [userId], references: [id])
-  unit    Unit     @relation(fields: [unitId], references: [id])
-  payment Payment?
+  userId String
+  unitId String
+
+  user User @relation(fields: [userId], references: [id])
+  unit Unit @relation(fields: [unitId], references: [id])
+
+  status BookingStatus @default(PENDING_PAYMENT)
+
+  visitDate DateTime?
+
+  depositAmount Float
+  serviceFee    Float
+  totalAmount   Float
+
+  paymentIntentId String?
+  paidAt          DateTime?
+  expiresAt       DateTime? // When unpaid booking expires
+
+  cancelledAt  DateTime?
+  refundAmount Float?
+  refundedAt   DateTime?
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  payment   Payment?
+
+  @@index([userId])
+  @@index([unitId])
+  @@index([status])
 }
 
 //////////////////////////////////////////////////
@@ -166,11 +189,12 @@ model Booking {
 //////////////////////////////////////////////////
 
 model Payment {
-  id        String        @id @default(uuid())
-  bookingId String        @unique
-  amount    Float
-  status    PaymentStatus
-  method    String // card, wallet, etc
+  id              String        @id @default(uuid())
+  bookingId       String        @unique
+  paymentIntentId String        @unique
+  amount          Float
+  status          PaymentStatus
+  method          String // card, wallet, etc
 
   booking   Booking  @relation(fields: [bookingId], references: [id])
   createdAt DateTime @default(now())
@@ -202,7 +226,7 @@ model Favorite {
   user User @relation(fields: [userId], references: [id])
   unit Unit @relation(fields: [unitId], references: [id])
 
-  @@unique([userId, unitId])
-
   createdAt DateTime @default(now())
+
+  @@unique([userId, unitId])
 }

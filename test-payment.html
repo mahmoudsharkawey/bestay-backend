@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stripe Payment Test - BeStay</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 100%;
+        padding: 40px;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 28px;
+      }
+
+      .subtitle {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 14px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+        font-family: "Courier New", monospace;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      #card-element {
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        background: white;
+        margin-bottom: 10px;
+      }
+
+      .card-errors {
+        color: #f44336;
+        font-size: 13px;
+        margin-bottom: 15px;
+        min-height: 20px;
+      }
+
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 0.8s linear infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .response-section {
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 2px solid #e0e0e0;
+      }
+
+      .response-section h2 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 18px;
+      }
+
+      .response-box {
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        max-height: 500px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        line-height: 1.6;
+      }
+
+      .response-box:empty::before {
+        content: "Payment response will appear here...";
+        color: #666;
+        font-style: italic;
+      }
+
+      .success-badge {
+        display: inline-block;
+        background: #4caf50;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .error-badge {
+        display: inline-block;
+        background: #f44336;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .test-cards {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 15px;
+        font-size: 13px;
+      }
+
+      .test-cards h3 {
+        color: #333;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+
+      .test-cards code {
+        background: #e0e0e0;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      .test-cards ul {
+        list-style: none;
+        margin-top: 8px;
+      }
+
+      .test-cards li {
+        margin-bottom: 5px;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>💳 Stripe Payment Test</h1>
+      <p class="subtitle">Test payment processing with Stripe</p>
+
+      <div class="form-group">
+        <label for="clientSecret">Client Secret:</label>
+        <input
+          type="text"
+          id="clientSecret"
+          placeholder="pi_xxx_secret_xxx"
+          value="pi_3Sz1IeQmvBZ7wv2z1soxk45P_secret_2poRMfN7gOmueVEVfiORE5o5m"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="card-element">Card Details:</label>
+        <div id="card-element"></div>
+        <div class="card-errors" id="card-errors"></div>
+      </div>
+
+      <button id="payBtn">Pay Now</button>
+
+      <div class="test-cards">
+        <h3>🧪 Test Cards:</h3>
+        <ul>
+          <li>✅ Success: <code>4242 4242 4242 4242</code></li>
+          <li>🔐 Auth Required: <code>4000 0025 0000 3155</code></li>
+          <li>❌ Declined: <code>4000 0000 0000 9995</code></li>
+        </ul>
+        <p style="margin-top: 8px; color: #666">
+          Use any future date, any CVC, any ZIP
+        </p>
+      </div>
+
+      <div class="response-section">
+        <h2>📋 Stripe Response</h2>
+        <div id="statusBadge"></div>
+        <div class="response-box" id="paymentResponse"></div>
+      </div>
+    </div>
+
+    <script>
+      const STRIPE_PUBLISHABLE_KEY =
+        "pk_test_51SywKyQmvBZ7wv2znimQnovJXnKklxUyGn6DuO5Cb8ju0eaj89fPi73B0ew4lZOSuhpIYAhJFjH25cxCOnkyfiz9005hxDAXns";
+
+      let stripe;
+      let elements;
+      let cardElement;
+
+      // Initialize Stripe
+      function initializeStripe() {
+        stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+        elements = stripe.elements();
+        cardElement = elements.create("card", {
+          style: {
+            base: {
+              fontSize: "16px",
+              color: "#32325d",
+              fontFamily:
+                '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              "::placeholder": {
+                color: "#aab7c4",
+              },
+            },
+            invalid: {
+              color: "#f44336",
+            },
+          },
+        });
+        cardElement.mount("#card-element");
+
+        cardElement.on("change", (event) => {
+          const displayError = document.getElementById("card-errors");
+          if (event.error) {
+            displayError.textContent = event.error.message;
+          } else {
+            displayError.textContent = "";
+          }
+        });
+      }
+
+      // Display response
+      function displayResponse(data, isSuccess) {
+        const responseBox = document.getElementById("paymentResponse");
+        const statusBadge = document.getElementById("statusBadge");
+
+        if (isSuccess) {
+          statusBadge.innerHTML =
+            '<span class="success-badge">✓ SUCCESS</span>';
+        } else {
+          statusBadge.innerHTML = '<span class="error-badge">✗ ERROR</span>';
+        }
+
+        responseBox.textContent = JSON.stringify(data, null, 2);
+      }
+
+      // Process Payment
+      document.getElementById("payBtn").addEventListener("click", async () => {
+        const btn = document.getElementById("payBtn");
+        const clientSecret = document
+          .getElementById("clientSecret")
+          .value.trim();
+
+        if (!clientSecret) {
+          displayResponse({ error: "Please enter a client secret" }, false);
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span>Processing Payment...';
+
+        try {
+          console.log("Starting payment with client secret:", clientSecret);
+
+          const { error, paymentIntent } = await stripe.confirmCardPayment(
+            clientSecret,
+            {
+              payment_method: {
+                card: cardElement,
+              },
+            },
+          );
+
+          if (error) {
+            console.error("Payment error:", error);
+            displayResponse(
+              {
+                error: error.message,
+                type: error.type,
+                code: error.code,
+                decline_code: error.decline_code,
+                full_error: error,
+              },
+              false,
+            );
+          } else {
+            console.log("Payment successful:", paymentIntent);
+            displayResponse(
+              {
+                success: true,
+                status: paymentIntent.status,
+                id: paymentIntent.id,
+                amount: paymentIntent.amount,
+                currency: paymentIntent.currency,
+                created: new Date(
+                  paymentIntent.created * 1000,
+                ).toLocaleString(),
+                payment_method: paymentIntent.payment_method,
+                full_response: paymentIntent,
+              },
+              true,
+            );
+          }
+        } catch (error) {
+          console.error("Unexpected error:", error);
+          displayResponse(
+            {
+              error: error.message,
+              stack: error.stack,
+            },
+            false,
+          );
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = "Pay Now";
+        }
+      });
+
+      // Initialize on page load
+      initializeStripe();
+      console.log("Stripe initialized with publishable key");
+    </script>
+  </body>
+</html>
