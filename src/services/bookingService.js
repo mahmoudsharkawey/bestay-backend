@@ -103,10 +103,6 @@ export async function getAllBookingsService(userId) {
     },
   });
 
-  if (!bookings) {
-    throw new Error("No bookings found");
-  }
-
   const bookingsWithUnit = bookings.map((booking) => {
     return {
       ...booking,
@@ -119,10 +115,6 @@ export async function getAllBookingsService(userId) {
       },
     };
   });
-
-  if (!bookingsWithUnit) {
-    throw new Error("No bookings found");
-  }
 
   return bookingsWithUnit;
 }

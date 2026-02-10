@@ -2,6 +2,31 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// Validate required environment variables
+const requiredEnvVars = [
+  "NODE_ENV",
+  "PORT",
+  "DATABASE_URL",
+  "JWT_SECRET",
+  "STRIPE_SECRET_KEY",
+  "EMAIL_USER",
+  "EMAIL_PASS",
+];
+
+const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
+
+if (missingVars.length > 0) {
+  console.error("❌ Missing required environment variables:");
+  missingVars.forEach((varName) => {
+    console.error(`   - ${varName}`);
+  });
+  console.error(
+    "\nPlease check your .env file and ensure all required variables are set.",
+  );
+  console.error("See .env.example for reference.\n");
+  process.exit(1);
+}
+
 export const env = {
   NODE_ENV: process.env.NODE_ENV,
   APP_VERSION: process.env.APP_VERSION,

@@ -8,7 +8,12 @@ export const apiLimiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   handler: (req, res) => {
-    return httpResponse(req, res, 429, "Too many requests, please try again later.");
+    return httpResponse(
+      req,
+      res,
+      429,
+      "Too many requests, please try again later.",
+    );
   },
 });
 
@@ -19,8 +24,29 @@ export const authLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
-    return httpResponse(req, res, 429, "Too many login attempts. Please try again later.");
+    return httpResponse(
+      req,
+      res,
+      429,
+      "Too many login attempts. Please try again later.",
+    );
   },
 });
 
-export default { apiLimiter, authLimiter };
+// Password reset rate limiter: stricter to prevent abuse
+export const passwordResetLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3, // 3 requests per hour
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    return httpResponse(
+      req,
+      res,
+      429,
+      "Too many password reset attempts. Please try again later.",
+    );
+  },
+});
+
+export default { apiLimiter, authLimiter, passwordResetLimiter };

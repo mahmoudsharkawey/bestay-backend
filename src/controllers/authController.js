@@ -2,6 +2,7 @@ import httpResponse from "../utils/httpResponse.js";
 import httpError from "../utils/httpError.js";
 import * as authService from "../services/authService.js";
 import { signToken } from "../utils/jwt.js";
+import { getErrorStatusCode } from "../utils/errorStatusCode.js";
 
 const sanitizeUser = (user) => {
   return {
@@ -17,8 +18,6 @@ const sanitizeUser = (user) => {
 export const signUp = async (req, res, next) => {
   try {
     const { name, email, password, phone, role } = req.body;
-    if (!name || !email || !password)
-      throw new Error("Name, email and password are required");
 
     const user = await authService.signUp({
       name,
@@ -41,14 +40,13 @@ export const signUp = async (req, res, next) => {
 
     httpResponse(req, res, 201, "User created successfully", data);
   } catch (err) {
-    httpError(next, err, req, 400);
+    httpError(next, err, req, getErrorStatusCode(err, 400));
   }
 };
 
 export const signIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) throw new Error("Email and password are required");
 
     const user = await authService.signIn({ email, password });
 
@@ -65,54 +63,37 @@ export const signIn = async (req, res, next) => {
 
     httpResponse(req, res, 200, "Signed in successfully", data);
   } catch (err) {
-    httpError(next, err, req, 401);
+    httpError(next, err, req, getErrorStatusCode(err, 401));
   }
 };
 
 export const forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
-    if (!email) {
-      httpError(next, new Error("Email is required"), req, 400);
-      return;
-    }
     await authService.forgotPassword(email);
     httpResponse(req, res, 200, "Password reset email sent successfully");
   } catch (err) {
-    httpError(next, err, req, 500);
+    httpError(next, err, req, getErrorStatusCode(err, 500));
   }
 };
 
 export const verifyResetCode = async (req, res, next) => {
   try {
     const { email, resetCode } = req.body;
-    if (!email || !resetCode) {
-      httpError(next, new Error("Email and reset code are required"), req, 400);
-      return;
-    }
     await authService.verifyResetCode(email, resetCode);
     httpResponse(req, res, 200, "Reset code verified successfully");
   } catch (err) {
-    httpError(next, err, req, 400);
+    httpError(next, err, req, getErrorStatusCode(err, 400));
   }
 };
 
 export const resetPassword = async (req, res, next) => {
   try {
     const { email, newPassword } = req.body;
-    if (!email || !newPassword) {
-      httpError(
-        next,
-        new Error("Email and new password are required"),
-        req,
-        400,
-      );
-      return;
-    }
     await authService.resetPassword(email, newPassword);
     httpResponse(req, res, 200, "Password reset successfully");
   } catch (err) {
-    httpError(next, err, req, 500);
+    httpError(next, err, req, getErrorStatusCode(err, 400));
   }
 };
 

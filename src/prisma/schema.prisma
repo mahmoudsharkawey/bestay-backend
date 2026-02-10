@@ -83,6 +83,8 @@ model User {
   favorites   Favorite[]
 
   @@unique([provider, providerId])
+  @@index([email])
+  @@index([role])
 }
 
 //////////////////////////////////////////////////
@@ -144,6 +146,12 @@ model Unit {
   favorites Favorite[]
 
   createdAt DateTime @default(now())
+
+  @@index([city])
+  @@index([isAvailable])
+  @@index([ownerId])
+  @@index([price])
+  @@index([roomType])
 }
 
 //////////////////////////////////////////////////
@@ -182,6 +190,8 @@ model Booking {
   @@index([userId])
   @@index([unitId])
   @@index([status])
+  @@index([expiresAt])
+  @@index([paidAt])
 }
 
 //////////////////////////////////////////////////

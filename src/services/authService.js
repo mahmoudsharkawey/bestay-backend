@@ -3,6 +3,7 @@ import { signToken } from "../utils/jwt.js";
 import { hashPassword, comparePassword } from "../utils/password.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { verifyGoogleToken } from "../utils/verifyGoogleToken.js";
+import logger from "../utils/logger.js";
 
 export const signUp = async ({ name, email, password, phone, role }) => {
   // check existing
@@ -88,7 +89,7 @@ export const verifyResetCode = async (email, resetCode) => {
     },
   });
 
-  console.log("Verifying reset code for user:", user);
+  logger.debug("Verifying reset code for user", { userId: user?.id, email });
 
   if (!user) {
     throw new Error(" No user found with this email");
@@ -145,7 +146,7 @@ export const googleLogin = async (token) => {
         name,
         provider: "GOOGLE",
         providerId: sub,
-        picture: picture ,
+        picture: picture,
       },
     });
   }
