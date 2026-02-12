@@ -5,8 +5,10 @@ import {
   createBookingSchema,
   createPaymentIntentSchema,
   confirmPaymentSchema,
+  cancelBookingSchema,
 } from "../../validations/bookingValidation.js";
 import {
+  cancelBooking,
   confirmPayment,
   createBooking,
   createPaymentIntent,
@@ -28,6 +30,12 @@ router.post(
   Authenticate,
   validate(confirmPaymentSchema),
   confirmPayment,
+);
+router.post(
+  "/cancel-booking",
+  Authenticate,
+  validate(cancelBookingSchema),
+  cancelBooking,
 );
 
 export default router;

@@ -20,6 +20,9 @@ enum PaymentStatus {
   PENDING
   PAID
   FAILED
+  REFUNDED
+  CANCELLED
+  PENDING_REFUND
 }
 
 enum AuthProvider {

@@ -14,3 +14,8 @@ export const createPaymentIntentSchema = z.object({
 export const confirmPaymentSchema = z.object({
   paymentIntentId: z.string().min(1, "Payment intent ID is required"),
 });
+
+export const cancelBookingSchema = z.object({
+  bookingId: z.string().uuid("Invalid booking ID"),
+  userId: z.string().uuid("Invalid user ID"),
+});

@@ -1,7 +1,6 @@
 import httpResponse from "../utils/httpResponse.js";
 import httpError from "../utils/httpError.js";
 import * as bookingService from "../services/bookingService.js";
-import { env } from "../config/env.js";
 import { getErrorStatusCode } from "../utils/errorStatusCode.js";
 
 export async function createBooking(req, res, next) {
@@ -30,6 +29,21 @@ export async function getAllBookings(req, res, next) {
     httpError(next, error, req, getErrorStatusCode(error));
   }
 }
+
+// export async function getBookingById(req, res, next) {
+//   try {
+//     const { bookingId } = req.params;
+//     const userId = req.user.id; // JWT payload has 'id', not 'userId'
+//     const booking = await bookingService.getBookingByIdService(
+//       bookingId,
+//       userId,
+//     );
+
+//     httpResponse(req, res, 200, "Booking fetched successfully", booking);
+//   } catch (error) {
+//     httpError(next, error, req, getErrorStatusCode(error));
+//   }
+// }
 
 export async function createPaymentIntent(req, res, next) {
   try {
@@ -64,6 +78,26 @@ export async function confirmPayment(req, res, next) {
     );
 
     httpResponse(req, res, 200, "Payment confirmed successfully", result);
+  } catch (error) {
+    httpError(next, error, req, getErrorStatusCode(error));
+  }
+}
+
+export async function cancelBooking(req, res, next) {
+  try {
+    const { bookingId, userId } = req.body;
+    const booking = await bookingService.cancelBookingService(
+      bookingId,
+      userId,
+    );
+
+    httpResponse(
+      req,
+      res,
+      200,
+      "Booking cancelled successfully and refund process started",
+      booking,
+    );
   } catch (error) {
     httpError(next, error, req, getErrorStatusCode(error));
   }

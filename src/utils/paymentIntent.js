@@ -38,3 +38,12 @@ export async function retrievePaymentIntentUtil(paymentIntentId) {
   const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
   return paymentIntent;
 }
+
+// Refund payment
+export async function refundPaymentUtil(paymentIntentId) {
+  const refund = await stripe.refunds.create({
+    payment_intent: paymentIntentId,
+  });
+  
+  return refund;
+}

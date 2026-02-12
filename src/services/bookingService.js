@@ -3,6 +3,7 @@ import { calculateBookingPrice } from "../utils/calculateBookingPrice.js";
 import {
   retrievePaymentIntentUtil,
   createPaymentIntentUtil,
+  refundPaymentUtil,
 } from "../utils/paymentIntent.js";
 import { sendEmail } from "../utils/sendEmail.js";
 
@@ -190,6 +191,12 @@ export async function confirmPaymentService(paymentIntentId, userId) {
       paidAt: new Date(),
       paymentIntentId: paymentIntent.id,
     },
+    include: {
+      unit: {
+        include: { owner: true },
+      },
+      user: true,
+    },
   });
 
   // Note: Unit availability is already set to false during booking creation
@@ -228,16 +235,55 @@ export async function confirmPaymentService(paymentIntentId, userId) {
     <p><strong>Payment ID:</strong> ${paymentIntent.id}</p>
     <p><strong>Amount Paid:</strong> ${amountInEGP} EGP</p>
     <p><strong>Status:</strong> ${paymentIntent.status.toUpperCase()}</p>
+    <p><strong>Unit:</strong> ${booking.unit.name}</p>
+    <p><strong>Owner:</strong> ${booking.unit.owner.name}</p>
+    <p><strong>Owner Email:</strong> ${booking.unit.owner.email}</p>
+    <p><strong>Owner Phone:</strong> ${booking.unit.owner.phone}</p>
+    <p><strong>Visit Date:</strong> ${booking.visitDate}</p>
+    <p><strong>User:</strong> ${booking.user.name}</p>
+    <p><strong>User Email:</strong> ${booking.user.email}</p>
+    <p><strong>User Phone:</strong> ${booking.user.phone}</p>
+    <hr>
+    <p>Thank you for choosing BeStay!</p>
+  `;
+
+  const htmlForOwner = `
+    <h1>🎉 New Booking!</h1>
+    <h3>A new booking has been made for your unit</h3>
+    <hr>
+    <p><strong>Booking ID:</strong> ${bookingId}</p>
+    <p><strong>Payment ID:</strong> ${paymentIntent.id}</p>
+    <p><strong>Amount Paid:</strong> ${amountInEGP} EGP</p>
+    <p><strong>Status:</strong> ${paymentIntent.status.toUpperCase()}</p>
+    <p><strong>Unit:</strong> ${booking.unit.name}</p>
+    <p><strong>Owner:</strong> ${booking.unit.owner.name}</p>
+    <p><strong>Owner Email:</strong> ${booking.unit.owner.email}</p>
+    <p><strong>Owner Phone:</strong> ${booking.unit.owner.phone}</p>
+    <p><strong>Visit Date:</strong> ${booking.visitDate}</p>
+    <p><strong>User:</strong> ${booking.user.name}</p>
+    <p><strong>User Email:</strong> ${booking.user.email}</p>
+    <p><strong>User Phone:</strong> ${booking.user.phone}</p>
     <hr>
     <p>Thank you for choosing BeStay!</p>
   `;
 
   try {
+    // send notification to user
     await sendEmail(
       user.email,
       "Booking Confirmed - BeStay",
       "Your booking has been confirmed successfully",
       html,
+    );
+    // send notification to owner
+    const owner = await prisma.user.findUnique({
+      where: { id: booking.unit.ownerId },
+    });
+    await sendEmail(
+      owner.email,
+      "New Booking - BeStay",
+      "A new booking has been made for your unit",
+      htmlForOwner,
     );
   } catch (emailError) {
     console.error("Failed to send confirmation email:", emailError);
@@ -253,4 +299,136 @@ export async function confirmPaymentService(paymentIntentId, userId) {
       amount: amountInEGP,
     },
   };
+}
+
+export async function cancelBookingService(bookingId, userId) {
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: {
+      unit: {
+        include: { owner: true },
+      },
+      user: true,
+    },
+  });
+
+  if (!booking) {
+    throw new Error("Booking not found");
+  }
+
+  // Security: Verify booking belongs to the user
+  if (booking.userId !== userId) {
+    throw new Error("Unauthorized: This booking does not belong to you");
+  }
+
+  if (booking.status === "REFUNDED") {
+    throw new Error("Booking is already refunded");
+  }
+  if (
+    booking.status === "CANCELLED_BY_USER" ||
+    booking.status === "CANCELLED_BY_OWNER"
+  ) {
+    throw new Error("Booking is already cancelled");
+  }
+
+  let refund = null;
+  if (booking.paymentIntentId) {
+    // refund the payment
+    refund = await refundPaymentUtil(booking.paymentIntentId);
+  }
+
+  // Check if the user is the owner
+  const isUser = booking.userId === userId;
+  const status = isUser ? "CANCELLED_BY_USER" : "CANCELLED_BY_OWNER";
+
+  // Update booking status to CANCELLED_BY_USER
+  const updatedBooking = await prisma.booking.update({
+    where: { id: bookingId },
+    data: {
+      status: status,
+      cancelledAt: new Date(),
+      refundAmount: refund ? refund.amount / 100 : null,
+      refundedAt: refund ? new Date() : null,
+    },
+  });
+
+  // Restore unit availability
+  await prisma.unit.update({
+    where: { id: booking.unitId },
+    data: { isAvailable: true },
+  });
+
+  // Payment status update (only if payment exists)
+  if (booking.paymentIntentId) {
+    await prisma.payment.update({
+      where: { bookingId: bookingId },
+      data: {
+        status: "REFUNDED",
+      },
+    });
+  }
+
+  const html = `
+    <h1>🎉 Booking Cancelled!</h1>
+    <h3>Your booking has been cancelled successfully</h3>
+    <hr>
+    <p><strong>Booking ID:</strong> ${bookingId}</p>
+    <p><strong>Payment ID:</strong> ${booking.paymentIntentId}</p>
+    <p><strong>Amount Refunded:</strong> ${refund ? refund.amount / 100 : 0} EGP</p>
+    <p><strong>Status:</strong> ${updatedBooking.status}</p>
+    <p><strong>Unit:</strong> ${booking.unit.name}</p>
+    <p><strong>Owner:</strong> ${booking.unit.owner.name}</p>
+    <p><strong>Owner Email:</strong> ${booking.unit.owner.email}</p>
+    <p><strong>Owner Phone:</strong> ${booking.unit.owner.phone}</p>
+    <p><strong>Visit Date:</strong> ${booking.visitDate}</p>
+    <p><strong>User:</strong> ${booking.user.name}</p>
+    <p><strong>User Email:</strong> ${booking.user.email}</p>
+    <p><strong>User Phone:</strong> ${booking.user.phone}</p>
+    <hr>
+    <p>Thank you for choosing BeStay!</p>
+  `;
+
+  const htmlForOwner = `
+    <h1>🎉 Booking Cancelled!</h1>
+    <h3>A booking has been cancelled for your unit</h3>
+    <hr>
+    <p><strong>Booking ID:</strong> ${bookingId}</p>
+    <p><strong>Payment ID:</strong> ${booking.paymentIntentId}</p>
+    <p><strong>Amount Refunded:</strong> ${refund ? refund.amount / 100 : 0} EGP</p>
+    <p><strong>Status:</strong> ${updatedBooking.status}</p>
+    <p><strong>Unit:</strong> ${booking.unit.name}</p>
+    <p><strong>Owner:</strong> ${booking.unit.owner.name}</p>
+    <p><strong>Owner Email:</strong> ${booking.unit.owner.email}</p>
+    <p><strong>Owner Phone:</strong> ${booking.unit.owner.phone}</p>
+    <p><strong>Visit Date:</strong> ${booking.visitDate}</p>
+    <p><strong>User:</strong> ${booking.user.name}</p>
+    <p><strong>User Email:</strong> ${booking.user.email}</p>
+    <p><strong>User Phone:</strong> ${booking.user.phone}</p>
+    <hr>
+    <p>Thank you for choosing BeStay!</p>
+  `;
+
+  console.log(user.email);
+  console.log(owner.email);
+
+  
+  // send notification to user
+  await sendEmail(
+    user.email,
+    "Booking Cancelled - BeStay",
+    "Your booking has been cancelled successfully",
+    html,
+  );
+  // send notification to owner
+  const owner = await prisma.user.findUnique({
+    where: { id: booking.unit.ownerId },
+  });
+  await sendEmail(
+    owner.email,
+    "Booking Cancelled - BeStay",
+    "A booking has been cancelled for your unit",
+    htmlForOwner,
+  );
+
+  return { updatedBooking, refund };
 }
