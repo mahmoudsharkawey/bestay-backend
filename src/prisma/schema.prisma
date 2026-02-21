@@ -47,15 +47,32 @@ enum GenderPreference {
   FEMALE_ONLY
 }
 
-enum BookingStatus {
-  PENDING_PAYMENT
-  PAID
-  VISIT_SCHEDULED
+enum NotificationType {
+  VISIT_REQUEST
+  VISIT_APPROVED
   VISIT_RESCHEDULED
+  VISIT_REJECTED
+  PAYMENT_CONFIRMED
+  BOOKING_CONFIRMED
+  BOOKING_CANCELLED
+  BOOKING_RESCHEDULED
+  BOOKING_REJECTED
+}
+
+enum VisitStatus {
+  PENDING_OWNER
+  APPROVED
+  REJECTED_BY_OWNER
+  RESCHEDULE_PROPOSED
+  REJECTED_BY_USER
   CANCELLED_BY_USER
-  CANCELLED_BY_OWNER
-  COMPLETED
-  REFUNDED
+  CONFIRMED
+}
+
+enum BookingStatus {
+  CONFIRMED
+  BOOKED
+  CANCELLED
 }
 
 //////////////////////////////////////////////////
@@ -79,11 +96,13 @@ model User {
   passwordResetExpiry   DateTime?
   passwordResetVerified Boolean   @default(false)
 
+  visits      Visit[]
   units       Unit[]          @relation("OwnerUnits")
   bookings    Booking[]
   preferences UserPreference?
   reviews     Review[]
   favorites   Favorite[]
+  payments    Payment[]
 
   @@unique([provider, providerId])
   @@index([email])
@@ -149,6 +168,7 @@ model Unit {
   favorites Favorite[]
 
   createdAt DateTime @default(now())
+  visits    Visit[]
 
   @@index([city])
   @@index([isAvailable])
@@ -162,39 +182,50 @@ model Unit {
 //////////////////////////////////////////////////
 
 model Booking {
-  id String @id @default(uuid())
+  id      String        @id @default(uuid())
+  userId  String
+  unitId  String
+  visitId String        @unique
+  status  BookingStatus
 
-  userId String
-  unitId String
+  user  User  @relation(fields: [userId], references: [id])
+  unit  Unit  @relation(fields: [unitId], references: [id])
+  visit Visit @relation(fields: [visitId], references: [id])
 
-  user User @relation(fields: [userId], references: [id])
-  unit Unit @relation(fields: [unitId], references: [id])
+  createdAt DateTime @default(now())
+  payment   Payment? @relation(fields: [paymentId], references: [id])
+  paymentId String?
+}
 
-  status BookingStatus @default(PENDING_PAYMENT)
+//////////////////////////////////////////////////
+// VISIT
+//////////////////////////////////////////////////
 
-  visitDate DateTime?
+model Visit {
+  id              String      @id @default(uuid())
+  userId          String
+  unitId          String
+  proposedDate    DateTime
+  pendingDate     DateTime? // Holds owner's reschedule proposal until user accepts
+  status          VisitStatus
+  rescheduleCount Int         @default(0)
+  paymentPaid     Boolean     @default(false)
 
-  depositAmount Float
-  serviceFee    Float
-  totalAmount   Float
-
-  paymentIntentId String?
-  paidAt          DateTime?
-  expiresAt       DateTime? // When unpaid booking expires
-
-  cancelledAt  DateTime?
-  refundAmount Float?
-  refundedAt   DateTime?
+  user    User     @relation(fields: [userId], references: [id])
+  unit    Unit     @relation(fields: [unitId], references: [id])
+  payment Payment?
+  booking Booking?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  payment   Payment?
+  paymentId String?
+  bookingId String?
 
   @@index([userId])
   @@index([unitId])
   @@index([status])
-  @@index([expiresAt])
-  @@index([paidAt])
+  @@index([proposedDate])
+  @@index([userId, unitId, status])
 }
 
 //////////////////////////////////////////////////
@@ -202,15 +233,19 @@ model Booking {
 //////////////////////////////////////////////////
 
 model Payment {
-  id              String        @id @default(uuid())
-  bookingId       String        @unique
-  paymentIntentId String        @unique
-  amount          Float
-  status          PaymentStatus
-  method          String // card, wallet, etc
+  id             String        @id @default(uuid())
+  userId         String
+  visitId        String        @unique
+  amount         Int
+  status         PaymentStatus
+  stripeIntentId String?
+  refundedAt     DateTime?
 
-  booking   Booking  @relation(fields: [bookingId], references: [id])
-  createdAt DateTime @default(now())
+  user  User  @relation(fields: [userId], references: [id])
+  visit Visit @relation(fields: [visitId], references: [id])
+
+  createdAt DateTime  @default(now())
+  bookings  Booking[]
 }
 
 //////////////////////////////////////////////////
@@ -231,6 +266,10 @@ model Review {
   createdAt DateTime @default(now())
 }
 
+//////////////////////////////////////////////////
+// FAVORITE
+//////////////////////////////////////////////////
+
 model Favorite {
   id     String @id @default(uuid())
   userId String
@@ -242,4 +281,17 @@ model Favorite {
   createdAt DateTime @default(now())
 
   @@unique([userId, unitId])
+}
+
+//////////////////////////////////////////////////
+// NOTIFICATION
+//////////////////////////////////////////////////
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  type      NotificationType
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
 }

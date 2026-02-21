@@ -30,21 +30,6 @@ export async function getAllBookings(req, res, next) {
   }
 }
 
-// export async function getBookingById(req, res, next) {
-//   try {
-//     const { bookingId } = req.params;
-//     const userId = req.user.id; // JWT payload has 'id', not 'userId'
-//     const booking = await bookingService.getBookingByIdService(
-//       bookingId,
-//       userId,
-//     );
-
-//     httpResponse(req, res, 200, "Booking fetched successfully", booking);
-//   } catch (error) {
-//     httpError(next, error, req, getErrorStatusCode(error));
-//   }
-// }
-
 export async function createPaymentIntent(req, res, next) {
   try {
     const { bookingId } = req.body;
@@ -82,7 +67,6 @@ export async function confirmPayment(req, res, next) {
     httpError(next, error, req, getErrorStatusCode(error));
   }
 }
-
 export async function cancelBooking(req, res, next) {
   try {
     const { bookingId, userId } = req.body;
