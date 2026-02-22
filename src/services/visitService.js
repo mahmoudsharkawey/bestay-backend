@@ -1,5 +1,14 @@
 import prisma from "../prisma/client.js";
-import { VisitRequestHTML } from "../utils/HTMLforEmails.js";
+import {
+  VisitRequestHTML,
+  VisitApprovedHTML,
+  VisitRejectedHTML,
+  RescheduleProposedHTML,
+  RescheduleAcceptedHTML,
+  RescheduleRejectedHTML,
+  VisitCancelledHTML,
+  VisitConfirmedHTML,
+} from "../utils/HTMLforEmails.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import logger from "../utils/logger.js";
 
@@ -252,10 +261,9 @@ export const approveVisit = async (visitId, ownerId) => {
   // 6. Send email to user (non-blocking)
   sendEmail(
     visit.user.email,
-    "Visit Request Approved",
+    "Visit Request Approved ✅",
     `Your visit request for "${visit.unit.title}" has been approved`,
-    // يمكنك إنشاء HTML template للإيميل
-    `<p>Good news! Your visit request has been approved.</p>`,
+    VisitApprovedHTML(visit.user, visit.unit),
   ).catch((emailError) => {
     logger.error("Failed to send visit approval email", {
       visitId,
@@ -339,9 +347,9 @@ export const rejectVisit = async (visitId, ownerId) => {
   // 6. Send email to user (non-blocking)
   sendEmail(
     visit.user.email,
-    "Visit Request Rejected",
-    `Your visit request for "${visit.unit.title}" has been rejected by the owner`,
-    `<p>Unfortunately, your visit request for "${visit.unit.title}" has been rejected by the owner.</p>`,
+    "Visit Request Declined",
+    `Your visit request for "${visit.unit.title}" has been declined by the owner`,
+    VisitRejectedHTML(visit.user, visit.unit),
   ).catch((emailError) => {
     logger.error("Failed to send visit rejection email", {
       visitId,
@@ -455,9 +463,9 @@ export const proposeReschedule = async (visitId, ownerId, newDate) => {
   // 7. Send email to visitor (non-blocking)
   sendEmail(
     visit.user.email,
-    "Visit Reschedule Proposed",
+    "New Date Proposed for Your Visit 🗓️",
     `The owner has proposed a new date for your visit to "${visit.unit.title}"`,
-    `<p>The owner has proposed a new visit date for "<strong>${visit.unit.title}</strong>": <strong>${newDateObj.toUTCString()}</strong>. Please log in to confirm or decline.</p>`,
+    RescheduleProposedHTML(visit.user, visit.unit, newDateObj),
   ).catch((emailError) => {
     logger.error("Failed to send visit reschedule email", {
       visitId,
@@ -555,9 +563,9 @@ export const acceptReschedule = async (visitId, userId) => {
   // 6. Send email to owner (non-blocking)
   sendEmail(
     visit.unit.owner.email,
-    "Reschedule Accepted",
+    "Reschedule Accepted ✅",
     `${visit.user.name} has accepted the reschedule for "${visit.unit.title}"`,
-    `<p><strong>${visit.user.name}</strong> has accepted your proposed reschedule for "<strong>${visit.unit.title}</strong>". The visit is now approved for the proposed date.</p>`,
+    RescheduleAcceptedHTML(visit.user, visit.unit),
   ).catch((emailError) => {
     logger.error("Failed to send reschedule acceptance email", {
       visitId,
@@ -645,9 +653,9 @@ export const rejectReschedule = async (visitId, userId) => {
   // 6. Send email to owner (non-blocking)
   sendEmail(
     visit.unit.owner.email,
-    "Reschedule Rejected",
-    `${visit.user.name} has rejected your reschedule proposal for "${visit.unit.title}"`,
-    `<p><strong>${visit.user.name}</strong> has rejected your proposed reschedule for "<strong>${visit.unit.title}</strong>". The visit is now closed.</p>`,
+    "Reschedule Declined",
+    `${visit.user.name} has declined your reschedule proposal for "${visit.unit.title}"`,
+    RescheduleRejectedHTML(visit.user, visit.unit),
   ).catch((emailError) => {
     logger.error("Failed to send reschedule rejection email", {
       visitId,
@@ -751,7 +759,7 @@ export const cancelVisit = async (visitId, userId) => {
     visit.unit.owner.email,
     "Visit Cancelled",
     `${visit.user.name} has cancelled their visit request for "${visit.unit.title}"`,
-    `<p><strong>${visit.user.name}</strong> has cancelled their visit request for "<strong>${visit.unit.title}</strong>".</p>`,
+    VisitCancelledHTML(visit.user, visit.unit),
   ).catch((emailError) => {
     logger.error("Failed to send visit cancellation email", {
       visitId,
@@ -770,7 +778,7 @@ export const confirmVisit = async (visitId, ownerId) => {
     where: { id: visitId },
     include: {
       unit: {
-        select: { ownerId: true, title: true },
+        select: { id: true, ownerId: true, title: true },
       },
       user: {
         select: { id: true, name: true, email: true },
@@ -822,21 +830,38 @@ export const confirmVisit = async (visitId, ownerId) => {
     throw error;
   }
 
-  // 7. Update visit status and notify visitor in a transaction
+  // 7. Update visit status, auto-create Booking, and notify visitor in a transaction
   let updatedVisit;
   try {
     updatedVisit = await prisma.$transaction(async (tx) => {
+      // Confirm the visit
       const confirmed = await tx.visit.update({
         where: { id: visitId },
         data: { status: "CONFIRMED" },
       });
 
-      // Notify the visitor
+      // Auto-create the Booking record (no manual user action needed)
+      const newBooking = await tx.booking.create({
+        data: {
+          userId: visit.user.id,
+          unitId: visit.unit.id,
+          visitId: visit.id,
+          status: "BOOKED",
+        },
+      });
+
+      // Back-fill Visit.bookingId so the visit response is complete
+      await tx.visit.update({
+        where: { id: visitId },
+        data: { bookingId: newBooking.id },
+      });
+
+      // Notify the visitor: visit confirmed + booking created
       await tx.notification.create({
         data: {
           userId: visit.user.id,
           type: "VISIT_CONFIRMED",
-          message: `Your visit to "${visit.unit.title}" has been confirmed by the owner`,
+          message: `Your visit to "${visit.unit.title}" has been confirmed and your booking is now active`,
         },
       });
 
@@ -856,9 +881,9 @@ export const confirmVisit = async (visitId, ownerId) => {
   // 8. Send email to visitor (non-blocking)
   sendEmail(
     visit.user.email,
-    "Visit Confirmed",
-    `Your visit to "${visit.unit.title}" has been confirmed`,
-    `<p>Great news! The owner has confirmed that your visit to "<strong>${visit.unit.title}</strong>" was completed successfully.</p>`,
+    "Your Booking is Confirmed 🎉",
+    `Your visit to "${visit.unit.title}" has been confirmed and your booking is now active`,
+    VisitConfirmedHTML(visit.user, visit.unit),
   ).catch((emailError) => {
     logger.error("Failed to send visit confirmation email", {
       visitId,
@@ -868,4 +893,64 @@ export const confirmVisit = async (visitId, ownerId) => {
   });
 
   return updatedVisit;
+};
+
+// ─── READ: Get all visits for the authenticated user or landlord ───
+export const getMyVisits = async (userId, role) => {
+  const where =
+    role === "LANDLORD"
+      ? { unit: { ownerId: userId } } // owner sees visits on their units
+      : { userId }; // user sees their own visit requests
+
+  const visits = await prisma.visit.findMany({
+    where,
+    orderBy: { createdAt: "desc" },
+    include: {
+      unit: { select: { id: true, title: true, city: true, images: true } },
+      user: { select: { id: true, name: true, email: true } },
+      payment: { select: { id: true, status: true, amount: true } },
+      booking: { select: { id: true, status: true } },
+    },
+  });
+
+  return visits;
+};
+
+// ─── READ: Get a single visit by ID ───
+export const getVisitById = async (visitId, userId, role) => {
+  const visit = await prisma.visit.findUnique({
+    where: { id: visitId },
+    include: {
+      unit: {
+        select: {
+          id: true,
+          title: true,
+          city: true,
+          images: true,
+          ownerId: true,
+        },
+      },
+      user: { select: { id: true, name: true, email: true } },
+      payment: true,
+      booking: true,
+    },
+  });
+
+  if (!visit) {
+    const error = new Error(`Visit with ID ${visitId} not found`);
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // USER sees only their own visits; LANDLORD sees only visits on their units
+  const isOwner = visit.unit.ownerId === userId;
+  const isVisitor = visit.user.id === userId;
+
+  if (!isOwner && !isVisitor) {
+    const error = new Error("You are not authorized to view this visit");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  return visit;
 };

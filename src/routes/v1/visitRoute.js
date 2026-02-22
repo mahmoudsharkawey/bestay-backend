@@ -11,6 +11,8 @@ import {
   rejectReschedule,
   cancelVisit,
   confirmVisit,
+  getMyVisits,
+  getVisitById,
 } from "../../controllers/visitController.js";
 import { authorizeRoles } from "../../middlewares/roleMiddleware.js";
 
@@ -28,6 +30,10 @@ router.post(
   authorizeRoles("USER"),
   createVisit,
 );
+// GET: all visits for the caller (USER sees own, LANDLORD sees visits on their units)
+router.get("/my", Authenticate, getMyVisits);
+// GET: single visit by ID (accessible to both the visitor and the unit owner)
+router.get("/:visitId", Authenticate, getVisitById);
 // User cancels a visit (only before its proposed date)
 router.post(
   "/:visitId/cancel",

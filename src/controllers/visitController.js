@@ -109,3 +109,30 @@ export const confirmVisit = async (req, res, next) => {
     return httpError(next, error, req, statusCode);
   }
 };
+
+// GET /visits/my — all visits for the authenticated user or landlord
+export const getMyVisits = async (req, res, next) => {
+  try {
+    const visits = await Visits.getMyVisits(req.user.id, req.user.role);
+    return httpResponse(req, res, 200, "Visits fetched successfully", visits);
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return httpError(next, error, req, statusCode);
+  }
+};
+
+// GET /visits/:visitId — single visit detail (user or landlord)
+export const getVisitById = async (req, res, next) => {
+  try {
+    const { visitId } = req.params;
+    const visit = await Visits.getVisitById(
+      visitId,
+      req.user.id,
+      req.user.role,
+    );
+    return httpResponse(req, res, 200, "Visit fetched successfully", visit);
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return httpError(next, error, req, statusCode);
+  }
+};

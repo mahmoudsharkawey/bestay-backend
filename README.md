@@ -12,11 +12,6 @@ Stripe webhook	https://inspective-unbred-lois.ngrok-free.dev/api/v1/payments/web
 
 
 TODOS:
-improve html templates for emails
 canceled by owner 
-get my units
-
-GET /visits/my
-GET /visits/:id
-GET /bookings/my
-GET /payments/my
+get my units for user and owner
+implement notification crud

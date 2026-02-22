@@ -1,58 +1,17 @@
 import prisma from "../prisma/client.js";
 
-export async function createBookingService(visitId, userId) {
-  // Fetch the visit and verify it belongs to the authenticated user
-  const visit = await prisma.visit.findUnique({
-    where: { id: visitId },
-  });
+// USER → their own bookings | LANDLORD → bookings on their units
+export async function getAllBookingsService(userId, role) {
+  const where =
+    role === "LANDLORD" ? { unit: { ownerId: userId } } : { userId };
 
-  if (!visit) {
-    throw new Error("Visit not found");
-  }
-
-  if (visit.userId !== userId) {
-    throw new Error("Unauthorized: This visit does not belong to you");
-  }
-
-  // Only allow booking creation when the visit is CONFIRMED
-  if (visit.status !== "CONFIRMED") {
-    throw new Error(
-      `Cannot create a booking for a visit with status: ${visit.status}`,
-    );
-  }
-
-  // Prevent duplicate bookings for the same visit
-  const existingBooking = await prisma.booking.findUnique({
-    where: { visitId },
-  });
-
-  if (existingBooking) {
-    throw new Error("A booking already exists for this visit");
-  }
-
-  // Create the booking
-  const booking = await prisma.booking.create({
-    data: {
-      userId: visit.userId,
-      unitId: visit.unitId,
-      visitId: visit.id,
-      status: "BOOKED",
-    },
-    include: {
-      visit: true,
-      unit: true,
-    },
-  });
-
-  return booking;
-}
-
-export async function getAllBookingsService(userId) {
   const bookings = await prisma.booking.findMany({
-    where: { userId },
+    where,
+    orderBy: { createdAt: "desc" },
     include: {
-      unit: true,
-      visit: true,
+      unit: { select: { id: true, title: true, city: true, images: true } },
+      visit: { select: { id: true, proposedDate: true, status: true } },
+      user: { select: { id: true, name: true, email: true } },
     },
   });
 

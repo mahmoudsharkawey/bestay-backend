@@ -6,6 +6,10 @@ import {
   refundPaymentUtil,
 } from "../utils/paymentIntent.js";
 import { sendEmail } from "../utils/sendEmail.js";
+import {
+  PaymentSuccessHTML,
+  PaymentRefundedHTML,
+} from "../utils/HTMLforEmails.js";
 
 /**
  * Create a Stripe payment intent for an approved visit.
@@ -162,8 +166,9 @@ export async function handleStripeWebhook(rawBody, sig) {
     // send notification email to the user
     await sendEmail(
       visit.user.email,
-      "Payment Successful",
+      "Payment Successful 💳",
       `Your payment has been processed successfully. Visit ID: ${visitId}`,
+      PaymentSuccessHTML(visit.user, visitId),
     );
   }
 
@@ -241,9 +246,36 @@ export async function refundPayment(paymentId) {
   // 5. Notify the user by email (non-blocking)
   sendEmail(
     payment.user.email,
-    "Payment Refunded",
+    "Payment Refunded ↩️",
     `Your payment (ID: ${paymentId}) has been refunded successfully.`,
+    PaymentRefundedHTML(payment.user, paymentId),
   ).catch(() => {}); // fire-and-forget
 
   return updated[0]; // the updated Payment record
+}
+
+// ─── READ: Get all payments for the authenticated user or landlord ───
+export async function getMyPayments(userId, role) {
+  const where =
+    role === "LANDLORD"
+      ? { visit: { unit: { ownerId: userId } } } // payments on the landlord's units
+      : { userId }; // user's own payments
+
+  const payments = await prisma.payment.findMany({
+    where,
+    orderBy: { createdAt: "desc" },
+    include: {
+      visit: {
+        select: {
+          id: true,
+          proposedDate: true,
+          status: true,
+          unit: { select: { id: true, title: true, city: true } },
+        },
+      },
+      user: { select: { id: true, name: true, email: true } },
+    },
+  });
+
+  return payments;
 }

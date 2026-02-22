@@ -4,6 +4,7 @@ import { authorizeRoles } from "../../middlewares/roleMiddleware.js";
 import {
   createPaymentIntent,
   refundPayment,
+  getMyPayments,
 } from "../../controllers/paymentController.js";
 
 const router = Router();
@@ -14,6 +15,9 @@ const router = Router();
 
 // User creates a payment intent for an approved visit
 router.post("/intent", Authenticate, createPaymentIntent);
+
+// GET: all payments for the caller (USER sees own, LANDLORD sees payments on their units)
+router.get("/my", Authenticate, getMyPayments);
 
 ////////////////////
 // Admin routes

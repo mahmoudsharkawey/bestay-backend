@@ -73,3 +73,23 @@ export const refundPayment = async (req, res, next) => {
     return httpError(next, error, req, statusCode);
   }
 };
+
+/**
+ * GET /payments/my
+ * USER sees their own payments; LANDLORD sees payments on their units.
+ */
+export const getMyPayments = async (req, res, next) => {
+  try {
+    const payments = await Payments.getMyPayments(req.user.id, req.user.role);
+    return httpResponse(
+      req,
+      res,
+      200,
+      "Payments fetched successfully",
+      payments,
+    );
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return httpError(next, error, req, statusCode);
+  }
+};
