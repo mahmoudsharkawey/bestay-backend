@@ -9,6 +9,7 @@ import favoriteRoute from "./favoriteRoute.js";
 import bookingRoute from "./bookingRoute.js";
 import visitRoute from "./visitRoute.js";
 import paymentRoute from "./paymentRoute.js";
+import notificationRoute from "./notificationRoute.js";
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use("/favorites", favoriteRoute);
 router.use("/bookings", bookingRoute);
 router.use("/visits", visitRoute);
 router.use("/payments", paymentRoute);
+router.use("/notifications", notificationRoute);
 
 export default router;
