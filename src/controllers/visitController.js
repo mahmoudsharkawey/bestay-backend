@@ -87,3 +87,25 @@ export const rejectReschedule = async (req, res, next) => {
     return httpError(next, error, req, statusCode);
   }
 };
+// User cancels a visit before its proposed date
+export const cancelVisit = async (req, res, next) => {
+  try {
+    const { visitId } = req.params;
+    const visit = await Visits.cancelVisit(visitId, req.user.id);
+    return httpResponse(req, res, 200, "Visit cancelled successfully", visit);
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return httpError(next, error, req, statusCode);
+  }
+};
+// Owner confirms a visit was completed after the proposed date
+export const confirmVisit = async (req, res, next) => {
+  try {
+    const { visitId } = req.params;
+    const visit = await Visits.confirmVisit(visitId, req.user.id);
+    return httpResponse(req, res, 200, "Visit confirmed successfully", visit);
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return httpError(next, error, req, statusCode);
+  }
+};

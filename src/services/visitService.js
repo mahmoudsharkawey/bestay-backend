@@ -658,3 +658,214 @@ export const rejectReschedule = async (visitId, userId) => {
 
   return updatedVisit;
 };
+// User cancels a visit before the proposed date
+export const cancelVisit = async (visitId, userId) => {
+  // 1. Fetch visit with unit and owner data
+  const visit = await prisma.visit.findUnique({
+    where: { id: visitId },
+    include: {
+      unit: {
+        select: {
+          ownerId: true,
+          title: true,
+          owner: { select: { email: true } },
+        },
+      },
+      user: {
+        select: { id: true, name: true, email: true },
+      },
+    },
+  });
+
+  // 2. Check if visit exists
+  if (!visit) {
+    const error = new Error(`Visit with ID ${visitId} not found`);
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // 3. Verify the requesting user owns this visit
+  if (visit.user.id !== userId) {
+    const error = new Error("You are not authorized to cancel this visit");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  // 4. Only cancellable statuses are allowed
+  const cancellableStatuses = [
+    "PENDING_OWNER",
+    "APPROVED",
+    "RESCHEDULE_PROPOSED",
+  ];
+  if (!cancellableStatuses.includes(visit.status)) {
+    const error = new Error(
+      `Cannot cancel a visit with status ${visit.status}`,
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // 5. Must cancel before the proposed date
+  const now = new Date();
+  if (now >= visit.proposedDate) {
+    const error = new Error(
+      "Cannot cancel a visit after its proposed date and time has passed",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // 6. Update visit status and notify owner in a transaction
+  let updatedVisit;
+  try {
+    updatedVisit = await prisma.$transaction(async (tx) => {
+      const cancelled = await tx.visit.update({
+        where: { id: visitId },
+        data: { status: "CANCELLED_BY_USER" },
+      });
+
+      // Notify owner
+      await tx.notification.create({
+        data: {
+          userId: visit.unit.ownerId,
+          type: "VISIT_CANCELLED",
+          message: `${visit.user.name} has cancelled their visit request for "${visit.unit.title}"`,
+        },
+      });
+
+      return cancelled;
+    });
+  } catch (error) {
+    logger.error("Failed to cancel visit in transaction", {
+      visitId,
+      userId,
+      error: error.message,
+    });
+    const err = new Error("Failed to cancel visit. Please try again");
+    err.statusCode = 500;
+    throw err;
+  }
+
+  // 7. Send email to owner (non-blocking)
+  sendEmail(
+    visit.unit.owner.email,
+    "Visit Cancelled",
+    `${visit.user.name} has cancelled their visit request for "${visit.unit.title}"`,
+    `<p><strong>${visit.user.name}</strong> has cancelled their visit request for "<strong>${visit.unit.title}</strong>".</p>`,
+  ).catch((emailError) => {
+    logger.error("Failed to send visit cancellation email", {
+      visitId,
+      ownerEmail: visit.unit.owner.email,
+      error: emailError.message,
+    });
+  });
+
+  return updatedVisit;
+};
+
+// Owner confirms a visit was completed (after proposed date + payment verified)
+export const confirmVisit = async (visitId, ownerId) => {
+  // 1. Fetch visit with unit, visitor, and payment data
+  const visit = await prisma.visit.findUnique({
+    where: { id: visitId },
+    include: {
+      unit: {
+        select: { ownerId: true, title: true },
+      },
+      user: {
+        select: { id: true, name: true, email: true },
+      },
+      payment: true,
+    },
+  });
+
+  // 2. Check if visit exists
+  if (!visit) {
+    const error = new Error(`Visit with ID ${visitId} not found`);
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // 3. Verify ownership
+  if (visit.unit.ownerId !== ownerId) {
+    const error = new Error("You are not authorized to confirm this visit");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  // 4. Only APPROVED visits can be confirmed
+  if (visit.status !== "APPROVED") {
+    const error = new Error(
+      `Cannot confirm a visit with status ${visit.status}. Only APPROVED visits can be confirmed`,
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // 5. The proposed date must have already passed
+  const now = new Date();
+  if (now < visit.proposedDate) {
+    const error = new Error(
+      "Cannot confirm a visit before its proposed date and time",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // 6. The payment must be in PAID status
+  const payment = visit.payment;
+  if (!payment || payment.status !== "PAID") {
+    const error = new Error(
+      "Cannot confirm visit: payment has not been completed",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // 7. Update visit status and notify visitor in a transaction
+  let updatedVisit;
+  try {
+    updatedVisit = await prisma.$transaction(async (tx) => {
+      const confirmed = await tx.visit.update({
+        where: { id: visitId },
+        data: { status: "CONFIRMED" },
+      });
+
+      // Notify the visitor
+      await tx.notification.create({
+        data: {
+          userId: visit.user.id,
+          type: "VISIT_CONFIRMED",
+          message: `Your visit to "${visit.unit.title}" has been confirmed by the owner`,
+        },
+      });
+
+      return confirmed;
+    });
+  } catch (error) {
+    logger.error("Failed to confirm visit in transaction", {
+      visitId,
+      ownerId,
+      error: error.message,
+    });
+    const err = new Error("Failed to confirm visit. Please try again");
+    err.statusCode = 500;
+    throw err;
+  }
+
+  // 8. Send email to visitor (non-blocking)
+  sendEmail(
+    visit.user.email,
+    "Visit Confirmed",
+    `Your visit to "${visit.unit.title}" has been confirmed`,
+    `<p>Great news! The owner has confirmed that your visit to "<strong>${visit.unit.title}</strong>" was completed successfully.</p>`,
+  ).catch((emailError) => {
+    logger.error("Failed to send visit confirmation email", {
+      visitId,
+      userEmail: visit.user.email,
+      error: emailError.message,
+    });
+  });
+
+  return updatedVisit;
+};

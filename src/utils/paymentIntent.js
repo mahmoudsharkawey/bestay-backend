@@ -7,7 +7,7 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 
 
 // Create payment intent to process payment
-export async function createPaymentIntentUtil(amount, bookingId) {
+export async function createPaymentIntentUtil(amount, visitId) {
   // Convert amount to smallest currency unit (piastres for EGP)
   // 1 EGP = 100 piastres
   const amountInPiastres = Math.round(amount * 100);
@@ -27,8 +27,8 @@ export async function createPaymentIntentUtil(amount, bookingId) {
       enabled: true,
     },
     metadata: {
-      bookingId: bookingId,
-    },
+      visitId: visitId,
+    },  
   });
   return paymentIntent;
 }

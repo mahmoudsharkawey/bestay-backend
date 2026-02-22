@@ -9,6 +9,7 @@ const requiredEnvVars = [
   "DATABASE_URL",
   "JWT_SECRET",
   "STRIPE_SECRET_KEY",
+  "STRIPE_WEBHOOK_SECRET",
   "EMAIL_USER",
   "EMAIL_PASS",
 ];
@@ -54,5 +55,5 @@ export const env = {
   // Stripe
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
-  // STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 };

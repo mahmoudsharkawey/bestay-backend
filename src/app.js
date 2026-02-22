@@ -5,6 +5,7 @@ import router from "./routes/v1/ApiRouter.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import page404Handler from "./middlewares/page404Handler.js";
 import { apiLimiter } from "./middlewares/rateLimiterMiddleware.js";
+import { stripeWebhook } from "./controllers/paymentController.js";
 
 // Initialize Express app
 const app = express();
@@ -19,7 +20,22 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.json());
+
+// ⚠️  express.json() with a `verify` callback — Stripe's recommended approach.
+//     The verify function runs BEFORE the body is parsed, giving us access to
+//     the original raw Buffer. We save it to req.rawBody so the webhook handler
+//     can use it for signature verification regardless of the middleware order.
+app.use(
+  express.json({
+    verify: (req, _res, buf) => {
+      req.rawBody = buf;
+    },
+  }),
+);
+
+// Stripe webhook — must come AFTER the json middleware so req.rawBody is populated,
+// but the handler uses req.rawBody (not req.body) for signature verification.
+app.post("/api/v1/payments/webhook", stripeWebhook);
 
 // Route setup (apply rate limiter to API routes)
 app.use("/api/v1", apiLimiter, router);
