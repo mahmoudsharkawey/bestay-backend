@@ -13,5 +13,3 @@ Stripe webhook	https://inspective-unbred-lois.ngrok-free.dev/api/v1/payments/web
 
 TODOS:
 canceled by owner 
-get my units for user and owner
-implement notification crud

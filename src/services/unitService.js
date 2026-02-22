@@ -133,7 +133,6 @@ export const getUnitById = async (id) => {
     },
   });
 
-
   if (!unit) {
     throw new Error("Unit not found");
   }
@@ -156,6 +155,42 @@ export const getUnitById = async (id) => {
 export const getAllUnits = async () => {
   const units = await prisma.unit.findMany();
   return units;
+};
+
+// Returns all units belonging to the authenticated landlord
+export const getMyUnits = async (ownerId) => {
+  const units = await prisma.unit.findMany({
+    where: { ownerId },
+    orderBy: { createdAt: "desc" },
+    include: {
+      _count: {
+        select: { visits: true, bookings: true, reviews: true },
+      },
+      reviews: { select: { rating: true } },
+    },
+  });
+
+  if (!units) {
+    throw new Error("Units not found");
+  }
+
+  return units.map(({ reviews, _count, ...unit }) => {
+    const avgRating =
+      reviews.length > 0
+        ? parseFloat(
+            (
+              reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+            ).toFixed(1),
+          )
+        : 0;
+    return {
+      ...unit,
+      reviewCount: _count.reviews,
+      visitCount: _count.visits,
+      bookingCount: _count.bookings,
+      averageRating: avgRating,
+    };
+  });
 };
 
 export const searchUnitsByFilter = async (filters) => {

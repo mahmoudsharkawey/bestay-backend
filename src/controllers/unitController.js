@@ -68,6 +68,16 @@ export const getAllUnits = async (req, res, next) => {
   }
 };
 
+// GET /units/my — all units owned by the authenticated landlord
+export const getMyUnits = async (req, res, next) => {
+  try {
+    const units = await unitService.getMyUnits(req.user.id);
+    httpResponse(req, res, 200, "Units retrieved successfully", units);
+  } catch (error) {
+    httpError(next, error, req, error.statusCode || 500);
+  }
+};
+
 export const searchUnitsByFilter = async (req, res, next) => {
   try {
     const {

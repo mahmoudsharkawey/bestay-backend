@@ -5,6 +5,7 @@ import {
   deleteUnitById,
   getAllUnits,
   getUnitById,
+  getMyUnits,
   searchUnitsByFilter,
   updateUnitById,
 } from "../../controllers/unitController.js";
@@ -17,6 +18,14 @@ router.get("/all", getAllUnits);
 
 // GET /api/v1/units - Search units with filters (public access)
 router.get("/", searchUnitsByFilter);
+
+// GET /api/v1/units/my - Get all units owned by the authenticated landlord
+router.get(
+  "/my",
+  Authenticate,
+  authorizeRoles("LANDLORD", "ADMIN"),
+  getMyUnits,
+);
 
 // GET /api/v1/units/:id - Get a specific unit by ID
 router.get("/:id", Authenticate, getUnitById);
