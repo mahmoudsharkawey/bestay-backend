@@ -216,6 +216,8 @@ export const searchUnitsByFilter = async (filters) => {
     facilities,
     page,
     limit,
+    sortBy,
+    sortOrder,
   } = filters;
 
   const where = {
@@ -240,11 +242,68 @@ export const searchUnitsByFilter = async (filters) => {
     };
   }
 
+  const orderDir = sortOrder === "asc" ? "asc" : "desc";
+  let orderBy = {};
+  if (sortBy === "price") orderBy.price = orderDir;
+  else if (sortBy === "distance") orderBy.distance = orderDir;
+  else if (sortBy === "createdAt") orderBy.createdAt = orderDir;
+
+  if (sortBy === "rating") {
+    // Fetch all matching units to sort them in memory
+    const allUnits = await prisma.unit.findMany({
+      where,
+      include: {
+        reviews: { select: { rating: true } },
+      },
+    });
+
+    const unitsWithRating = allUnits.map((unit) => {
+      const avgRating =
+        unit.reviews.length > 0
+          ? unit.reviews.reduce((s, r) => s + r.rating, 0) / unit.reviews.length
+          : 0;
+      const { reviews, ...rest } = unit;
+      return { ...rest, averageRating: parseFloat(avgRating.toFixed(1)) };
+    });
+
+    unitsWithRating.sort((a, b) => {
+      return orderDir === "asc"
+        ? a.averageRating - b.averageRating
+        : b.averageRating - a.averageRating;
+    });
+
+    const total = unitsWithRating.length;
+    const paginatedUnits = unitsWithRating.slice(
+      (page - 1) * limit,
+      page * limit,
+    );
+
+    return {
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+      units: paginatedUnits,
+    };
+  }
+
+  // Not sorting by rating
   const units = await prisma.unit.findMany({
     where,
     skip: (page - 1) * limit,
     take: limit,
-    orderBy: { createdAt: "desc" },
+    orderBy: Object.keys(orderBy).length ? orderBy : { createdAt: "desc" },
+    include: {
+      reviews: { select: { rating: true } },
+    },
+  });
+
+  const unitsWithRating = units.map((unit) => {
+    const avgRating =
+      unit.reviews.length > 0
+        ? unit.reviews.reduce((s, r) => s + r.rating, 0) / unit.reviews.length
+        : 0;
+    const { reviews, ...rest } = unit;
+    return { ...rest, averageRating: parseFloat(avgRating.toFixed(1)) };
   });
 
   const total = await prisma.unit.count({ where });
@@ -253,6 +312,6 @@ export const searchUnitsByFilter = async (filters) => {
     total,
     page,
     pages: Math.ceil(total / limit),
-    units,
+    units: unitsWithRating,
   };
 };

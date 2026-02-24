@@ -112,6 +112,8 @@ export const searchUnitsByFilter = async (req, res, next) => {
       facilities,
       page = 1,
       limit = 10,
+      sortBy = "createdAt",
+      sortOrder = "desc",
     } = req.query;
 
     const filters = {
@@ -124,6 +126,8 @@ export const searchUnitsByFilter = async (req, res, next) => {
       facilities,
       page: Number(page),
       limit: Number(limit),
+      sortBy,
+      sortOrder,
     };
     const units = await unitService.searchUnitsByFilter(filters);
     httpResponse(req, res, 200, "Units retrieved successfully", units);
