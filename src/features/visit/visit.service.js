@@ -850,12 +850,6 @@ export const confirmVisit = async (visitId, ownerId) => {
         },
       });
 
-      // Back-fill Visit.bookingId so the visit response is complete
-      await tx.visit.update({
-        where: { id: visitId },
-        data: { bookingId: newBooking.id },
-      });
-
       // Notify the visitor: visit confirmed + booking created
       await tx.notification.create({
         data: {

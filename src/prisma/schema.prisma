@@ -239,7 +239,6 @@ model Visit {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   paymentId String?
-  bookingId String?
 
   deletedAt   DateTime?
   deletedById String?
