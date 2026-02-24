@@ -2,7 +2,7 @@ import prisma from "../../prisma/client.js";
 import AppError from "../../utils/AppError.js";
 
 // Create a new notification (used internally by other services)
-export async function createNotification(userId, type, message, tx = prisma) {
+export function createNotification(userId, type, message, tx = prisma) {
   return tx.notification.create({
     data: {
       userId,

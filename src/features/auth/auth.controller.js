@@ -1,5 +1,5 @@
 import httpResponse from "../../utils/httpResponse.js";
-import httpError from "../../utils/httpError.js";
+import httpError from "../../utils/httpError.js"
 import * as authService from "./auth.service.js";
 import { signToken } from "../../utils/jwt.js";
 import { getErrorStatusCode } from "../../utils/errorStatusCode.js";
