@@ -1,5 +1,10 @@
 import prisma from "../../prisma/client.js";
 import { softDelete } from "../../utils/softDelete.js";
+import { calculateAverageRating } from "../../utils/rating.js";
+import {
+  buildWhereClause,
+  buildOrderByClause,
+} from "../../utils/unitQueryBuilder.js";
 
 // Returns a unit by id
 export const createUnit = async (data) => {
@@ -146,11 +151,7 @@ export const getUnitById = async (id) => {
 
   // Calculate average rating and review count
   const reviewCount = unit.reviews.length;
-  const averageRating =
-    reviewCount > 0
-      ? unit.reviews.reduce((sum, review) => sum + review.rating, 0) /
-        reviewCount
-      : 0;
+  const averageRating = calculateAverageRating(unit.reviews);
 
   return {
     ...unit,
@@ -187,14 +188,7 @@ export const getMyUnits = async (ownerId) => {
   }
 
   return units.map(({ reviews, _count, ...unit }) => {
-    const avgRating =
-      reviews.length > 0
-        ? parseFloat(
-            (
-              reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
-            ).toFixed(1),
-          )
-        : 0;
+    const avgRating = calculateAverageRating(reviews);
     return {
       ...unit,
       reviewCount: _count.reviews,
@@ -206,47 +200,12 @@ export const getMyUnits = async (ownerId) => {
 };
 // Returns units by filter
 export const searchUnitsByFilter = async (filters) => {
-  const {
-    city,
-    university,
-    minPrice,
-    maxPrice,
-    roomType,
-    genderType,
-    facilities,
-    page,
-    limit,
-    sortBy,
-    sortOrder,
-  } = filters;
+  const { page, limit, sortBy, sortOrder } = filters;
 
-  const where = {
-    status: "ACTIVE",
-    deletedAt: null,
-  };
-
-  if (city) where.city = city;
-  if (university) where.university = university;
-  if (roomType) where.roomType = roomType;
-  if (genderType) where.genderType = genderType;
-
-  if (minPrice || maxPrice) {
-    where.price = {};
-    if (minPrice) where.price.gte = Number(minPrice);
-    if (maxPrice) where.price.lte = Number(maxPrice);
-  }
-
-  if (facilities) {
-    where.facilities = {
-      hasEvery: facilities.split(","),
-    };
-  }
+  const where = buildWhereClause(filters);
 
   const orderDir = sortOrder === "asc" ? "asc" : "desc";
-  let orderBy = {};
-  if (sortBy === "price") orderBy.price = orderDir;
-  else if (sortBy === "distance") orderBy.distance = orderDir;
-  else if (sortBy === "createdAt") orderBy.createdAt = orderDir;
+  const orderBy = buildOrderByClause(sortBy, sortOrder);
 
   if (sortBy === "rating") {
     // Fetch all matching units to sort them in memory
@@ -258,10 +217,7 @@ export const searchUnitsByFilter = async (filters) => {
     });
 
     const unitsWithRating = allUnits.map((unit) => {
-      const avgRating =
-        unit.reviews.length > 0
-          ? unit.reviews.reduce((s, r) => s + r.rating, 0) / unit.reviews.length
-          : 0;
+      const avgRating = calculateAverageRating(unit.reviews);
       const { reviews, ...rest } = unit;
       return { ...rest, averageRating: parseFloat(avgRating.toFixed(1)) };
     });
@@ -298,10 +254,7 @@ export const searchUnitsByFilter = async (filters) => {
   });
 
   const unitsWithRating = units.map((unit) => {
-    const avgRating =
-      unit.reviews.length > 0
-        ? unit.reviews.reduce((s, r) => s + r.rating, 0) / unit.reviews.length
-        : 0;
+    const avgRating = calculateAverageRating(unit.reviews);
     const { reviews, ...rest } = unit;
     return { ...rest, averageRating: parseFloat(avgRating.toFixed(1)) };
   });

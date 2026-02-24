@@ -11,23 +11,12 @@ import {
 } from "../../utils/HTMLforEmails.js";
 import { sendEmail } from "../../utils/sendEmail.js";
 import logger from "../../utils/logger.js";
+import { validateFutureDate } from "../../utils/dateValidation.js";
 
 // Creates a new visit request for a unit
 export const createVisit = async ({ userId, unitId, proposedDate }) => {
   // Parse and validate proposed date
-  const proposedDateObj = new Date(proposedDate);
-  const now = new Date();
-
-  // Add 1 hour buffer to ensure date is meaningfully in the future
-  const minimumDate = new Date(now.getTime() + 60 * 60 * 1000);
-
-  if (proposedDateObj < minimumDate) {
-    const error = new Error(
-      "Proposed date must be at least 1 hour in the future",
-    );
-    error.statusCode = 400;
-    throw error;
-  }
+  const proposedDateObj = validateFutureDate(proposedDate, 1);
 
   // Check if user has an active/pending visit for this unit
   const activeStatuses = [
@@ -364,22 +353,7 @@ export const rejectVisit = async (visitId, ownerId) => {
 // Owner proposes a new date for a visit (reschedule)
 export const proposeReschedule = async (visitId, ownerId, newDate) => {
   // 1. Parse and validate the new proposed date
-  const newDateObj = new Date(newDate);
-  const minimumDate = new Date(Date.now() + 60 * 60 * 1000); // at least 1 hour ahead
-
-  if (isNaN(newDateObj.getTime())) {
-    const error = new Error("Invalid date format");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  if (newDateObj < minimumDate) {
-    const error = new Error(
-      "Proposed reschedule date must be at least 1 hour in the future",
-    );
-    error.statusCode = 400;
-    throw error;
-  }
+  const newDateObj = validateFutureDate(newDate, 1);
 
   // 2. Fetch visit with unit and visitor data
   const visit = await prisma.visit.findUnique({
