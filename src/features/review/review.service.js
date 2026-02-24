@@ -11,10 +11,10 @@ export const createReview = async (data) => {
 
   // Check if user already has a review for this unit
   const existingReview = await prisma.review.findFirst({
-    where: { userId, unitId, deletedAt: null },
+    where: { userId, unitId },
   });
 
-  if (existingReview) {
+  if (existingReview && !existingReview.deletedAt) {
     throw new Error("You have already reviewed this unit");
   }
 
@@ -41,24 +41,46 @@ export const createReview = async (data) => {
     throw new Error("Rating must be between 1 and 5");
   }
 
-  // Create the review
-  const review = await prisma.review.create({
-    data: {
-      userId,
-      unitId,
-      rating,
-      comment: comment || null,
-    },
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          picture: true,
+  // Create or restore the review
+  let review;
+  if (existingReview && existingReview.deletedAt) {
+    review = await prisma.review.update({
+      where: { id: existingReview.id },
+      data: {
+        rating,
+        comment: comment || null,
+        deletedAt: null,
+        deletedById: null,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            picture: true,
+          },
         },
       },
-    },
-  });
+    });
+  } else {
+    review = await prisma.review.create({
+      data: {
+        userId,
+        unitId,
+        rating,
+        comment: comment || null,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            picture: true,
+          },
+        },
+      },
+    });
+  }
 
   if (!review) {
     throw new Error("Failed to create review");
