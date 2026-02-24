@@ -140,7 +140,7 @@ model UserPreference {
 
   rooms      Int
   furnished  Boolean
-  genderType String // e.g., "male only", "female only"
+  genderType GenderPreference // e.g., MALE_ONLY, FEMALE_ONLY
   facilities String[] // e.g., ["wifi", "parking", "gym"]
 
   user User @relation(fields: [userId], references: [id])
@@ -258,7 +258,7 @@ model Payment {
   id             String        @id @default(uuid())
   userId         String
   visitId        String        @unique
-  amount         Int
+  amount         Int // Stored in piastres/cents (smallest currency unit)
   status         PaymentStatus
   stripeIntentId String?
   refundedAt     DateTime?
