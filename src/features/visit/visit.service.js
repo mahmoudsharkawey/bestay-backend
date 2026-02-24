@@ -631,11 +631,15 @@ export const cancelVisit = async (visitId, userId) => {
     );
   }
 
-  // 5. Must cancel before the proposed date
+  // 5. Must cancel at least 24 hours before the proposed date
   const now = new Date();
-  if (now >= visit.proposedDate) {
+  const cancellationDeadline = new Date(
+    visit.proposedDate.getTime() - 24 * 60 * 60 * 1000,
+  );
+
+  if (now > cancellationDeadline) {
     throw new AppError(
-      "Cannot cancel a visit after its proposed date and time has passed",
+      "Cannot cancel a visit within 24 hours of its proposed date and time",
       400,
     );
   }
@@ -719,15 +723,18 @@ export const confirmVisit = async (visitId, ownerId) => {
     );
   }
 
-  // 5. The proposed date must have already passed
+  // 5. The proposed date + 2 hours buffer must have already passed
   const now = new Date();
-  if (now < visit.proposedDate) {
+  const confirmationTime = new Date(
+    visit.proposedDate.getTime() + 2 * 60 * 60 * 1000,
+  );
+
+  if (now < confirmationTime) {
     throw new AppError(
-      "Cannot confirm a visit before its proposed date and time",
+      "Cannot confirm a visit until at least 2 hours after its proposed date and time",
       400,
     );
   }
-
   // 6. The payment must be in PAID status
   const payment = visit.payment;
   if (!payment || payment.status !== "PAID") {
@@ -746,6 +753,15 @@ export const confirmVisit = async (visitId, ownerId) => {
         where: { id: visitId },
         data: { status: "CONFIRMED" },
       });
+
+      // Check if a booking already exists to prevent duplicate creation crash
+      const existingBooking = await tx.booking.findUnique({
+        where: { visitId: visit.id },
+      });
+
+      if (existingBooking) {
+        throw new AppError("A booking already exists for this visit", 409);
+      }
 
       // Auto-create the Booking record (no manual user action needed)
       const newBooking = await tx.booking.create({
@@ -774,9 +790,10 @@ export const confirmVisit = async (visitId, ownerId) => {
       ownerId,
       error: error.message,
     });
-    const err = new Error("Failed to confirm visit. Please try again");
-    err.statusCode = 500;
-    throw err;
+    throw new AppError(
+      error.message || "Failed to confirm visit. Please try again",
+      error.statusCode || 500,
+    );
   }
 
   // 8. Send email to visitor (non-blocking)

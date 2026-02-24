@@ -33,8 +33,6 @@ export const createUnit = async (data) => {
     where: {
       address: data.address,
       ownerId: data.ownerId,
-      latitude: data.latitude,
-      longitude: data.longitude,
     },
   });
 
