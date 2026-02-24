@@ -5,7 +5,7 @@ import router from "./routes/v1/ApiRouter.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import page404Handler from "./middlewares/page404Handler.js";
 import { apiLimiter } from "./middlewares/rateLimiterMiddleware.js";
-import { stripeWebhook } from "./controllers/paymentController.js";
+import { stripeWebhook } from "./features/payment/payment.controller.js";
 
 // Initialize Express app
 const app = express();
