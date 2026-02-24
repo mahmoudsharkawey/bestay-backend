@@ -1,5 +1,7 @@
 import prisma from "../prisma/client.js";
+import { softDelete } from "../utils/softDelete.js";
 
+// Returns a unit by id
 export const createUnit = async (data) => {
   // Logic to create a new unit in the database
   const newUnit = {
@@ -23,26 +25,10 @@ export const createUnit = async (data) => {
 
   const existingUnit = await prisma.unit.findFirst({
     where: {
-      title: data.title,
-      description: data.description,
-      price: data.price,
-      city: data.city,
       address: data.address,
-      rooms: data.rooms,
-      furnished: data.furnished,
-      university: data.university,
-      distance: data.distance,
-      roomType: data.roomType,
-      genderType: data.genderType,
       ownerId: data.ownerId,
       latitude: data.latitude,
       longitude: data.longitude,
-      facilities: {
-        equals: data.facilities,
-      },
-      images: {
-        equals: data.images,
-      },
     },
   });
 
@@ -58,33 +44,54 @@ export const createUnit = async (data) => {
   }
   return createdUnit;
 };
+// Returns a unit by id
+export const deleteUnitById = async (id, actorId) => {
+  // 1. Fetch unit, confirming it exists and isn't already deleted
 
-export const deleteUnitById = async (id) => {
   const unit = await prisma.unit.findUnique({
-    where: {
-      id: id,
+    where: { id },
+    include: {
+      visits: {
+        where: {
+          status: {
+            in: [
+              "PENDING_OWNER",
+              "APPROVED",
+              "RESCHEDULE_PROPOSED",
+              "CONFIRMED",
+            ],
+          },
+        },
+      },
+      bookings: {
+        where: { status: { in: ["BOOKED", "CONFIRMED"] } },
+      },
     },
   });
-
-  if (!unit) {
-    throw new Error("Unit not found");
+  if (!unit || unit.deletedAt || unit.status === "DELETED") {
+    throw new Error("Unit already deleted");
+  }
+  // 2. Block if active bookings or visits
+  if (unit.visits.length > 0 || unit.bookings.length > 0) {
+    const error = new Error(
+      "Cannot delete unit with active bookings or visits",
+    );
+    error.statusCode = 409;
+    throw error;
   }
 
-  const deletedUnit = await prisma.unit.delete({
-    where: {
-      id: id,
-    },
-  });
-  if (!deletedUnit) {
-    throw new Error("Failed to delete unit");
-  }
+  // 3. Perform soft delete
+  const deletedUnit = await softDelete(prisma.unit, id, actorId, "DELETED");
+
   return deletedUnit;
 };
-
+// Returns a unit by id
 export const updateUnitById = async (id, data) => {
   const unit = await prisma.unit.findUnique({
     where: {
       id: id,
+      deletedAt: null,
+      status: "ACTIVE",
     },
   });
 
@@ -103,7 +110,7 @@ export const updateUnitById = async (id, data) => {
   }
   return updatedUnit;
 };
-
+// Returns a unit by id
 export const getUnitById = async (id) => {
   const unit = await prisma.unit.findUnique({
     where: {
@@ -133,7 +140,7 @@ export const getUnitById = async (id) => {
     },
   });
 
-  if (!unit) {
+  if (!unit || unit.deletedAt) {
     throw new Error("Unit not found");
   }
 
@@ -151,16 +158,21 @@ export const getUnitById = async (id) => {
     averageRating: parseFloat(averageRating.toFixed(1)),
   };
 };
-
-export const getAllUnits = async () => {
-  const units = await prisma.unit.findMany();
-  return units;
+// Returns all units
+export const getAllUnits = async (page, limit) => {
+  const units = await prisma.unit.findMany({
+    where: { deletedAt: null, status: "ACTIVE" },
+    skip: Number((page - 1) * limit),
+    take: Number(limit),
+    orderBy: { createdAt: "desc" },
+  });
+  const total = await prisma.unit.count({ where: { deletedAt: null } });
+  return { units, total };
 };
-
 // Returns all units belonging to the authenticated landlord
 export const getMyUnits = async (ownerId) => {
   const units = await prisma.unit.findMany({
-    where: { ownerId },
+    where: { ownerId, deletedAt: null },
     orderBy: { createdAt: "desc" },
     include: {
       _count: {
@@ -192,7 +204,7 @@ export const getMyUnits = async (ownerId) => {
     };
   });
 };
-
+// Returns units by filter
 export const searchUnitsByFilter = async (filters) => {
   const {
     city,
@@ -207,7 +219,8 @@ export const searchUnitsByFilter = async (filters) => {
   } = filters;
 
   const where = {
-    isAvailable: true,
+    status: "ACTIVE",
+    deletedAt: null,
   };
 
   if (city) where.city = city;

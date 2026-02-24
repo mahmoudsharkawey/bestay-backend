@@ -15,5 +15,9 @@ export async function getAllBookingsService(userId, role) {
     },
   });
 
+  if (!bookings) {
+    throw new Error("Bookings not found");
+  }
+
   return bookings;
 }

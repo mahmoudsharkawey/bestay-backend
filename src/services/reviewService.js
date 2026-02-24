@@ -1,4 +1,5 @@
 import prisma from "../prisma/client.js";
+import { softDelete } from "../utils/softDelete.js";
 
 /**
  * Create a new review for a unit
@@ -8,12 +9,21 @@ import prisma from "../prisma/client.js";
 export const createReview = async (data) => {
   const { userId, unitId, rating, comment } = data;
 
+  // Check if user already has a review for this unit
+  const existingReview = await prisma.review.findFirst({
+    where: { userId, unitId, deletedAt: null },
+  });
+
+  if (existingReview) {
+    throw new Error("You have already reviewed this unit");
+  }
+
   // Validate that the unit exists
   const unit = await prisma.unit.findUnique({
     where: { id: unitId },
   });
 
-  if (!unit) {
+  if (!unit || unit.deletedAt) {
     throw new Error("Unit not found");
   }
 
@@ -22,7 +32,7 @@ export const createReview = async (data) => {
     where: { id: userId },
   });
 
-  if (!user) {
+  if (!user || user.deletedAt) {
     throw new Error("User not found");
   }
 
@@ -73,7 +83,7 @@ export const getReviewsByUnitId = async (unitId) => {
   }
 
   const reviews = await prisma.review.findMany({
-    where: { unitId },
+    where: { unitId, deletedAt: null },
     include: {
       user: {
         select: {
@@ -116,7 +126,7 @@ export const getReviewById = async (id) => {
     },
   });
 
-  if (!review) {
+  if (!review || review.deletedAt) {
     throw new Error("Review not found");
   }
 
@@ -135,7 +145,7 @@ export const updateReviewById = async (id, userId, data) => {
     where: { id },
   });
 
-  if (!review) {
+  if (!review || review.deletedAt) {
     throw new Error("Review not found");
   }
 
@@ -184,7 +194,7 @@ export const deleteReviewById = async (id, userId) => {
     where: { id },
   });
 
-  if (!review) {
+  if (!review || review.deletedAt) {
     throw new Error("Review not found");
   }
 
@@ -193,9 +203,7 @@ export const deleteReviewById = async (id, userId) => {
     throw new Error("You are not authorized to delete this review");
   }
 
-  const deletedReview = await prisma.review.delete({
-    where: { id },
-  });
+  const deletedReview = await softDelete(prisma.review, id, userId);
 
   if (!deletedReview) {
     throw new Error("Failed to delete review");

@@ -1,8 +1,12 @@
 import httpError from "../utils/httpError.js";
 import httpResponse from "../utils/httpResponse.js";
 import * as unitService from "../services/unitService.js";
-import { validateUnitFields } from "../validations/unitValidation.js";
+import {
+  validateUnitFields,
+  validateUpdateUnitFields,
+} from "../validations/unitValidation.js";
 
+// Returns a unit by id
 export const createUnit = async (req, res, next) => {
   try {
     validateUnitFields(req.body);
@@ -14,7 +18,7 @@ export const createUnit = async (req, res, next) => {
     httpError(next, error, req, 500);
   }
 };
-
+// Returns a unit by id
 export const getUnitById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -27,7 +31,7 @@ export const getUnitById = async (req, res, next) => {
     httpError(next, error, req, 500);
   }
 };
-
+// Returns a unit by id
 export const updateUnitById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -35,39 +39,39 @@ export const updateUnitById = async (req, res, next) => {
       throw new Error("Unit ID is required");
     }
 
-    validateUnitFields(req.body);
+    validateUpdateUnitFields(req.body);
     const unit = await unitService.updateUnitById(id, req.body);
     httpResponse(req, res, 200, "Unit updated successfully", unit);
   } catch (error) {
     httpError(next, error, req, 500);
   }
 };
-
+// Returns a unit by id
 export const deleteUnitById = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (!id) {
       throw new Error("Unit ID is required");
     }
-    const deletedUnit = await unitService.deleteUnitById(id);
+    const deletedUnit = await unitService.deleteUnitById(id, req.user.id);
     httpResponse(req, res, 200, "Unit deleted successfully", deletedUnit);
   } catch (error) {
     httpError(next, error, req, 500);
   }
 };
-
+// Returns all units
 export const getAllUnits = async (req, res, next) => {
   try {
-    const units = await unitService.getAllUnits();
+    const { page = 1, limit = 10 } = req.query;
+    const units = await unitService.getAllUnits(page, limit);
     if (!units) {
-      throw new Error("Units hihik not found");
+      throw new Error("Units not found");
     }
     httpResponse(req, res, 200, "Units retrieved successfully", units);
   } catch (error) {
     httpError(next, error, req, 500);
   }
 };
-
 // GET /units/my — all units owned by the authenticated landlord
 export const getMyUnits = async (req, res, next) => {
   try {
@@ -77,7 +81,7 @@ export const getMyUnits = async (req, res, next) => {
     httpError(next, error, req, error.statusCode || 500);
   }
 };
-
+// Returns units by filter
 export const searchUnitsByFilter = async (req, res, next) => {
   try {
     const {

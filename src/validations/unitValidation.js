@@ -38,9 +38,21 @@ export const createUnitSchema = z.object({
 
 export const updateUnitSchema = createUnitSchema.partial();
 
-// Validation helper function
+// Validation helper function for creating a unit (all fields required)
 export const validateUnitFields = (data) => {
   const result = createUnitSchema.safeParse(data);
+  if (!result.success) {
+    const errors = result.error.errors.map(
+      (err) => `${err.path.join(".")}: ${err.message}`,
+    );
+    throw new Error(errors.join(", "));
+  }
+  return result.data;
+};
+
+// Validation helper function for updating a unit (all fields optional)
+export const validateUpdateUnitFields = (data) => {
+  const result = updateUnitSchema.safeParse(data);
   if (!result.success) {
     const errors = result.error.errors.map(
       (err) => `${err.path.join(".")}: ${err.message}`,

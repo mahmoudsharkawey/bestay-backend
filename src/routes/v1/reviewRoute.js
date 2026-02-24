@@ -7,9 +7,9 @@ const router = express.Router();
 
 // Create a new review
 router.post(
-  "/",
+  "/unit/:unitId",
   Authenticate,
-  authorizeRoles("USER", "LANDLORD"),
+  authorizeRoles("USER"),
   reviewController.createReview,
 );
 
@@ -23,7 +23,7 @@ router.get("/:id", Authenticate, reviewController.getReviewById);
 router.put(
   "/:id",
   Authenticate,
-  authorizeRoles("USER", "LANDLORD"),
+  authorizeRoles("USER"),
   reviewController.updateReviewById,
 );
 
@@ -31,7 +31,7 @@ router.put(
 router.delete(
   "/:id",
   Authenticate,
-  authorizeRoles("USER", "LANDLORD"),
+  authorizeRoles("USER"),
   reviewController.deleteReviewById,
 );
 

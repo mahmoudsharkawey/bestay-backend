@@ -1,21 +1,22 @@
 import httpError from "../utils/httpError.js";
 import httpResponse from "../utils/httpResponse.js";
-import * as reviewService from "../services/rewiewService.js";
+import * as reviewService from "../services/reviewService.js";
 
 /**
  * Create a new review
  */
 export const createReview = async (req, res, next) => {
   try {
-    const { userId, unitId, rating, comment } = req.body;
+    const { rating, comment } = req.body;
+    const unitId = req.params.unitId;
 
     // Validate required fields
-    if (!userId || !unitId || !rating) {
-      throw new Error("userId, unitId, and rating are required");
+    if (!unitId || !rating) {
+      throw new Error("unitId, and rating are required");
     }
 
     const reviewData = {
-      userId,
+      userId: req.user.id,
       unitId,
       rating: Number(rating),
       comment,
@@ -101,7 +102,7 @@ export const updateReviewById = async (req, res, next) => {
 export const deleteReviewById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { userId } = req.body;
+    const userId = req.user.id;
 
     if (!id) {
       throw new Error("Review ID is required");

@@ -72,7 +72,7 @@ export const createVisit = async ({ userId, unitId, proposedDate }) => {
     throw error;
   }
 
-  if (!unit.isAvailable) {
+  if (unit.deletedAt || unit.status !== "ACTIVE") {
     const error = new Error(`Unit "${unit.title}" is not available for visits`);
     error.statusCode = 400;
     throw error;

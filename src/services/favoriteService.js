@@ -13,7 +13,7 @@ export const addFavorite = async (data) => {
     where: { id: unitId },
   });
 
-  if (!unit) {
+  if (!unit || unit.deletedAt) {
     throw new Error("Unit not found");
   }
 
@@ -122,7 +122,7 @@ export const getUserFavorites = async (userId) => {
   }
 
   const favorites = await prisma.favorite.findMany({
-    where: { userId },
+    where: { userId, unit: { deletedAt: null } },
     include: {
       unit: {
         include: {

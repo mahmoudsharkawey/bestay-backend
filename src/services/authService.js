@@ -22,7 +22,8 @@ export const signUp = async ({ name, email, password, phone, role }) => {
 
 export const signIn = async ({ email, password }) => {
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || !user.password) throw new Error("Invalid credentials");
+  if (!user || user.deletedAt || !user.password)
+    throw new Error("Invalid credentials");
 
   const match = await comparePassword(password, user.password);
   if (!match) throw new Error("Invalid credentials");
@@ -33,7 +34,7 @@ export const signIn = async ({ email, password }) => {
 export const forgotPassword = async (email) => {
   //get user by email
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) throw new Error("No user found with this email");
+  if (!user || user.deletedAt) throw new Error("No user found with this email");
 
   // if user exists, generate a reset code and hash it
   const resetCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6 digit code
@@ -96,7 +97,7 @@ export const verifyResetCode = async (email, resetCode) => {
 
 export const resetPassword = async (email, newPassword) => {
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) throw new Error("No user found with this email");
+  if (!user || user.deletedAt) throw new Error("No user found with this email");
   if (!user.passwordResetVerified) {
     throw new Error("Reset code not verified");
   }

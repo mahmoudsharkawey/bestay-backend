@@ -1,109 +1,150 @@
 import prisma from "../prisma/client.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
+import { softDelete } from "../utils/softDelete.js";
 
-//  Get user details by email
-export const getUserDetails = async (id) => {
+// Fields safe to return to the client (never expose password, reset codes, etc.)
+const USER_SELECT = {
+  id: true,
+  name: true,
+  email: true,
+  phone: true,
+  role: true,
+  picture: true,
+  provider: true,
+  createdAt: true,
+};
+
+// Fields a user is allowed to update on their own profile
+const ALLOWED_UPDATE_FIELDS = ["name", "phone", "picture"];
+
+// Get the authenticated user's profile
+export const getProfile = async (id) => {
   const user = await prisma.user.findUnique({
-    where: { id },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      createdAt: true,
-      phone: true,
-      role: true,
-      provider: true,
-      providerId: true,
-      picture: true,
-    },
+    where: { id, deletedAt: null },
+    select: USER_SELECT,
   });
+
   if (!user) {
-    throw new Error("User not found");
+    const error = new Error("User not found");
+    error.statusCode = 404;
+    throw error;
   }
 
   return user;
 };
 
-// update user details by email
-export const updateUserDetails = async (id, userDetails) => {
+// Update the authenticated user's profile (only whitelisted fields)
+export const updateProfile = async (id, incomingData) => {
+  // Verify user exists and is not deleted
+  const existing = await prisma.user.findUnique({
+    where: { id, deletedAt: null },
+  });
+
+  if (!existing) {
+    const error = new Error("User not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // Whitelist: only allow safe fields to be updated
+  const data = {};
+  for (const field of ALLOWED_UPDATE_FIELDS) {
+    if (incomingData[field] !== undefined) {
+      data[field] = incomingData[field];
+    }
+  }
+
+  if (Object.keys(data).length === 0) {
+    const error = new Error(
+      `No valid fields to update. Allowed fields: ${ALLOWED_UPDATE_FIELDS.join(", ")}`,
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
   const user = await prisma.user.update({
     where: { id },
-    data: { ...userDetails },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      createdAt: true,
-      phone: true,
-      role: true,
-      provider: true,
-      providerId: true,
-      picture: true,
-    },
+    data,
+    select: USER_SELECT,
   });
-  if (!user) {
-    throw new Error("Failed to update user details");
-  }
+
   return user;
 };
 
-// Delete user profile by id
-export const deleteUser = async (id) => {
-  const user = await prisma.user.delete({
-    where: { id },
+// Soft-delete the authenticated user's account
+export const deleteAccount = async (id, actorId) => {
+  const user = await prisma.user.findUnique({
+    where: { id, deletedAt: null },
   });
+
   if (!user) {
-    throw new Error("Failed to delete user profile");
+    const error = new Error("User not found");
+    error.statusCode = 404;
+    throw error;
   }
-  return user;
+
+  const deletedUser = await softDelete(prisma.user, id, actorId);
+  return deletedUser;
 };
 
 // Change user password
 export const changePassword = async (id, oldPassword, newPassword) => {
   const user = await prisma.user.findUnique({
-    where: { id },
+    where: { id, deletedAt: null },
   });
+
   if (!user) {
-    throw new Error("User not found");
+    const error = new Error("User not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (!user.password) {
+    const error = new Error(
+      "Password change is not available for social login accounts",
+    );
+    error.statusCode = 400;
+    throw error;
   }
 
   const oldMatch = await comparePassword(oldPassword, user.password);
   if (!oldMatch) {
-    throw new Error("Old password is incorrect");
+    const error = new Error("Old password is incorrect");
+    error.statusCode = 401;
+    throw error;
   }
 
   const newHashedPassword = await hashPassword(newPassword);
-  const updatedUser = await prisma.user.update({
+  await prisma.user.update({
     where: { id },
     data: { password: newHashedPassword },
   });
-  if (!updatedUser) {
-    throw new Error("Failed to change password");
-  }
 
-  return updatedUser;
+  return { message: "Password changed successfully" };
 };
 
-//  Get user preferences
-export const getUserPreference = async (userId) => {
+// Get the authenticated user's preferences
+export const getPreferences = async (userId) => {
   const preferences = await prisma.userPreference.findUnique({
     where: { userId },
   });
+
   if (!preferences) {
-    throw new Error("User preferences not found");
+    const error = new Error("User preferences not found");
+    error.statusCode = 404;
+    throw error;
   }
+
   return preferences;
 };
 
-// create or update user preferences
-export const upsertUserPreference = async (userId, prefs) => {
+// Create or update the authenticated user's preferences
+export const savePreferences = async (userId, prefs) => {
   const preferences = await prisma.userPreference.upsert({
     where: { userId },
     update: { ...prefs },
     create: { userId, ...prefs },
   });
-  if (!preferences) {
-    throw new Error("Failed to upsert user preferences");
-  }
+
   return preferences;
 };

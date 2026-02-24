@@ -2,77 +2,59 @@ import httpResponse from "../utils/httpResponse.js";
 import httpError from "../utils/httpError.js";
 import * as UserService from "../services/userService.js";
 
-// Get user profile
-export const getUserProfile = async (req, res, next) => {
+// GET /user/me — Get the authenticated user's profile
+export const getMyProfile = async (req, res, next) => {
   try {
-    const { id } = req.body;
-    if (!id) {
-      return httpError(next, new Error("ID   is required"), req, 400);
-    }
-
-    const data = await UserService.getUserDetails(id);
+    const data = await UserService.getProfile(req.user.id);
     httpResponse(req, res, 200, "User profile retrieved successfully", data);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
-// Update user profile
-export const updateUserProfile = async (req, res, next) => {
+// PUT /user/me — Update the authenticated user's profile
+export const updateMyProfile = async (req, res, next) => {
   try {
-    const { id, userDetails } = req.body;
-    if (!id || !userDetails)
-      httpError(next, new Error("ID and user details are required"), req, 400);
-
-    const data = await UserService.updateUserDetails(id, userDetails);
+    const data = await UserService.updateProfile(req.user.id, req.body);
     httpResponse(req, res, 200, "User profile updated successfully", data);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
-// Delete user profile
-export const deleteUserProfile = async (req, res, next) => {
+// DELETE /user/delete-profile — Soft-delete the authenticated user's account
+export const deleteMyAccount = async (req, res, next) => {
   try {
-    const { id } = req.body;
-    if (!id) {
-      return httpError(next, new Error("ID is required"), req, 400);
-    }
-
-    const data = await UserService.deleteUser(id);
+    const data = await UserService.deleteAccount(req.user.id, req.user.id);
     httpResponse(req, res, 200, "User profile deleted successfully", data);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
-// Change password
-export const changeUserPassword = async (req, res, next) => {
+// PATCH /user/change-password — Change the authenticated user's password
+export const changeMyPassword = async (req, res, next) => {
   try {
-    const { id, oldPassword, newPassword } = req.body;
-    if (!id || !oldPassword || !newPassword) {
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
       return httpError(
         next,
-        new Error("ID, old password and new password are required"),
+        new Error("Old password and new password are required"),
         req,
         400,
       );
     }
-    const data = await UserService.changePassword(id, oldPassword, newPassword);
-    httpResponse(req, res, 200, "Password changed successfully", data);
+    await UserService.changePassword(req.user.id, oldPassword, newPassword);
+    httpResponse(req, res, 200, "Password changed successfully");
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
-// Get user preferences
-export const getUserPreferences = async (req, res, next) => {
+// GET /user/preferences — Get the authenticated user's preferences
+export const getMyPreferences = async (req, res, next) => {
   try {
-    const { userId } = req.body;
-    if (!userId) {
-      return httpError(next, new Error("User ID is required"), req, 400);
-    }
-    const data = await UserService.getUserPreference(userId);
+    const data = await UserService.getPreferences(req.user.id);
     httpResponse(
       req,
       res,
@@ -81,31 +63,16 @@ export const getUserPreferences = async (req, res, next) => {
       data,
     );
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
-// Create or update user preferences
-export const upsertUserPreferences = async (req, res, next) => {
+// POST /user/preferences — Create or update the authenticated user's preferences
+export const saveMyPreferences = async (req, res, next) => {
   try {
-    const { userId, prefs } = req.body;
-    if (!userId || !prefs) {
-      return httpError(
-        next,
-        new Error("User ID and preferences are required"),
-        req,
-        400,
-      );
-    }
-    const data = await UserService.upsertUserPreference(userId, prefs);
-    httpResponse(
-      req,
-      res,
-      200,
-      "User preferences created or updated successfully",
-      data,
-    );
+    const data = await UserService.savePreferences(req.user.id, req.body);
+    httpResponse(req, res, 200, "User preferences saved successfully", data);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
