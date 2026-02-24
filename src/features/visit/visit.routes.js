@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { Authenticate } from "../../middlewares/authMiddleware.js";
 import { validate } from "../../middlewares/validateMiddleware.js";
-import { createVisitSchema } from "./visit.validation.js";
+import {
+  createVisitSchema,
+  proposeRescheduleSchema,
+} from "./visit.validation.js";
 import {
   createVisit,
   approveVisit,
@@ -78,6 +81,7 @@ router.post(
 router.post(
   "/:visitId/reschedule",
   Authenticate,
+  validate(proposeRescheduleSchema),
   authorizeRoles("LANDLORD"),
   proposeReschedule,
 );

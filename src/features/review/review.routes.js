@@ -2,6 +2,8 @@ import express from "express";
 import * as reviewController from "./review.controller.js";
 import { Authenticate } from "../../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../../middlewares/roleMiddleware.js";
+import { validate } from "../../middlewares/validateMiddleware.js";
+import { createReviewSchema, updateReviewSchema } from "./review.validation.js";
 
 const router = express.Router();
 
@@ -10,6 +12,7 @@ router.post(
   "/unit/:unitId",
   Authenticate,
   authorizeRoles("USER"),
+  validate(createReviewSchema),
   reviewController.createReview,
 );
 
@@ -24,6 +27,7 @@ router.put(
   "/:id",
   Authenticate,
   authorizeRoles("USER"),
+  validate(updateReviewSchema),
   reviewController.updateReviewById,
 );
 

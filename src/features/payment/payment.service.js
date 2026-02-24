@@ -66,7 +66,8 @@ export async function createPaymentIntent(visitId, userId) {
   }
 
   // 5. Create the Stripe PaymentIntent (amount is in EGP; util converts to piastres)
-  const unitPrice = visit.unit.price * 0.5;
+  const depositPercentage = env.DEPOSIT_PERCENTAGE / 100;
+  const unitPrice = visit.unit.price * depositPercentage;
   const stripeIntent = await createPaymentIntentUtil(unitPrice, visitId);
 
   // 6. Upsert the Payment record (create on first call, update on retry)

@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { Authenticate } from "../../middlewares/authMiddleware.js";
+import { validate } from "../../middlewares/validateMiddleware.js";
+import { notificationIdSchema } from "./notification.validation.js";
 import {
   getMyNotifications,
   markAllRead,
@@ -17,9 +19,19 @@ router.get("/my", Authenticate, getMyNotifications);
 router.patch("/read-all", Authenticate, markAllRead);
 
 // PATCH /notifications/:id/read  — mark a single notification as read
-router.patch("/:id/read", Authenticate, markAsRead);
+router.patch(
+  "/:id/read",
+  Authenticate,
+  validate(notificationIdSchema, "params"),
+  markAsRead,
+);
 
 // DELETE /notifications/:id      — delete a single notification
-router.delete("/:id", Authenticate, deleteNotification);
+router.delete(
+  "/:id",
+  Authenticate,
+  validate(notificationIdSchema, "params"),
+  deleteNotification,
+);
 
 export default router;

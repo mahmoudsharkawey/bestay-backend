@@ -24,8 +24,28 @@ export const createUnitSchema = z.object({
   facilities: z.array(z.string()).min(1, "At least one facility is required"),
   ownerId: z.string().uuid("Invalid owner ID"),
   images: z
-    .array(z.string().url("Each image must be a valid URL"))
-    .min(1, "At least one image is required"),
+    .array(
+      z
+        .string()
+        .url("Each image must be a valid URL")
+        .refine(
+          (url) => {
+            const lowerUrl = url.toLowerCase();
+            return (
+              lowerUrl.endsWith(".jpg") ||
+              lowerUrl.endsWith(".jpeg") ||
+              lowerUrl.endsWith(".png") ||
+              lowerUrl.endsWith(".webp") ||
+              lowerUrl.endsWith(".gif")
+            );
+          },
+          {
+            message:
+              "Image must have a valid file extension (.jpg, .jpeg, .png, .webp, .gif)",
+          },
+        ),
+    )
+    .min(1, "At least one valid image URL is required"),
   latitude: z
     .number()
     .min(-90, "Latitude must be >= -90")
