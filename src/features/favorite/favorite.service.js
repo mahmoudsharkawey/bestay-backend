@@ -1,4 +1,5 @@
 import prisma from "../../prisma/client.js";
+import AppError from "../../utils/AppError.js";
 
 /**
  * Add a unit to user's favorites
@@ -14,7 +15,7 @@ export const addFavorite = async (data) => {
   });
 
   if (!unit || unit.deletedAt) {
-    throw new Error("Unit not found");
+    throw new AppError("Unit not found", 404);
   }
 
   // Validate that the user exists
@@ -23,7 +24,7 @@ export const addFavorite = async (data) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new AppError("User not found", 404);
   }
 
   // Check if already favorited
@@ -37,7 +38,7 @@ export const addFavorite = async (data) => {
   });
 
   if (existingFavorite) {
-    throw new Error("Unit is already in favorites");
+    throw new AppError("Unit is already in favorites", 409);
   }
 
   // Create the favorite
@@ -62,7 +63,7 @@ export const addFavorite = async (data) => {
   });
 
   if (!favorite) {
-    throw new Error("Failed to add favorite");
+    throw new AppError("Failed to add favorite", 500);
   }
 
   return favorite;
@@ -86,7 +87,7 @@ export const removeFavorite = async (userId, unitId) => {
   });
 
   if (!favorite) {
-    throw new Error("Favorite not found");
+    throw new AppError("Favorite not found", 404);
   }
 
   // Delete the favorite
@@ -100,7 +101,7 @@ export const removeFavorite = async (userId, unitId) => {
   });
 
   if (!deletedFavorite) {
-    throw new Error("Failed to remove favorite");
+    throw new AppError("Failed to remove favorite", 500);
   }
 
   return deletedFavorite;
@@ -118,7 +119,7 @@ export const getUserFavorites = async (userId) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new AppError("User not found", 404);
   }
 
   const favorites = await prisma.favorite.findMany({

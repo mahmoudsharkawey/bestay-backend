@@ -11,6 +11,7 @@ import {
   PaymentRefundedHTML,
 } from "../../utils/HTMLforEmails.js";
 import { createNotification } from "../notification/notification.service.js";
+import AppError from "../../utils/AppError.js";
 
 /**
  * Create a Stripe payment intent for an approved visit.
@@ -34,25 +35,20 @@ export async function createPaymentIntent(visitId, userId) {
   });
 
   if (!visit) {
-    const err = new Error("Visit not found");
-    err.statusCode = 404;
-    throw err;
+    throw new AppError("Visit not found", 404);
   }
 
   // 2. Only the user who owns the visit may pay
   if (visit.userId !== userId) {
-    const err = new Error("Forbidden: this visit does not belong to you");
-    err.statusCode = 403;
-    throw err;
+    throw new AppError("Forbidden: this visit does not belong to you", 403);
   }
 
   // 3. Visit must be APPROVED before a payment can be created
   if (visit.status !== "APPROVED") {
-    const err = new Error(
+    throw new AppError(
       `Payment can only be initiated for APPROVED visits. Current status: ${visit.status}`,
+      400,
     );
-    err.statusCode = 400;
-    throw err;
   }
 
   // 4. Prevent duplicate payments (idempotency guard)
@@ -61,9 +57,7 @@ export async function createPaymentIntent(visitId, userId) {
   });
 
   if (existingPayment && existingPayment.status === "PAID") {
-    const err = new Error("This visit has already been paid");
-    err.statusCode = 409;
-    throw err;
+    throw new AppError("This visit has already been paid", 409);
   }
 
   // 5. Create the Stripe PaymentIntent (amount is in EGP; util converts to piastres)
@@ -120,11 +114,10 @@ export async function handleStripeWebhook(rawBody, sig) {
       env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (err) {
-    const error = new Error(
+    throw new AppError(
       `Webhook signature verification failed: ${err.message}`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 2. Dispatch on event type
@@ -143,9 +136,7 @@ export async function handleStripeWebhook(rawBody, sig) {
       include: { payment: true, user: true },
     });
     if (!visit) {
-      const err = new Error("Visit not found");
-      err.statusCode = 404;
-      throw err;
+      throw new AppError("Visit not found", 404);
     }
     await prisma.$transaction([
       prisma.payment.update({
@@ -199,24 +190,19 @@ export async function refundPayment(paymentId) {
   });
 
   if (!payment) {
-    const err = new Error("Payment not found");
-    err.statusCode = 404;
-    throw err;
+    throw new AppError("Payment not found", 404);
   }
 
   // 2. Only PAID payments can be refunded
   if (payment.status !== "PAID" && payment.status !== "PENDING_REFUND") {
-    const err = new Error(
+    throw new AppError(
       `Cannot refund a payment with status ${payment.status}. Only PAID payments are refundable.`,
+      400,
     );
-    err.statusCode = 400;
-    throw err;
   }
 
   if (!payment.stripeIntentId) {
-    const err = new Error("No Stripe PaymentIntent linked to this payment");
-    err.statusCode = 400;
-    throw err;
+    throw new AppError("No Stripe PaymentIntent linked to this payment", 400);
   }
 
   // 3. Issue the refund on Stripe (via shared util)

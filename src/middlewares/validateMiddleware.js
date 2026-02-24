@@ -1,3 +1,5 @@
+import AppError from "../utils/AppError.js";
+
 /**
  * Validation middleware factory
  * Creates middleware that validates request body against a Zod schema
@@ -11,23 +13,16 @@ export const validate = (schema) => {
         const errors = result.error.errors.map(
           (err) => `${err.path.join(".")}: ${err.message}`,
         );
-        return res.status(400).json({
-          success: false,
-          statusCode: 400,
-          message: "Validation failed",
-          errors: errors,
-        });
+        return next(
+          new AppError(`Validation failed: ${errors.join(", ")}`, 400),
+        );
       }
 
       // Replace req.body with validated and sanitized data
       req.body = result.data;
       next();
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        statusCode: 500,
-        message: "Validation error occurred",
-      });
+      return next(new AppError("Validation error occurred", 500));
     }
   };
 };

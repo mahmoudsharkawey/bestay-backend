@@ -1,6 +1,7 @@
 import prisma from "../../prisma/client.js";
 import { comparePassword, hashPassword } from "../../utils/password.js";
 import { softDelete } from "../../utils/softDelete.js";
+import AppError from "../../utils/AppError.js";
 
 // Fields safe to return to the client (never expose password, reset codes, etc.)
 const USER_SELECT = {
@@ -25,9 +26,7 @@ export const getProfile = async (id) => {
   });
 
   if (!user) {
-    const error = new Error("User not found");
-    error.statusCode = 404;
-    throw error;
+    throw new AppError("User not found", 404);
   }
 
   return user;
@@ -41,9 +40,7 @@ export const updateProfile = async (id, incomingData) => {
   });
 
   if (!existing) {
-    const error = new Error("User not found");
-    error.statusCode = 404;
-    throw error;
+    throw new AppError("User not found", 404);
   }
 
   // Whitelist: only allow safe fields to be updated
@@ -55,11 +52,10 @@ export const updateProfile = async (id, incomingData) => {
   }
 
   if (Object.keys(data).length === 0) {
-    const error = new Error(
+    throw new AppError(
       `No valid fields to update. Allowed fields: ${ALLOWED_UPDATE_FIELDS.join(", ")}`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   const user = await prisma.user.update({
@@ -78,9 +74,7 @@ export const deleteAccount = async (id, actorId) => {
   });
 
   if (!user) {
-    const error = new Error("User not found");
-    error.statusCode = 404;
-    throw error;
+    throw new AppError("User not found", 404);
   }
 
   const deletedUser = await softDelete(prisma.user, id, actorId);
@@ -94,24 +88,19 @@ export const changePassword = async (id, oldPassword, newPassword) => {
   });
 
   if (!user) {
-    const error = new Error("User not found");
-    error.statusCode = 404;
-    throw error;
+    throw new AppError("User not found", 404);
   }
 
   if (!user.password) {
-    const error = new Error(
+    throw new AppError(
       "Password change is not available for social login accounts",
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   const oldMatch = await comparePassword(oldPassword, user.password);
   if (!oldMatch) {
-    const error = new Error("Old password is incorrect");
-    error.statusCode = 401;
-    throw error;
+    throw new AppError("Old password is incorrect", 401);
   }
 
   const newHashedPassword = await hashPassword(newPassword);
@@ -130,9 +119,7 @@ export const getPreferences = async (userId) => {
   });
 
   if (!preferences) {
-    const error = new Error("User preferences not found or not created yet");
-    error.statusCode = 404;
-    throw error;
+    throw new AppError("User preferences not found or not created yet", 404);
   }
 
   return preferences;

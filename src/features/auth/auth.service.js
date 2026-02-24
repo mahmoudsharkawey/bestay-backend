@@ -5,11 +5,12 @@ import { sendEmail } from "../../utils/sendEmail.js";
 import { verifyGoogleToken } from "../../utils/verifyGoogleToken.js";
 import { ResetCodeHTML } from "../../utils/HTMLforEmails.js";
 import logger from "../../utils/logger.js";
+import AppError from "../../utils/AppError.js";
 
 export const signUp = async ({ name, email, password, phone, role }) => {
   // check existing
   const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) throw new Error("User already exists with this email");
+  if (existing) throw new AppError("User already exists with this email", 409);
 
   const hashed = await hashPassword(password);
 
@@ -23,10 +24,10 @@ export const signUp = async ({ name, email, password, phone, role }) => {
 export const signIn = async ({ email, password }) => {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || user.deletedAt || !user.password)
-    throw new Error("Invalid credentials");
+    throw new AppError("Invalid credentials", 401);
 
   const match = await comparePassword(password, user.password);
-  if (!match) throw new Error("Invalid credentials");
+  if (!match) throw new AppError("Invalid credentials", 401);
 
   return user;
 };
@@ -34,7 +35,8 @@ export const signIn = async ({ email, password }) => {
 export const forgotPassword = async (email) => {
   //get user by email
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || user.deletedAt) throw new Error("No user found with this email");
+  if (!user || user.deletedAt)
+    throw new AppError("No user found with this email", 404);
 
   // if user exists, generate a reset code and hash it
   const resetCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6 digit code
@@ -75,16 +77,16 @@ export const verifyResetCode = async (email, resetCode) => {
   logger.debug("Verifying reset code for user", { userId: user?.id, email });
 
   if (!user) {
-    throw new Error(" No user found with this email");
+    throw new AppError(" No user found with this email", 404);
   }
 
   if (user.passwordResetExpiry < new Date()) {
-    throw new Error("Reset code has expired");
+    throw new AppError("Reset code has expired", 400);
   }
 
   const match = await comparePassword(resetCode, user.passwordResetCode);
   if (!match) {
-    throw new Error("Invalid reset code");
+    throw new AppError("Invalid reset code", 400);
   }
 
   await prisma.user.update({
@@ -97,9 +99,10 @@ export const verifyResetCode = async (email, resetCode) => {
 
 export const resetPassword = async (email, newPassword) => {
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || user.deletedAt) throw new Error("No user found with this email");
+  if (!user || user.deletedAt)
+    throw new AppError("No user found with this email", 404);
   if (!user.passwordResetVerified) {
-    throw new Error("Reset code not verified");
+    throw new AppError("Reset code not verified", 400);
   }
   const hashed = await hashPassword(newPassword);
   await prisma.user.update({

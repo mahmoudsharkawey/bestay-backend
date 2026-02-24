@@ -12,6 +12,7 @@ import {
 import { sendEmail } from "../../utils/sendEmail.js";
 import logger from "../../utils/logger.js";
 import { validateFutureDate } from "../../utils/dateValidation.js";
+import AppError from "../../utils/AppError.js";
 import { createNotification } from "../notification/notification.service.js";
 
 // Creates a new visit request for a unit
@@ -35,11 +36,10 @@ export const createVisit = async ({ userId, unitId, proposedDate }) => {
   });
 
   if (existingActiveVisit) {
-    const error = new Error(
+    throw new AppError(
       `You already have an active visit request for this unit (Status: ${existingActiveVisit.status})`,
+      409,
     );
-    error.statusCode = 409;
-    throw error;
   }
 
   // Fetch unit with owner data in a single query
@@ -57,15 +57,11 @@ export const createVisit = async ({ userId, unitId, proposedDate }) => {
   });
 
   if (!unit) {
-    const error = new Error(`Unit with ID ${unitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Unit with ID ${unitId} not found`, 404);
   }
 
   if (unit.deletedAt || unit.status !== "ACTIVE") {
-    const error = new Error(`Unit "${unit.title}" is not available for visits`);
-    error.statusCode = 400;
-    throw error;
+    throw new AppError(`Unit "${unit.title}" is not available for visits`, 400);
   }
 
   // Check for time slot conflicts (within 2 hours of proposed date)
@@ -88,11 +84,10 @@ export const createVisit = async ({ userId, unitId, proposedDate }) => {
   });
 
   if (conflictingVisit) {
-    const error = new Error(
+    throw new AppError(
       `There is already a visit scheduled for this unit within 2 hours of your proposed time`,
+      409,
     );
-    error.statusCode = 409;
-    throw error;
   }
 
   // Fetch user data
@@ -106,9 +101,7 @@ export const createVisit = async ({ userId, unitId, proposedDate }) => {
   });
 
   if (!user) {
-    const error = new Error(`User with ID ${userId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`User with ID ${userId} not found`, 404);
   }
 
   // Use transaction to ensure atomicity
@@ -142,9 +135,7 @@ export const createVisit = async ({ userId, unitId, proposedDate }) => {
       unitId,
       error: error.message,
     });
-    const err = new Error("Failed to create visit. Please try again");
-    err.statusCode = 500;
-    throw err;
+    throw new AppError("Failed to create visit. Please try again", 500);
   }
 
   // Send email asynchronously (non-blocking)
@@ -194,25 +185,20 @@ export const approveVisit = async (visitId, ownerId) => {
 
   // 2. Check if visit exists
   if (!visit) {
-    const error = new Error(`Visit with ID ${visitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Visit with ID ${visitId} not found`, 404);
   }
 
   // 3. Verify ownership
   if (visit.unit.ownerId !== ownerId) {
-    const error = new Error("You are not authorized to approve this visit");
-    error.statusCode = 403;
-    throw error;
+    throw new AppError("You are not authorized to approve this visit", 403);
   }
 
   // 4. Check if visit is in correct status
   if (visit.status !== "PENDING_OWNER") {
-    const error = new Error(
+    throw new AppError(
       `Cannot approve visit with status ${visit.status}. Only pending visits can be approved`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 5. Update visit and create notification in transaction
@@ -241,9 +227,7 @@ export const approveVisit = async (visitId, ownerId) => {
       ownerId,
       error: error.message,
     });
-    const err = new Error("Failed to approve visit. Please try again");
-    err.statusCode = 500;
-    throw err;
+    throw new AppError("Failed to approve visit. Please try again", 500);
   }
 
   // 6. Send email to user (non-blocking)
@@ -279,25 +263,20 @@ export const rejectVisit = async (visitId, ownerId) => {
 
   // 2. Check if visit exists
   if (!visit) {
-    const error = new Error(`Visit with ID ${visitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Visit with ID ${visitId} not found`, 404);
   }
 
   // 3. Verify ownership
   if (visit.unit.ownerId !== ownerId) {
-    const error = new Error("You are not authorized to reject this visit");
-    error.statusCode = 403;
-    throw error;
+    throw new AppError("You are not authorized to reject this visit", 403);
   }
 
   // 4. Check if visit is in a rejectable status
   if (visit.status !== "PENDING_OWNER") {
-    const error = new Error(
+    throw new AppError(
       `Cannot reject visit with status ${visit.status}. Only pending visits can be rejected`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 5. Update visit and create notification in transaction
@@ -326,9 +305,7 @@ export const rejectVisit = async (visitId, ownerId) => {
       ownerId,
       error: error.message,
     });
-    const err = new Error("Failed to reject visit. Please try again");
-    err.statusCode = 500;
-    throw err;
+    throw new AppError("Failed to reject visit. Please try again", 500);
   }
 
   // 6. Send email to user (non-blocking)
@@ -368,34 +345,28 @@ export const proposeReschedule = async (visitId, ownerId, newDate) => {
 
   // 3. Check if visit exists
   if (!visit) {
-    const error = new Error(`Visit with ID ${visitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Visit with ID ${visitId} not found`, 404);
   }
 
   // 4. Verify ownership
   if (visit.unit.ownerId !== ownerId) {
-    const error = new Error("You are not authorized to reschedule this visit");
-    error.statusCode = 403;
-    throw error;
+    throw new AppError("You are not authorized to reschedule this visit", 403);
   }
 
   // 5. Only PENDING_OWNER visits can be rescheduled by owner
   if (visit.status !== "PENDING_OWNER") {
-    const error = new Error(
+    throw new AppError(
       `Cannot reschedule a visit with status ${visit.status}. Only pending visits can be rescheduled`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 5b. Enforce reschedule limit: max 2 reschedules allowed
   if (visit.rescheduleCount >= 2) {
-    const error = new Error(
+    throw new AppError(
       "Reschedule limit reached. This visit has already been rescheduled 2 times",
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 6. Update visit and create notification in transaction
@@ -427,8 +398,7 @@ export const proposeReschedule = async (visitId, ownerId, newDate) => {
       ownerId,
       error: error.message,
     });
-    error.statusCode = error.statusCode || 500;
-    throw error;
+    throw new AppError(error.message, error.statusCode || 500);
   }
 
   // 7. Send email to visitor (non-blocking)
@@ -469,32 +439,25 @@ export const acceptReschedule = async (visitId, userId) => {
 
   // 2. Check if visit exists
   if (!visit) {
-    const error = new Error(`Visit with ID ${visitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Visit with ID ${visitId} not found`, 404);
   }
 
   // 3. Verify the requesting user owns this visit
   if (visit.user.id !== userId) {
-    const error = new Error("You are not authorized to accept this reschedule");
-    error.statusCode = 403;
-    throw error;
+    throw new AppError("You are not authorized to accept this reschedule", 403);
   }
 
   // 4. Only visits with RESCHEDULE_PROPOSED status can be accepted
   if (visit.status !== "RESCHEDULE_PROPOSED") {
-    const error = new Error(
+    throw new AppError(
       `Cannot accept reschedule for a visit with status ${visit.status}. Only visits with a pending reschedule proposal can be accepted`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 5. Move pendingDate → proposedDate and set status to APPROVED
   if (!visit.pendingDate) {
-    const error = new Error("No pending reschedule date found for this visit");
-    error.statusCode = 400;
-    throw error;
+    throw new AppError("No pending reschedule date found for this visit", 400);
   }
 
   let updatedVisit;
@@ -525,9 +488,7 @@ export const acceptReschedule = async (visitId, userId) => {
       userId,
       error: error.message,
     });
-    const err = new Error("Failed to accept reschedule. Please try again");
-    err.statusCode = 500;
-    throw err;
+    throw new AppError("Failed to accept reschedule. Please try again", 500);
   }
 
   // 6. Send email to owner (non-blocking)
@@ -568,25 +529,20 @@ export const rejectReschedule = async (visitId, userId) => {
 
   // 2. Check if visit exists
   if (!visit) {
-    const error = new Error(`Visit with ID ${visitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Visit with ID ${visitId} not found`, 404);
   }
 
   // 3. Verify the requesting user owns this visit
   if (visit.user.id !== userId) {
-    const error = new Error("You are not authorized to reject this reschedule");
-    error.statusCode = 403;
-    throw error;
+    throw new AppError("You are not authorized to reject this reschedule", 403);
   }
 
   // 4. Only visits with RESCHEDULE_PROPOSED status can be rejected
   if (visit.status !== "RESCHEDULE_PROPOSED") {
-    const error = new Error(
+    throw new AppError(
       `Cannot reject reschedule for a visit with status ${visit.status}. Only visits with a pending reschedule proposal can be rejected`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 5. Update status to REJECTED_BY_USER in transaction + notify owner
@@ -614,9 +570,7 @@ export const rejectReschedule = async (visitId, userId) => {
       userId,
       error: error.message,
     });
-    const err = new Error("Failed to reject reschedule. Please try again");
-    err.statusCode = 500;
-    throw err;
+    throw new AppError("Failed to reject reschedule. Please try again", 500);
   }
 
   // 6. Send email to owner (non-blocking)
@@ -656,16 +610,12 @@ export const cancelVisit = async (visitId, userId) => {
 
   // 2. Check if visit exists
   if (!visit) {
-    const error = new Error(`Visit with ID ${visitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Visit with ID ${visitId} not found`, 404);
   }
 
   // 3. Verify the requesting user owns this visit
   if (visit.user.id !== userId) {
-    const error = new Error("You are not authorized to cancel this visit");
-    error.statusCode = 403;
-    throw error;
+    throw new AppError("You are not authorized to cancel this visit", 403);
   }
 
   // 4. Only cancellable statuses are allowed
@@ -675,21 +625,19 @@ export const cancelVisit = async (visitId, userId) => {
     "RESCHEDULE_PROPOSED",
   ];
   if (!cancellableStatuses.includes(visit.status)) {
-    const error = new Error(
+    throw new AppError(
       `Cannot cancel a visit with status ${visit.status}`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 5. Must cancel before the proposed date
   const now = new Date();
   if (now >= visit.proposedDate) {
-    const error = new Error(
+    throw new AppError(
       "Cannot cancel a visit after its proposed date and time has passed",
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 6. Update visit status and notify owner in a transaction
@@ -717,9 +665,7 @@ export const cancelVisit = async (visitId, userId) => {
       userId,
       error: error.message,
     });
-    const err = new Error("Failed to cancel visit. Please try again");
-    err.statusCode = 500;
-    throw err;
+    throw new AppError("Failed to cancel visit. Please try again", 500);
   }
 
   // 7. Send email to owner (non-blocking)
@@ -757,45 +703,38 @@ export const confirmVisit = async (visitId, ownerId) => {
 
   // 2. Check if visit exists
   if (!visit) {
-    const error = new Error(`Visit with ID ${visitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Visit with ID ${visitId} not found`, 404);
   }
 
   // 3. Verify ownership
   if (visit.unit.ownerId !== ownerId) {
-    const error = new Error("You are not authorized to confirm this visit");
-    error.statusCode = 403;
-    throw error;
+    throw new AppError("You are not authorized to confirm this visit", 403);
   }
 
   // 4. Only APPROVED visits can be confirmed
   if (visit.status !== "APPROVED") {
-    const error = new Error(
+    throw new AppError(
       `Cannot confirm a visit with status ${visit.status}. Only APPROVED visits can be confirmed`,
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 5. The proposed date must have already passed
   const now = new Date();
   if (now < visit.proposedDate) {
-    const error = new Error(
+    throw new AppError(
       "Cannot confirm a visit before its proposed date and time",
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 6. The payment must be in PAID status
   const payment = visit.payment;
   if (!payment || payment.status !== "PAID") {
-    const error = new Error(
+    throw new AppError(
       "Cannot confirm visit: payment has not been completed",
+      400,
     );
-    error.statusCode = 400;
-    throw error;
   }
 
   // 7. Update visit status, auto-create Booking, and notify visitor in a transaction
@@ -899,9 +838,7 @@ export const getVisitById = async (visitId, userId, role) => {
   });
 
   if (!visit) {
-    const error = new Error(`Visit with ID ${visitId} not found`);
-    error.statusCode = 404;
-    throw error;
+    throw new AppError(`Visit with ID ${visitId} not found`, 404);
   }
 
   // USER sees only their own visits; LANDLORD sees only visits on their units
@@ -909,9 +846,7 @@ export const getVisitById = async (visitId, userId, role) => {
   const isVisitor = visit.user.id === userId;
 
   if (!isOwner && !isVisitor) {
-    const error = new Error("You are not authorized to view this visit");
-    error.statusCode = 403;
-    throw error;
+    throw new AppError("You are not authorized to view this visit", 403);
   }
 
   return visit;

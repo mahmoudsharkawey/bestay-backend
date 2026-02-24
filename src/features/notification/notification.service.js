@@ -1,4 +1,5 @@
 import prisma from "../../prisma/client.js";
+import AppError from "../../utils/AppError.js";
 
 // Create a new notification (used internally by other services)
 export async function createNotification(userId, type, message, tx = prisma) {
@@ -26,15 +27,14 @@ export async function markAsRead(notificationId, userId) {
   });
 
   if (!notification) {
-    const err = new Error("Notification not found");
-    err.statusCode = 404;
-    throw err;
+    throw new AppError("Notification not found", 404);
   }
 
   if (notification.userId !== userId) {
-    const err = new Error("You are not authorized to update this notification");
-    err.statusCode = 403;
-    throw err;
+    throw new AppError(
+      "You are not authorized to update this notification",
+      403,
+    );
   }
 
   return prisma.notification.update({
@@ -60,15 +60,14 @@ export async function deleteNotification(notificationId, userId) {
   });
 
   if (!notification) {
-    const err = new Error("Notification not found");
-    err.statusCode = 404;
-    throw err;
+    throw new AppError("Notification not found", 404);
   }
 
   if (notification.userId !== userId) {
-    const err = new Error("You are not authorized to delete this notification");
-    err.statusCode = 403;
-    throw err;
+    throw new AppError(
+      "You are not authorized to delete this notification",
+      403,
+    );
   }
 
   return prisma.notification.delete({ where: { id: notificationId } });

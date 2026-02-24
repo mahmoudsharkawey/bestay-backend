@@ -5,6 +5,7 @@ import {
   buildWhereClause,
   buildOrderByClause,
 } from "../../utils/unitQueryBuilder.js";
+import AppError from "../../utils/AppError.js";
 
 // Returns a unit by id
 export const createUnit = async (data) => {
@@ -38,14 +39,14 @@ export const createUnit = async (data) => {
   });
 
   if (existingUnit) {
-    throw new Error("Unit already exists at this address");
+    throw new AppError("Unit already exists at this address", 409);
   }
 
   const createdUnit = await prisma.unit.create({
     data: newUnit,
   });
   if (!createdUnit) {
-    throw new Error("Failed to create unit");
+    throw new AppError("Failed to create unit", 500);
   }
   return createdUnit;
 };
@@ -74,15 +75,14 @@ export const deleteUnitById = async (id, actorId) => {
     },
   });
   if (!unit || unit.deletedAt || unit.status === "DELETED") {
-    throw new Error("Unit already deleted");
+    throw new AppError("Unit already deleted", 404);
   }
   // 2. Block if active bookings or visits
   if (unit.visits.length > 0 || unit.bookings.length > 0) {
-    const error = new Error(
+    throw new AppError(
       "Cannot delete unit with active bookings or visits",
+      409,
     );
-    error.statusCode = 409;
-    throw error;
   }
 
   // 3. Perform soft delete
@@ -101,7 +101,7 @@ export const updateUnitById = async (id, data) => {
   });
 
   if (!unit) {
-    throw new Error("Unit not found");
+    throw new AppError("Unit not found", 404);
   }
 
   const updatedUnit = await prisma.unit.update({
@@ -111,7 +111,7 @@ export const updateUnitById = async (id, data) => {
     data: data,
   });
   if (!updatedUnit) {
-    throw new Error("Failed to update unit");
+    throw new AppError("Failed to update unit", 500);
   }
   return updatedUnit;
 };
@@ -146,7 +146,7 @@ export const getUnitById = async (id) => {
   });
 
   if (!unit || unit.deletedAt) {
-    throw new Error("Unit not found");
+    throw new AppError("Unit not found", 404);
   }
 
   // Calculate average rating and review count
@@ -184,7 +184,7 @@ export const getMyUnits = async (ownerId) => {
   });
 
   if (!units) {
-    throw new Error("Units not found");
+    throw new AppError("Units not found", 404);
   }
 
   return units.map(({ reviews, _count, ...unit }) => {

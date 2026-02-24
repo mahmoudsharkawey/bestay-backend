@@ -1,5 +1,6 @@
 import prisma from "../../prisma/client.js";
 import { softDelete } from "../../utils/softDelete.js";
+import AppError from "../../utils/AppError.js";
 
 /**
  * Create a new review for a unit
@@ -15,7 +16,7 @@ export const createReview = async (data) => {
   });
 
   if (existingReview && !existingReview.deletedAt) {
-    throw new Error("You have already reviewed this unit");
+    throw new AppError("You have already reviewed this unit", 409);
   }
 
   // Validate that the unit exists
@@ -24,7 +25,7 @@ export const createReview = async (data) => {
   });
 
   if (!unit || unit.deletedAt) {
-    throw new Error("Unit not found");
+    throw new AppError("Unit not found", 404);
   }
 
   // Validate that the user exists
@@ -33,12 +34,11 @@ export const createReview = async (data) => {
   });
 
   if (!user || user.deletedAt) {
-    throw new Error("User not found");
+    throw new AppError("User not found", 404);
   }
 
-  // Validate rating is between 1-5
   if (rating < 1 || rating > 5) {
-    throw new Error("Rating must be between 1 and 5");
+    throw new AppError("Rating must be between 1 and 5", 400);
   }
 
   // Create or restore the review
@@ -83,7 +83,7 @@ export const createReview = async (data) => {
   }
 
   if (!review) {
-    throw new Error("Failed to create review");
+    throw new AppError("Failed to create review", 500);
   }
 
   return review;
@@ -101,7 +101,7 @@ export const getReviewsByUnitId = async (unitId) => {
   });
 
   if (!unit) {
-    throw new Error("Unit not found");
+    throw new AppError("Unit not found", 404);
   }
 
   const reviews = await prisma.review.findMany({
@@ -149,7 +149,7 @@ export const getReviewById = async (id) => {
   });
 
   if (!review || review.deletedAt) {
-    throw new Error("Review not found");
+    throw new AppError("Review not found", 404);
   }
 
   return review;
@@ -168,17 +168,15 @@ export const updateReviewById = async (id, userId, data) => {
   });
 
   if (!review || review.deletedAt) {
-    throw new Error("Review not found");
+    throw new AppError("Review not found", 404);
   }
 
-  // Only allow the review author to update
   if (review.userId !== userId) {
-    throw new Error("You are not authorized to update this review");
+    throw new AppError("You are not authorized to update this review", 403);
   }
 
-  // Validate rating if provided
   if (data.rating && (data.rating < 1 || data.rating > 5)) {
-    throw new Error("Rating must be between 1 and 5");
+    throw new AppError("Rating must be between 1 and 5", 400);
   }
 
   const updatedReview = await prisma.review.update({
@@ -199,7 +197,7 @@ export const updateReviewById = async (id, userId, data) => {
   });
 
   if (!updatedReview) {
-    throw new Error("Failed to update review");
+    throw new AppError("Failed to update review", 500);
   }
 
   return updatedReview;
@@ -217,18 +215,17 @@ export const deleteReviewById = async (id, userId) => {
   });
 
   if (!review || review.deletedAt) {
-    throw new Error("Review not found");
+    throw new AppError("Review not found", 404);
   }
 
-  // Only allow the review author to delete
   if (review.userId !== userId) {
-    throw new Error("You are not authorized to delete this review");
+    throw new AppError("You are not authorized to delete this review", 403);
   }
 
   const deletedReview = await softDelete(prisma.review, id, userId);
 
   if (!deletedReview) {
-    throw new Error("Failed to delete review");
+    throw new AppError("Failed to delete review", 500);
   }
 
   return deletedReview;
