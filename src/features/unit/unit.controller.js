@@ -1,5 +1,6 @@
 import httpError from "../../utils/httpError.js";
 import httpResponse from "../../utils/httpResponse.js";
+import prisma from "../../prisma/client.js";
 import * as unitService from "./unit.service.js";
 import {
   validateUnitFields,
@@ -9,13 +10,30 @@ import {
 // Returns a unit by id
 export const createUnit = async (req, res, next) => {
   try {
+    // Default to the current user if not an ADMIN or if no ownerId is provided
+    if (req.user.role !== "ADMIN" || !req.body.ownerId) {
+      req.body.ownerId = req.user.id;
+    }
+
     validateUnitFields(req.body);
+
+    // Validate that the assigned owner is actually a LANDLORD
+    const owner = await prisma.user.findUnique({
+      where: { id: req.body.ownerId },
+      select: { role: true },
+    });
+
+    if (!owner || owner.role !== "LANDLORD") {
+      const error = new Error("The assigned owner must be a LANDLORD");
+      error.statusCode = 403;
+      throw error;
+    }
 
     const unit = await unitService.createUnit(req.body);
 
     httpResponse(req, res, 201, "Unit created successfully", unit);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 // Returns a unit by id
