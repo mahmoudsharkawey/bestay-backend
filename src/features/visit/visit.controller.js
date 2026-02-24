@@ -1,11 +1,13 @@
-import httpError from "../../utils/httpError.js";
+import httpError from "../../utils/httpError.js"
 import httpResponse from "../../utils/httpResponse.js";
 import * as Visits from "./visit.service.js";
 
 // Creates a new visit request for a unit
 export const createVisit = async (req, res, next) => {
   try {
-    const { userId, unitId, proposedDate } = req.body;
+    const userId = req.user.id;
+    const unitId = req.params.unitId;
+    const { proposedDate } = req.body;
     const visit = await Visits.createVisit({ userId, unitId, proposedDate });
     return httpResponse(req, res, 201, "Visit created successfully", visit);
   } catch (error) {

@@ -13,19 +13,27 @@ import notificationRoute from "../../features/notification/notification.routes.j
 
 const router = Router();
 
-// Example route
+// Auth Routes
+router.use("/auth", authRoute);
+// User Routes
+router.use("/users", userRoute);
+// Unit Routes
+router.use("/units", unitRoute);
+// Review Routes
+router.use("/reviews", reviewRoute);
+// Favorite Routes
+router.use("/favorites", favoriteRoute);
+// Booking Routes
+router.use("/bookings", bookingRoute);
+// Visit Routes
+router.use("/visits", visitRoute);
+// Payment Routes
+router.use("/payments", paymentRoute);
+// Notification Routes
+router.use("/notifications", notificationRoute);
+
+// Example Routes
 router.get("/", WelcomController);
 router.get("/health", HealthController);
-
-// Auth routes
-router.use("/auth", authRoute);
-router.use("/users", userRoute);
-router.use("/units", unitRoute);
-router.use("/reviews", reviewRoute);
-router.use("/favorites", favoriteRoute);
-router.use("/bookings", bookingRoute);
-router.use("/visits", visitRoute);
-router.use("/payments", paymentRoute);
-router.use("/notifications", notificationRoute);
 
 export default router;

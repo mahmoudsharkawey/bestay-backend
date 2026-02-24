@@ -18,15 +18,15 @@ router.get("/me", Authenticate, getMyProfile);
 router.put("/me", Authenticate, updateMyProfile);
 
 // DELETE /api/v1/user/delete-profile — Soft-delete the authenticated user's account
-router.delete("/delete-profile", Authenticate, deleteMyAccount);
+router.delete("/me", Authenticate, deleteMyAccount);
 
 // PATCH /api/v1/user/change-password — Change the authenticated user's password
 router.patch("/change-password", Authenticate, changeMyPassword);
 
 // GET  /api/v1/user/preferences — Get the authenticated user's preferences
-router.get("/preferences", Authenticate, getMyPreferences);
+router.get("/me/preferences", Authenticate, getMyPreferences);
 
 // POST /api/v1/user/preferences — Create or update the authenticated user's preferences
-router.post("/preferences", Authenticate, saveMyPreferences);
+router.post("/me/preferences", Authenticate, saveMyPreferences);
 
 export default router;

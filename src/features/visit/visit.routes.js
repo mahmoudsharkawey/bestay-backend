@@ -24,7 +24,7 @@ const router = Router();
 
 // User creates a visit request
 router.post(
-  "/",
+  "/:unitId",
   Authenticate,
   validate(createVisitSchema),
   authorizeRoles("USER"),

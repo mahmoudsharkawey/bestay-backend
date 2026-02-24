@@ -130,7 +130,7 @@ export const getPreferences = async (userId) => {
   });
 
   if (!preferences) {
-    const error = new Error("User preferences not found");
+    const error = new Error("User preferences not found or not created yet");
     error.statusCode = 404;
     throw error;
   }

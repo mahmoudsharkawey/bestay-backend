@@ -1748,3 +1748,106 @@ Argument `take`: Invalid value provided. Expected Int, provided String. {"succes
 2026-02-24 15:44:28 [ERROR]: You have already reviewed this unit {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/reviews/unit/f292e722-2133-4d0a-8596-a910d389b378"},"trace":{"error":"Error: You have already reviewed this unit\n    at Module.createReview (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/review/review.service.js:18:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createReview (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/review/review.controller.js:25:20)"}}
 2026-02-24 15:46:15 [ERROR]: jwt expired {"success":"false","statusCode":401,"request":{"ip":"::1","method":"GET","url":"/api/v1/users/me"},"trace":{"error":"TokenExpiredError: jwt expired\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:190:21\n    at getSecret (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:97:14)\n    at module.exports [as verify] (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:101:10)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:9:25)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15"}}
 2026-02-24 15:46:21 [ERROR]: User not found {"success":"false","statusCode":404,"request":{"ip":"::1","method":"GET","url":"/api/v1/users/me"},"trace":{"error":"Error: User not found\n    at Module.getProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/user/user.service.js:28:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getMyProfile (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/user/user.controller.js:8:18)"}}
+2026-02-24 15:58:52 [ERROR]: jwt expired {"success":"false","statusCode":401,"request":{"ip":"::1","method":"GET","url":"/api/v1/reviews/unit/f292e722-2133-4d0a-8596-a910d389b378"},"trace":{"error":"TokenExpiredError: jwt expired\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:190:21\n    at getSecret (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:97:14)\n    at module.exports [as verify] (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\jsonwebtoken\\verify.js:101:10)\n    at Authenticate (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/authMiddleware.js:9:25)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:295:15"}}
+2026-02-24 16:01:40 [ERROR]: User preferences not found {"success":"false","statusCode":404,"request":{"ip":"::1","method":"GET","url":"/api/v1/users/me/preferences"},"trace":{"error":"Error: User preferences not found\n    at Module.getPreferences (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/user/user.service.js:133:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async getMyPreferences (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/user/user.controller.js:57:18)"}}
+2026-02-24 16:02:37 [ERROR]: 
+Invalid `prisma.userPreference.upsert()` invocation:
+
+{
+  where: {
+    userId: "d3050824-3935-4cde-8061-ff680b20ed41"
+  },
+  update: {
+    userId: "c2c935cb-7209-45d2-95e9-873de849b12e",
+    prefs: {
+      unitType: "APARTMENT",
+      minBudget: 2000,
+      maxBudget: 3000,
+      city: "Cairo",
+      university: "Cairo University",
+      maxDistance: 5,
+      rooms: 2,
+      furnished: true,
+      genderType: "female only",
+      facilities: [
+        "wifi",
+        "parking",
+        "gym"
+      ]
+    }
+  },
+  create: {
+    userId: "c2c935cb-7209-45d2-95e9-873de849b12e",
+    prefs: {
+      unitType: "APARTMENT",
+      minBudget: 2000,
+      maxBudget: 3000,
+      city: "Cairo",
+      university: "Cairo University",
+      maxDistance: 5,
+      rooms: 2,
+      furnished: true,
+      genderType: "female only",
+      facilities: [
+        "wifi",
+        "parking",
+        "gym"
+      ]
+    },
++   unitType: UnitType
+  }
+}
+
+Argument `unitType` is missing. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/users/me/preferences"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.userPreference.upsert()` invocation:\n\n{\n  where: {\n    userId: \"d3050824-3935-4cde-8061-ff680b20ed41\"\n  },\n  update: {\n    userId: \"c2c935cb-7209-45d2-95e9-873de849b12e\",\n    prefs: {\n      unitType: \"APARTMENT\",\n      minBudget: 2000,\n      maxBudget: 3000,\n      city: \"Cairo\",\n      university: \"Cairo University\",\n      maxDistance: 5,\n      rooms: 2,\n      furnished: true,\n      genderType: \"female only\",\n      facilities: [\n        \"wifi\",\n        \"parking\",\n        \"gym\"\n      ]\n    }\n  },\n  create: {\n    userId: \"c2c935cb-7209-45d2-95e9-873de849b12e\",\n    prefs: {\n      unitType: \"APARTMENT\",\n      minBudget: 2000,\n      maxBudget: 3000,\n      city: \"Cairo\",\n      university: \"Cairo University\",\n      maxDistance: 5,\n      rooms: 2,\n      furnished: true,\n      genderType: \"female only\",\n      facilities: [\n        \"wifi\",\n        \"parking\",\n        \"gym\"\n      ]\n    },\n+   unitType: UnitType\n  }\n}\n\nArgument `unitType` is missing.\n    at ar (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at zr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at zr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at zr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.savePreferences (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/user/user.service.js:143:23)\n    at async saveMyPreferences (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/user/user.controller.js:73:18)"}}
+2026-02-24 16:03:10 [ERROR]: 
+Invalid `prisma.userPreference.upsert()` invocation:
+
+{
+  where: {
+    userId: "d3050824-3935-4cde-8061-ff680b20ed41"
+  },
+  update: {
+    prefs: {
+      unitType: "APARTMENT",
+      minBudget: 2000,
+      maxBudget: 3000,
+      city: "Cairo",
+      university: "Cairo University",
+      maxDistance: 5,
+      rooms: 2,
+      furnished: true,
+      genderType: "female only",
+      facilities: [
+        "wifi",
+        "parking",
+        "gym"
+      ]
+    }
+  },
+  create: {
+    userId: "d3050824-3935-4cde-8061-ff680b20ed41",
+    prefs: {
+      unitType: "APARTMENT",
+      minBudget: 2000,
+      maxBudget: 3000,
+      city: "Cairo",
+      university: "Cairo University",
+      maxDistance: 5,
+      rooms: 2,
+      furnished: true,
+      genderType: "female only",
+      facilities: [
+        "wifi",
+        "parking",
+        "gym"
+      ]
+    },
++   unitType: UnitType
+  }
+}
+
+Argument `unitType` is missing. {"success":"false","statusCode":500,"request":{"ip":"::1","method":"POST","url":"/api/v1/users/me/preferences"},"trace":{"error":"PrismaClientValidationError: \nInvalid `prisma.userPreference.upsert()` invocation:\n\n{\n  where: {\n    userId: \"d3050824-3935-4cde-8061-ff680b20ed41\"\n  },\n  update: {\n    prefs: {\n      unitType: \"APARTMENT\",\n      minBudget: 2000,\n      maxBudget: 3000,\n      city: \"Cairo\",\n      university: \"Cairo University\",\n      maxDistance: 5,\n      rooms: 2,\n      furnished: true,\n      genderType: \"female only\",\n      facilities: [\n        \"wifi\",\n        \"parking\",\n        \"gym\"\n      ]\n    }\n  },\n  create: {\n    userId: \"d3050824-3935-4cde-8061-ff680b20ed41\",\n    prefs: {\n      unitType: \"APARTMENT\",\n      minBudget: 2000,\n      maxBudget: 3000,\n      city: \"Cairo\",\n      university: \"Cairo University\",\n      maxDistance: 5,\n      rooms: 2,\n      furnished: true,\n      genderType: \"female only\",\n      facilities: [\n        \"wifi\",\n        \"parking\",\n        \"gym\"\n      ]\n    },\n+   unitType: UnitType\n  }\n}\n\nArgument `unitType` is missing.\n    at ar (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at zr.handleRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at zr.handleAndLogRequestError (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at zr.request (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async a (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async Module.savePreferences (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/user/user.service.js:143:23)\n    at async saveMyPreferences (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/user/user.controller.js:73:18)"}}
+2026-02-24 16:06:21 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/users/me/preference"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:276:14)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:276:14)"}}
+2026-02-24 16:13:23 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/visits/f292e722-2133-4d0a-8596-a910d389b378"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:276:14)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:276:14)"}}
+2026-02-24 16:13:36 [ERROR]: route not found. {"success":"false","statusCode":404,"request":{"ip":"::1","method":"POST","url":"/api/v1/visits/f292e722-2133-4d0a-8596-a910d389b378"},"trace":{"error":"Error: route not found.\n    at page404Handler (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/page404Handler.js:6:11)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at trimPrefix (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:342:13)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:297:9\n    at processParams (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:582:12)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:291:5)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:276:14)\n    at D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:688:15\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\index.js:276:14)"}}
+2026-02-24 16:14:38 [ERROR]: Proposed date must be at least 1 hour in the future {"success":"false","statusCode":400,"request":{"ip":"::1","method":"POST","url":"/api/v1/visits/f292e722-2133-4d0a-8596-a910d389b378"},"trace":{"error":"Error: Proposed date must be at least 1 hour in the future\n    at Module.createVisit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/visit/visit.service.js:25:19)\n    at createVisit (file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/features/visit/visit.controller.js:11:32)\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/roleMiddleware.js:7:5\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///D:/ME/AOU/BeStay%20Project/bestay-backend/src/middlewares/validateMiddleware.js:24:7\n    at Layer.handleRequest (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (D:\\ME\\AOU\\BeStay Project\\bestay-backend\\node_modules\\router\\lib\\route.js:157:13)"}}
