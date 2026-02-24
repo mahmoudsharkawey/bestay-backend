@@ -10,6 +10,7 @@ import {
   PaymentSuccessHTML,
   PaymentRefundedHTML,
 } from "../../utils/HTMLforEmails.js";
+import { createNotification } from "../notification/notification.service.js";
 
 /**
  * Create a Stripe payment intent for an approved visit.
@@ -155,13 +156,12 @@ export async function handleStripeWebhook(rawBody, sig) {
         where: { id: visitId },
         data: { paymentPaid: true, paymentId: visit.payment.id },
       }),
-      prisma.notification.create({
-        data: {
-          userId: visit.user.id,
-          type: "PAYMENT_CONFIRMED",
-          message: "Your payment has been processed successfully",
-        },
-      }),
+      createNotification(
+        visit.user.id,
+        "PAYMENT_CONFIRMED",
+        "Your payment has been processed successfully",
+        prisma,
+      ),
     ]);
 
     // send notification email to the user
@@ -231,13 +231,12 @@ export async function refundPayment(paymentId) {
         refundedAt: new Date(),
       },
     }),
-    prisma.notification.create({
-      data: {
-        userId: payment.user.id,
-        type: "PAYMENT_REFUNDED",
-        message: "Your payment refund has been processed successfully",
-      },
-    }),
+    createNotification(
+      payment.user.id,
+      "PAYMENT_REFUNDED",
+      "Your payment refund has been processed successfully",
+      prisma,
+    ),
     prisma.visit.update({
       where: { id: payment.visitId },
       data: { status: "REFUNDED" },

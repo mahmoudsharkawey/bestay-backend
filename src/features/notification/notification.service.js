@@ -1,5 +1,16 @@
 import prisma from "../../prisma/client.js";
 
+// Create a new notification (used internally by other services)
+export async function createNotification(userId, type, message, tx = prisma) {
+  return tx.notification.create({
+    data: {
+      userId,
+      type,
+      message,
+    },
+  });
+}
+
 // GET all notifications for a user (newest first)
 export async function getMyNotifications(userId) {
   return prisma.notification.findMany({

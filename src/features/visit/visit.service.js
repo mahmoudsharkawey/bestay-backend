@@ -12,6 +12,7 @@ import {
 import { sendEmail } from "../../utils/sendEmail.js";
 import logger from "../../utils/logger.js";
 import { validateFutureDate } from "../../utils/dateValidation.js";
+import { createNotification } from "../notification/notification.service.js";
 
 // Creates a new visit request for a unit
 export const createVisit = async ({ userId, unitId, proposedDate }) => {
@@ -126,13 +127,12 @@ export const createVisit = async ({ userId, unitId, proposedDate }) => {
       });
 
       // Create notification for owner
-      await tx.notification.create({
-        data: {
-          userId: unit.owner.id,
-          type: "VISIT_REQUEST",
-          message: `You have a new visit request from ${user.name} for "${unit.title}"`,
-        },
-      });
+      await createNotification(
+        unit.owner.id,
+        "VISIT_REQUEST",
+        `You have a new visit request from ${user.name} for "${unit.title}"`,
+        tx,
+      );
 
       return newVisit;
     });
@@ -226,13 +226,12 @@ export const approveVisit = async (visitId, ownerId) => {
       });
 
       // Notify user
-      await tx.notification.create({
-        data: {
-          userId: visit.user.id,
-          type: "VISIT_APPROVED",
-          message: `Your visit request for "${visit.unit.title}" has been approved`,
-        },
-      });
+      await createNotification(
+        visit.user.id,
+        "VISIT_APPROVED",
+        `Your visit request for "${visit.unit.title}" has been approved`,
+        tx,
+      );
 
       return approved;
     });
@@ -312,13 +311,12 @@ export const rejectVisit = async (visitId, ownerId) => {
       });
 
       // Notify user
-      await tx.notification.create({
-        data: {
-          userId: visit.user.id,
-          type: "VISIT_REJECTED",
-          message: `Your visit request for "${visit.unit.title}" has been rejected by the owner`,
-        },
-      });
+      await createNotification(
+        visit.user.id,
+        "VISIT_REJECTED",
+        `Your visit request for "${visit.unit.title}" has been rejected by the owner`,
+        tx,
+      );
 
       return rejected;
     });
@@ -414,13 +412,12 @@ export const proposeReschedule = async (visitId, ownerId, newDate) => {
       });
 
       // Notify visitor
-      await tx.notification.create({
-        data: {
-          userId: visit.user.id,
-          type: "VISIT_RESCHEDULED",
-          message: `The owner has proposed a new date for your visit to "${visit.unit.title}"`,
-        },
-      });
+      await createNotification(
+        visit.user.id,
+        "VISIT_RESCHEDULED",
+        `The owner has proposed a new date for your visit to "${visit.unit.title}"`,
+        tx,
+      );
 
       return rescheduled;
     });
@@ -513,13 +510,12 @@ export const acceptReschedule = async (visitId, userId) => {
       });
 
       // Notify owner
-      await tx.notification.create({
-        data: {
-          userId: visit.unit.ownerId,
-          type: "VISIT_APPROVED",
-          message: `${visit.user.name} has accepted your reschedule proposal for "${visit.unit.title}"`,
-        },
-      });
+      await createNotification(
+        visit.unit.ownerId,
+        "VISIT_APPROVED",
+        `${visit.user.name} has accepted your reschedule proposal for "${visit.unit.title}"`,
+        tx,
+      );
 
       return accepted;
     });
@@ -603,13 +599,12 @@ export const rejectReschedule = async (visitId, userId) => {
       });
 
       // Notify owner
-      await tx.notification.create({
-        data: {
-          userId: visit.unit.ownerId,
-          type: "VISIT_REJECTED",
-          message: `${visit.user.name} has rejected your reschedule proposal for "${visit.unit.title}"`,
-        },
-      });
+      await createNotification(
+        visit.unit.ownerId,
+        "VISIT_REJECTED",
+        `${visit.user.name} has rejected your reschedule proposal for "${visit.unit.title}"`,
+        tx,
+      );
 
       return rejected;
     });
@@ -707,13 +702,12 @@ export const cancelVisit = async (visitId, userId) => {
       });
 
       // Notify owner
-      await tx.notification.create({
-        data: {
-          userId: visit.unit.ownerId,
-          type: "VISIT_CANCELLED",
-          message: `${visit.user.name} has cancelled their visit request for "${visit.unit.title}"`,
-        },
-      });
+      await createNotification(
+        visit.unit.ownerId,
+        "VISIT_CANCELLED",
+        `${visit.user.name} has cancelled their visit request for "${visit.unit.title}"`,
+        tx,
+      );
 
       return cancelled;
     });
