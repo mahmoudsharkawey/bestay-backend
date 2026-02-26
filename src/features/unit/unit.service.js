@@ -201,60 +201,13 @@ export const searchUnitsByFilter = async (filters) => {
   const { page, limit, sortBy, sortOrder } = filters;
 
   const where = buildWhereClause(filters);
-
-  const orderDir = sortOrder === "asc" ? "asc" : "desc";
   const orderBy = buildOrderByClause(sortBy, sortOrder);
 
-  if (sortBy === "rating") {
-    // Fetch all matching units to sort them in memory
-    const allUnits = await prisma.unit.findMany({
-      where,
-      include: {
-        reviews: { select: { rating: true } },
-      },
-    });
-
-    const unitsWithRating = allUnits.map((unit) => {
-      const avgRating = calculateAverageRating(unit.reviews);
-      const { reviews, ...rest } = unit;
-      return { ...rest, averageRating: parseFloat(avgRating.toFixed(1)) };
-    });
-
-    unitsWithRating.sort((a, b) => {
-      return orderDir === "asc"
-        ? a.averageRating - b.averageRating
-        : b.averageRating - a.averageRating;
-    });
-
-    const total = unitsWithRating.length;
-    const paginatedUnits = unitsWithRating.slice(
-      (page - 1) * limit,
-      page * limit,
-    );
-
-    return {
-      total,
-      page,
-      pages: Math.ceil(total / limit),
-      units: paginatedUnits,
-    };
-  }
-
-  // Not sorting by rating
   const units = await prisma.unit.findMany({
     where,
     skip: (page - 1) * limit,
     take: limit,
     orderBy: Object.keys(orderBy).length ? orderBy : { createdAt: "desc" },
-    include: {
-      reviews: { select: { rating: true } },
-    },
-  });
-
-  const unitsWithRating = units.map((unit) => {
-    const avgRating = calculateAverageRating(unit.reviews);
-    const { reviews, ...rest } = unit;
-    return { ...rest, averageRating: parseFloat(avgRating.toFixed(1)) };
   });
 
   const total = await prisma.unit.count({ where });
@@ -263,6 +216,6 @@ export const searchUnitsByFilter = async (filters) => {
     total,
     page,
     pages: Math.ceil(total / limit),
-    units: unitsWithRating,
+    units,
   };
 };

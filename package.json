@@ -13,7 +13,7 @@
   "type": "module",
   "dependencies": {
     "@prisma/adapter-pg": "^7.3.0",
-    "@prisma/client": "^7.4.0",
+    "@prisma/client": "^7.4.1",
     "axios": "^1.13.4",
     "bcrypt": "^6.0.0",
     "colorette": "^2.0.20",
@@ -34,6 +34,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11",
-    "prisma": "^7.4.0"
+    "prisma": "^7.4.1"
   }
 }

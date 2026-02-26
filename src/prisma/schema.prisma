@@ -173,6 +173,8 @@ model Unit {
   facilities String[] // e.g., ["wifi", "parking", "gym"]
   images     String[] // URLs of unit images
 
+  averageRating Float @default(0)
+
   ownerId String
   owner   User   @relation("OwnerUnits", fields: [ownerId], references: [id])
 
@@ -192,6 +194,7 @@ model Unit {
   @@index([price])
   @@index([roomType])
   @@index([deletedAt])
+  @@index([averageRating])
 }
 
 //////////////////////////////////////////////////

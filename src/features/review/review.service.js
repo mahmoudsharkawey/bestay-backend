@@ -3,6 +3,23 @@ import { softDelete } from "../../utils/softDelete.js";
 import AppError from "../../utils/AppError.js";
 
 /**
+ * Helper to recalculate and update a unit's average rating
+ */
+const updateUnitAverageRating = async (unitId) => {
+  const aggregate = await prisma.review.aggregate({
+    where: { unitId, deletedAt: null },
+    _avg: { rating: true },
+  });
+
+  const newAvg = aggregate._avg.rating || 0;
+
+  await prisma.unit.update({
+    where: { id: unitId },
+    data: { averageRating: parseFloat(newAvg.toFixed(1)) },
+  });
+};
+
+/**
  * Create a new review for a unit
  * @param {Object} data - Review data including userId, unitId, rating, and optional comment
  * @returns {Promise<Object>} Created review
@@ -85,6 +102,8 @@ export const createReview = async (data) => {
   if (!review) {
     throw new AppError("Failed to create review", 500);
   }
+
+  await updateUnitAverageRating(unitId);
 
   return review;
 };
@@ -200,6 +219,8 @@ export const updateReviewById = async (id, userId, data) => {
     throw new AppError("Failed to update review", 500);
   }
 
+  await updateUnitAverageRating(review.unitId);
+
   return updatedReview;
 };
 
@@ -227,6 +248,8 @@ export const deleteReviewById = async (id, userId) => {
   if (!deletedReview) {
     throw new AppError("Failed to delete review", 500);
   }
+
+  await updateUnitAverageRating(review.unitId);
 
   return deletedReview;
 };

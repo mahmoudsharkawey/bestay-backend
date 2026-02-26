@@ -41,6 +41,7 @@ export const buildOrderByClause = (sortBy, sortOrder) => {
   if (sortBy === "price") orderBy.price = orderDir;
   else if (sortBy === "distance") orderBy.distance = orderDir;
   else if (sortBy === "createdAt") orderBy.createdAt = orderDir;
+  else if (sortBy === "rating") orderBy.averageRating = orderDir;
 
   return orderBy;
 };
