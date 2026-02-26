@@ -1,5 +1,6 @@
 import httpError from "../../utils/httpError.js";
 import httpResponse from "../../utils/httpResponse.js";
+import AppError from "../../utils/AppError.js";
 import * as reviewService from "./review.service.js";
 
 /**
@@ -12,7 +13,7 @@ export const createReview = async (req, res, next) => {
 
     // Validate required fields
     if (!unitId || !rating) {
-      throw new Error("unitId, and rating are required");
+      throw new AppError("unitId, and rating are required", 400);
     }
 
     const reviewData = {
@@ -26,7 +27,7 @@ export const createReview = async (req, res, next) => {
 
     httpResponse(req, res, 201, "Review created successfully", review);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
@@ -38,14 +39,14 @@ export const getReviewsByUnitId = async (req, res, next) => {
     const { unitId } = req.params;
 
     if (!unitId) {
-      throw new Error("Unit ID is required");
+      throw new AppError("Unit ID is required", 400);
     }
 
     const reviews = await reviewService.getReviewsByUnitId(unitId);
 
     httpResponse(req, res, 200, "Reviews retrieved successfully", reviews);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
@@ -64,7 +65,7 @@ export const getReviewById = async (req, res, next) => {
 
     httpResponse(req, res, 200, "Review retrieved successfully", review);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
@@ -92,7 +93,7 @@ export const updateReviewById = async (req, res, next) => {
 
     httpResponse(req, res, 200, "Review updated successfully", review);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
@@ -116,6 +117,6 @@ export const deleteReviewById = async (req, res, next) => {
 
     httpResponse(req, res, 200, "Review deleted successfully", deletedReview);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };

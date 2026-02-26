@@ -1,5 +1,6 @@
 import httpResponse from "../../utils/httpResponse.js";
-import httpError from "../../utils/httpError.js"
+import httpError from "../../utils/httpError.js";
+import AppError from "../../utils/AppError.js";
 import * as authService from "./auth.service.js";
 import { signToken } from "../../utils/jwt.js";
 import { getErrorStatusCode } from "../../utils/errorStatusCode.js";
@@ -102,13 +103,13 @@ export const googleLogin = async (req, res, next) => {
     const { token } = req.body;
 
     if (!token) {
-      return httpError(next, new Error("Google token is required"), req, 400);
+      throw new AppError("Google token is required", 400);
     }
 
     const result = await authService.googleLogin(token);
 
     httpResponse(req, res, 200, "Google login successful", result);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };

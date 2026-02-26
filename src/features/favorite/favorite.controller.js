@@ -1,5 +1,6 @@
 import httpError from "../../utils/httpError.js";
 import httpResponse from "../../utils/httpResponse.js";
+import AppError from "../../utils/AppError.js";
 import * as favoriteService from "./favorite.service.js";
 
 /**
@@ -11,7 +12,7 @@ export const addFavorite = async (req, res, next) => {
 
     // Validate required fields
     if (!userId || !unitId) {
-      throw new Error("userId and unitId are required");
+      throw new AppError("userId and unitId are required", 400);
     }
 
     const favorite = await favoriteService.addFavorite({ userId, unitId });
@@ -24,7 +25,7 @@ export const addFavorite = async (req, res, next) => {
       favorite,
     );
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
@@ -37,7 +38,7 @@ export const removeFavorite = async (req, res, next) => {
     const { userId } = req.body;
 
     if (!userId || !unitId) {
-      throw new Error("userId and unitId are required");
+      throw new AppError("userId and unitId are required", 400);
     }
 
     const deletedFavorite = await favoriteService.removeFavorite(
@@ -53,7 +54,7 @@ export const removeFavorite = async (req, res, next) => {
       deletedFavorite,
     );
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
@@ -65,14 +66,14 @@ export const getUserFavorites = async (req, res, next) => {
     const { userId } = req.params;
 
     if (!userId) {
-      throw new Error("User ID is required");
+      throw new AppError("User ID is required", 400);
     }
 
     const favorites = await favoriteService.getUserFavorites(userId);
 
     httpResponse(req, res, 200, "Favorites retrieved successfully", favorites);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 
@@ -84,13 +85,13 @@ export const checkIfFavorited = async (req, res, next) => {
     const { unitId, userId } = req.params;
 
     if (!userId || !unitId) {
-      throw new Error("userId and unitId are required");
+      throw new AppError("userId and unitId are required", 400);
     }
 
     const result = await favoriteService.checkIfFavorited(userId, unitId);
 
     httpResponse(req, res, 200, "Favorite status checked successfully", result);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };

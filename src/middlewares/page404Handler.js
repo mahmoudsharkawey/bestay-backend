@@ -1,9 +1,10 @@
 import responseMessage from "../constants/responseMessage.js";
 import httpError from "../utils/httpError.js";
+import AppError from "../utils/AppError.js";
 
 const page404Handler = (req, _, next) => {
   try {
-    throw new Error(responseMessage.NOT_FOUND("route"));
+    throw new AppError(responseMessage.NOT_FOUND("route"), 404);
   } catch (error) {
     httpError(next, error, req, 404);
   }

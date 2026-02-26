@@ -1,4 +1,5 @@
 import { z } from "zod";
+import AppError from "../../utils/AppError.js";
 
 // Unit validation schema
 export const createUnitSchema = z.object({
@@ -65,7 +66,7 @@ export const validateUnitFields = (data) => {
     const errors = result.error.errors.map(
       (err) => `${err.path.join(".")}: ${err.message}`,
     );
-    throw new Error(errors.join(", "));
+    throw new AppError(errors.join(", "), 400);
   }
   return result.data;
 };
@@ -77,7 +78,7 @@ export const validateUpdateUnitFields = (data) => {
     const errors = result.error.errors.map(
       (err) => `${err.path.join(".")}: ${err.message}`,
     );
-    throw new Error(errors.join(", "));
+    throw new AppError(errors.join(", "), 400);
   }
   return result.data;
 };

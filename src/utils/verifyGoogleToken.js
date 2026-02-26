@@ -1,5 +1,6 @@
 import { OAuth2Client } from "google-auth-library";
 import { env } from "../config/env.js";
+import AppError from "./AppError.js";
 
 const client = new OAuth2Client(env.GOOGLE_CLIENT_ID);
 
@@ -13,7 +14,7 @@ export async function verifyGoogleToken(token) {
   console.log("Google token payload:", payload);
 
   if (!payload?.email) {
-    throw new Error("Invalid Google token");
+    throw new AppError("Invalid Google token", 400);
   }
 
   return {

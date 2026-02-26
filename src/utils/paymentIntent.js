@@ -1,10 +1,10 @@
 import Stripe from "stripe";
 import { env } from "../config/env.js";
+import AppError from "./AppError.js";
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-11-17.clover",
 });
-
 
 // Create payment intent to process payment
 export async function createPaymentIntentUtil(amount, visitId) {
@@ -15,8 +15,9 @@ export async function createPaymentIntentUtil(amount, visitId) {
   // Stripe requires minimum 50 cents USD (~25 EGP as of 2026)
   // For EGP, this translates to approximately 2500 piastres minimum
   if (amountInPiastres < 2500) {
-    throw new Error(
+    throw new AppError(
       `Amount too small for payment processing. Minimum amount is 25 EGP. Provided: ${amount} EGP`,
+      400,
     );
   }
 
@@ -28,7 +29,7 @@ export async function createPaymentIntentUtil(amount, visitId) {
     },
     metadata: {
       visitId: visitId,
-    },  
+    },
   });
   return paymentIntent;
 }
@@ -44,6 +45,6 @@ export async function refundPaymentUtil(paymentIntentId) {
   const refund = await stripe.refunds.create({
     payment_intent: paymentIntentId,
   });
-  
+
   return refund;
 }

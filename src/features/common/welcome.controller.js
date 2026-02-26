@@ -8,6 +8,6 @@ export const WelcomController = (req, res, next) => {
       hello: "Welcome to our API!",
     });
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };

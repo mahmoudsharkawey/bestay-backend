@@ -1,5 +1,6 @@
 import httpError from "../../utils/httpError.js";
 import httpResponse from "../../utils/httpResponse.js";
+import AppError from "../../utils/AppError.js";
 import prisma from "../../prisma/client.js";
 import * as unitService from "./unit.service.js";
 import {
@@ -24,9 +25,7 @@ export const createUnit = async (req, res, next) => {
     });
 
     if (!owner || owner.role !== "LANDLORD") {
-      const error = new Error("The assigned owner must be a LANDLORD");
-      error.statusCode = 403;
-      throw error;
+      throw new AppError("The assigned owner must be a LANDLORD", 403);
     }
 
     const unit = await unitService.createUnit(req.body);
@@ -41,12 +40,12 @@ export const getUnitById = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (!id) {
-      throw new Error("Unit ID is required");
+      throw new AppError("Unit ID is required", 400);
     }
     const unit = await unitService.getUnitById(id);
     httpResponse(req, res, 200, "Unit retrieved successfully", unit);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 // Returns a unit by id
@@ -54,14 +53,14 @@ export const updateUnitById = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (!id) {
-      throw new Error("Unit ID is required");
+      throw new AppError("Unit ID is required", 400);
     }
 
     validateUpdateUnitFields(req.body);
     const unit = await unitService.updateUnitById(id, req.body);
     httpResponse(req, res, 200, "Unit updated successfully", unit);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 // Returns a unit by id
@@ -69,12 +68,12 @@ export const deleteUnitById = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (!id) {
-      throw new Error("Unit ID is required");
+      throw new AppError("Unit ID is required", 400);
     }
     const deletedUnit = await unitService.deleteUnitById(id, req.user.id);
     httpResponse(req, res, 200, "Unit deleted successfully", deletedUnit);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 // Returns all units
@@ -83,11 +82,11 @@ export const getAllUnits = async (req, res, next) => {
     const { page = 1, limit = 10 } = req.query;
     const units = await unitService.getAllUnits(page, limit);
     if (!units) {
-      throw new Error("Units not found");
+      throw new AppError("Units not found", 404);
     }
     httpResponse(req, res, 200, "Units retrieved successfully", units);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
 // GET /units/my — all units owned by the authenticated landlord
@@ -132,6 +131,6 @@ export const searchUnitsByFilter = async (req, res, next) => {
     const units = await unitService.searchUnitsByFilter(filters);
     httpResponse(req, res, 200, "Units retrieved successfully", units);
   } catch (error) {
-    httpError(next, error, req, 500);
+    httpError(next, error, req, error.statusCode || 500);
   }
 };
