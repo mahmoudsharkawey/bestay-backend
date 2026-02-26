@@ -139,7 +139,7 @@ export const googleLogin = async (token) => {
 
   // 3. generate JWT
   const accessToken = signToken({
-    userId: user.id,
+    id: user.id,
     role: user.role,
   });
 
