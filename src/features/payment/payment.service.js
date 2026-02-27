@@ -265,3 +265,32 @@ export async function getMyPayments(userId, role) {
 
   return payments;
 }
+
+
+export async function getAllPayments(page, limit) {
+  const payments = await prisma.payment.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      visit: {
+        select: {
+          id: true,
+          proposedDate: true,
+          status: true,
+          unit: { select: { id: true, title: true, city: true } },
+        },
+      },
+      user: { select: { id: true, name: true, email: true } },
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  if (!payments) {
+    throw new AppError("No payments found", 404);
+  }
+
+  const total = await prisma.payment.count();
+
+  return { payments, total, page, limit, totalPages: Math.ceil(total / limit) };
+}
+

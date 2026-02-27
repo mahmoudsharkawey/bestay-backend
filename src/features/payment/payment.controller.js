@@ -93,3 +93,21 @@ export const getMyPayments = async (req, res, next) => {
     return httpError(next, error, req, statusCode);
   }
 };
+
+
+export const getAllPayments = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    const payments = await Payments.getAllPayments(page, limit);
+    return httpResponse(
+      req,
+      res,
+      200,
+      "Payments fetched successfully",
+      payments,
+    );
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return httpError(next, error, req, statusCode);
+  }
+};
