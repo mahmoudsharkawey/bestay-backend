@@ -11,7 +11,9 @@ import { stripeWebhook } from "./features/payment/payment.controller.js";
 const app = express();
 
 // Middlewares setup
+// Security middleware
 app.use(helmet());
+// CORS middleware
 app.use(
   cors({
     origin: "*",

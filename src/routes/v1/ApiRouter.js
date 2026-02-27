@@ -10,6 +10,7 @@ import bookingRoute from "../../features/booking/booking.routes.js";
 import visitRoute from "../../features/visit/visit.routes.js";
 import paymentRoute from "../../features/payment/payment.routes.js";
 import notificationRoute from "../../features/notification/notification.routes.js";
+import uploadRoute from "../../features/upload/upload.routes.js";
 
 const router = Router();
 
@@ -31,6 +32,8 @@ router.use("/visits", visitRoute);
 router.use("/payments", paymentRoute);
 // Notification Routes
 router.use("/notifications", notificationRoute);
+// Upload Routes
+router.use("/uploads", uploadRoute);
 
 // Example Routes
 router.get("/", WelcomController);
