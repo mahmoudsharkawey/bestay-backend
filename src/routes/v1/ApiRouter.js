@@ -11,6 +11,7 @@ import visitRoute from "../../features/visit/visit.routes.js";
 import paymentRoute from "../../features/payment/payment.routes.js";
 import notificationRoute from "../../features/notification/notification.routes.js";
 import uploadRoute from "../../features/upload/upload.routes.js";
+import adminRoute from "../../features/admin/admin.routes.js";
 
 const router = Router();
 
@@ -34,6 +35,8 @@ router.use("/payments", paymentRoute);
 router.use("/notifications", notificationRoute);
 // Upload Routes
 router.use("/uploads", uploadRoute);
+// Admin Routes
+router.use("/admin", adminRoute);
 
 // Example Routes
 router.get("/", WelcomController);
