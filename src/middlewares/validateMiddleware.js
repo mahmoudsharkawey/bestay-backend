@@ -10,7 +10,7 @@ export const validate = (schema) => {
       const result = schema.safeParse(req.body);
 
       if (!result.success) {
-        const errors = result.error.errors.map(
+        const errors = result.error.issues.map(
           (err) => `${err.path.join(".")}: ${err.message}`,
         );
         return next(
@@ -22,7 +22,12 @@ export const validate = (schema) => {
       req.body = result.data;
       next();
     } catch (error) {
-      return next(new AppError("Validation error occurred", 500));
+      return next(
+        new AppError(
+          `Validation error: ${error.message || "Unknown error"}`,
+          400,
+        ),
+      );
     }
   };
 };

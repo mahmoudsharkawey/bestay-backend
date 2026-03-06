@@ -12,6 +12,7 @@ const sanitizeUser = (user) => {
     email: user.email,
     phone: user.phone || null,
     role: user.role,
+    picture: user.picture || null,
     createdAt: user.createdAt,
   };
 };

@@ -43,6 +43,7 @@ export const updateProfile = async (id, incomingData) => {
     throw new AppError("User not found", 404);
   }
 
+
   // Whitelist: only allow safe fields to be updated
   const data = {};
   for (const field of ALLOWED_UPDATE_FIELDS) {
