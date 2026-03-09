@@ -149,6 +149,10 @@ export const googleLogin = async (token) => {
       id: user.id,
       email: user.email,
       role: user.role,
+      name: user.name,
+      picture: user.picture,
+      phone: user.phone,
+      provider: user.provider
     },
   };
 };
