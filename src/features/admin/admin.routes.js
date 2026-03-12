@@ -32,7 +32,6 @@ router.use(Authenticate, authorizeRoles("ADMIN"));
 
 // 1. Overview & KPIs
 router.get("/dashboard/overview", getOverviewStats);
-
 // 2. Visits & Traffic Analytics
 router.get("/dashboard/visits-stats", getVisitsStats);
 router.get("/charts/visits", getVisitsStats); // Adding charts alias for flexibility as per request
