@@ -22,7 +22,6 @@ router.patch("/read-all", Authenticate, markAllRead);
 router.patch(
   "/:id/read",
   Authenticate,
-  validate(notificationIdSchema, "params"),
   markAsRead,
 );
 
@@ -30,7 +29,6 @@ router.patch(
 router.delete(
   "/:id",
   Authenticate,
-  validate(notificationIdSchema, "params"),
   deleteNotification,
 );
 

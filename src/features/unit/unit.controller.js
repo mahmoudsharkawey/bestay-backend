@@ -42,7 +42,7 @@ export const getUnitById = async (req, res, next) => {
     if (!id) {
       throw new AppError("Unit ID is required", 400);
     }
-    const unit = await unitService.getUnitById(id);
+    const unit = await unitService.getUnitById(id,req.user.id);
     httpResponse(req, res, 200, "Unit retrieved successfully", unit);
   } catch (error) {
     httpError(next, error, req, error.statusCode || 500);

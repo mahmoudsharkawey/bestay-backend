@@ -60,9 +60,26 @@ export async function createPaymentIntent(visitId, userId) {
     throw new AppError("This visit has already been paid", 409);
   }
 
+
   // 5. Create the Stripe PaymentIntent (amount is in EGP; util converts to piastres)
   const depositPercentage = env.DEPOSIT_PERCENTAGE / 100;
   const unitPrice = visit.unit.price * depositPercentage;
+
+  if (existingPayment && existingPayment.status === "PENDING" && existingPayment.stripeIntentId) {
+    // Attempt to retrieve the existing intent from Stripe
+    const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2025-11-17.clover" });
+    const existingIntent = await stripe.paymentIntents.retrieve(existingPayment.stripeIntentId);
+    
+    // If it's still actionable, reuse it
+    if (existingIntent && existingIntent.status === "requires_payment_method") {
+      return {
+        clientSecret: existingIntent.client_secret,
+        paymentId: existingPayment.id,
+      };
+    }
+  }
+
+  // If we reach here, we either don't have a pending payment, or the old intent is no longer usable.
   const stripeIntent = await createPaymentIntentUtil(unitPrice, visitId);
 
   // 6. Upsert the Payment record (create on first call, update on retry)

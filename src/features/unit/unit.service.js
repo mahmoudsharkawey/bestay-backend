@@ -114,7 +114,7 @@ export const updateUnitById = async (id, data) => {
   return updatedUnit;
 };
 // Returns a unit by id
-export const getUnitById = async (id) => {
+export const getUnitById = async (id,userId) => {
   const unit = await prisma.unit.findUnique({
     where: {
       id: id,
@@ -151,10 +151,26 @@ export const getUnitById = async (id) => {
   const reviewCount = unit.reviews.length;
   const averageRating = calculateAverageRating(unit.reviews);
 
+  const isFavorite = await prisma.favorite.findFirst({
+    where: {
+      userId: userId,
+      unitId: id,
+    },
+  });
+
+  const isVisited = await prisma.visit.findFirst({
+    where: {
+      userId: userId,
+      unitId: id,
+    },
+  });
+
   return {
     ...unit,
     reviewCount,
     averageRating: parseFloat(averageRating.toFixed(1)),
+    isFavorite: !!isFavorite,
+    isVisited: !!isVisited,
   };
 };
 // Returns all units

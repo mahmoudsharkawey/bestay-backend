@@ -835,7 +835,7 @@ export const getMyVisits = async (userId, role) => {
 };
 
 // ─── READ: Get a single visit by ID ───
-export const getVisitById = async (visitId, userId, role) => {
+export const getVisitById = async (visitId, userId) => {
   const visit = await prisma.visit.findUnique({
     where: { id: visitId },
     include: {
@@ -849,8 +849,8 @@ export const getVisitById = async (visitId, userId, role) => {
         },
       },
       user: { select: { id: true, name: true, email: true } },
-      payment: true,
-      booking: true,
+      booking: { select: { id: true, status: true } },
+      payment: { select: { id: true, status: true, amount: true } },
     },
   });
 
