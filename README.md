@@ -13,3 +13,4 @@ Stripe webhook	https://inspective-unbred-lois.ngrok-free.dev/api/v1/payments/web
 
 TODOS:
 canceled by owner 
+I have refactored the landlord.controller.js to use the project's standard httpError and httpResponse patterns.
