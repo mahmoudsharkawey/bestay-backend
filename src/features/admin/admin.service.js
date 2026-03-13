@@ -134,7 +134,13 @@ export const getRevenueStats = async (period = "monthly") => {
     GROUP BY date
     ORDER BY date ASC
   `;
-
+  if (period === "daily") {
+    return {
+      labels: result.map((r) => r.date.toISOString().split("T")[0]),
+      // Divide by 100 since amount is in piastres/cents
+      data: result.map((r) => (Number(r.total) || 0) / 100),
+    };
+  }
   return {
     labels: result.map((r) => r.date.toISOString().split("T")[0]),
     // Divide by 100 since amount is in piastres/cents
@@ -192,7 +198,7 @@ export const getUsers = async (page = 1, limit = 10) => {
   ]);
 
   return {
-    data: users,
+    users,
     meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
   };
 };
@@ -276,7 +282,7 @@ export const getBookings = async (page = 1, limit = 10, from, to) => {
   ]);
 
   return {
-    data: bookings,
+    bookings,
     meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
   };
 };
@@ -316,7 +322,7 @@ export const getVisits = async (page = 1, limit = 10, from, to) => {
   ]);
 
   return {
-    data: visits,
+    visits,
     meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
   };
 };
@@ -354,7 +360,7 @@ export const getReviews = async (page = 1, limit = 10) => {
   ]);
 
   return {
-    data: reviews,
+    reviews,
     meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
   };
 };
