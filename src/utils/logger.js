@@ -68,11 +68,11 @@ const logger = winston.createLogger({
   level: env.INFO_LEVEL || "info",
   defaultMeta: {},
   transports: [
-    new winston.transports.File({
-      filename: path.join(logsDir, "error.log"),
-      level: "error",
-      format: fileFormat,
-    }),
+    // new winston.transports.File({
+    //   filename: path.join(logsDir, "error.log"),
+    //   level: "error",
+    //   format: fileFormat,
+    // }),
     new winston.transports.Console({
       format: consoleFormat,
     }),
