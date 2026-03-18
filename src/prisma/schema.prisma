@@ -188,6 +188,10 @@ model Unit {
   createdAt DateTime @default(now())
   visits    Visit[]
 
+  // TODO: Add these fields and dont forgot to update relaited models
+  // unitType   UnitType // ROOM, APARTMENT, STUDIO
+  // is_air_conditioned Boolean // true, false
+  //facilities Facilities[] // WIFI, Parking, Gym, Air Conditioning, etc.
   @@index([city])
   @@index([status])
   @@index([ownerId])

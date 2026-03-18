@@ -13,6 +13,7 @@ import notificationRoute from "../../features/notification/notification.routes.j
 import uploadRoute from "../../features/upload/upload.routes.js";
 import adminRoute from "../../features/admin/admin.routes.js";
 import landlordRoute from "../../features/landlord/landlord.routes.js";
+import userPreferenceRoute from "../../features/user-preference/userPreference.routes.js";
 
 const router = Router();
 
@@ -40,6 +41,8 @@ router.use("/uploads", uploadRoute);
 router.use("/admin", adminRoute);
 // Landlord Routes
 router.use("/landlord", landlordRoute);
+// User Preference Routes
+router.use("/user-preferences", userPreferenceRoute);
 
 // Example Routes
 router.get("/", WelcomController);
