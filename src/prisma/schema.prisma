@@ -206,11 +206,13 @@ model Unit {
 //////////////////////////////////////////////////
 
 model Booking {
-  id      String        @id @default(uuid())
-  userId  String
-  unitId  String
-  visitId String        @unique
-  status  BookingStatus
+  id        String        @id @default(uuid())
+  userId    String
+  unitId    String
+  visitId   String        @unique
+  status    BookingStatus
+  startDate DateTime      @default(now())
+  endDate   DateTime      @default(now())
 
   user  User  @relation(fields: [userId], references: [id])
   unit  Unit  @relation(fields: [unitId], references: [id])

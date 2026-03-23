@@ -690,7 +690,7 @@ export const cancelVisit = async (visitId, userId) => {
 };
 
 // Owner confirms a visit was completed (after proposed date + payment verified)
-export const confirmVisit = async (visitId, ownerId) => {
+export const confirmVisit = async (visitId, ownerId, startDate, endDate) => {
   // 1. Fetch visit with unit, visitor, and payment data
   const visit = await prisma.visit.findUnique({
     where: { id: visitId },
@@ -769,16 +769,20 @@ export const confirmVisit = async (visitId, ownerId) => {
           userId: visit.user.id,
           unitId: visit.unit.id,
           visitId: visit.id,
+          startDate: startDate,
+          endDate: endDate,
           status: "BOOKED",
         },
       });
 
+      const formatedStartDate = startDate.toISOString().split("T")[0];
+      const formatedEndDate = endDate.toISOString().split("T")[0];
       // Notify the visitor: visit confirmed + booking created
       await tx.notification.create({
         data: {
           userId: visit.user.id,
           type: "VISIT_CONFIRMED",
-          message: `Your visit to "${visit.unit.title}" has been confirmed and your booking is now active`,
+          message: `Your visit to "${visit.unit.title}" has been confirmed and your booking is now active from ${formatedStartDate} to ${formatedEndDate}`,
         },
       });
 

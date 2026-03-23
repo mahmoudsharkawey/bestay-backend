@@ -104,7 +104,8 @@ export const cancelVisit = async (req, res, next) => {
 export const confirmVisit = async (req, res, next) => {
   try {
     const { visitId } = req.params;
-    const visit = await Visits.confirmVisit(visitId, req.user.id);
+    const {startDate, endDate} = req.body;
+    const visit = await Visits.confirmVisit(visitId, req.user.id, startDate, endDate);
     return httpResponse(req, res, 200, "Visit confirmed successfully", visit);
   } catch (error) {
     const statusCode = error.statusCode || 500;
