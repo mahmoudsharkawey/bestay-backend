@@ -61,4 +61,6 @@ export const env = {
   CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+  // Gemini AI (optional – AI features degrade gracefully without it)
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 };

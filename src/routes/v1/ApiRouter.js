@@ -14,6 +14,8 @@ import uploadRoute from "../../features/upload/upload.routes.js";
 import adminRoute from "../../features/admin/admin.routes.js";
 import landlordRoute from "../../features/landlord/landlord.routes.js";
 import userPreferenceRoute from "../../features/user-preference/userPreference.routes.js";
+import recommendationRoute from "../../features/recommendation/recommendation.routes.js";
+import pricingRoute from "../../features/pricing/pricing.routes.js";
 
 const router = Router();
 
@@ -43,6 +45,10 @@ router.use("/admin", adminRoute);
 router.use("/landlord", landlordRoute);
 // User Preference Routes
 router.use("/user-preferences", userPreferenceRoute);
+// AI: Smart Recommendations
+router.use("/recommendations", recommendationRoute);
+// AI: Pricing Suggestions
+router.use("/pricing", pricingRoute);
 
 // Example Routes
 router.get("/", WelcomController);
