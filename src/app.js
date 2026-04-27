@@ -1,6 +1,8 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger.js";
 import router from "./routes/v1/ApiRouter.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import page404Handler from "./middlewares/page404Handler.js";
@@ -38,6 +40,12 @@ app.use(
 // Stripe webhook — must come AFTER the json middleware so req.rawBody is populated,
 // but the handler uses req.rawBody (not req.body) for signature verification.
 app.post("/api/v1/payments/webhook", stripeWebhook);
+
+// Swagger API Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: "BeStay API Documentation",
+}));
 
 // Route setup (apply rate limiter to API routes)
 app.use("/api/v1", apiLimiter, router);

@@ -5,7 +5,21 @@ import * as recommendationController from "./recommendation.controller.js";
 
 const router = Router();
 
-// GET /api/v1/recommendations — AI-scored unit recommendations for the logged-in user
+/**
+ * @swagger
+ * /recommendations:
+ *   get:
+ *     summary: Get AI-scored unit recommendations
+ *     description: Uses user preferences and Gemini AI to score and rank units.
+ *     tags: [AI Recommendations]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Recommendations generated
+ *       404:
+ *         description: No user preferences found
+ */
 router.get(
   "/",
   Authenticate,

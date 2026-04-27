@@ -10,7 +10,26 @@ import * as userPreferenceController from "./userPreference.controller.js";
 
 const router = Router();
 
-// POST /api/v1/user-preferences — Create or update preference (upsert)
+/**
+ * @swagger
+ * /user-preferences:
+ *   post:
+ *     summary: Create or update preference (upsert)
+ *     tags: [User Preferences]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserPreference'
+ *     responses:
+ *       200:
+ *         description: Preference saved successfully
+ *       403:
+ *         description: USER role required
+ */
 router.post(
   "/",
   Authenticate,
@@ -19,7 +38,29 @@ router.post(
   userPreferenceController.upsertPreference,
 );
 
-// GET /api/v1/user-preferences/me — Get current user's preference
+/**
+ * @swagger
+ * /user-preferences/me:
+ *   get:
+ *     summary: Get current user's preference
+ *     tags: [User Preferences]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Preference retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/UserPreference'
+ *       404:
+ *         description: No preferences found
+ */
 router.get(
   "/me",
   Authenticate,
@@ -27,7 +68,20 @@ router.get(
   userPreferenceController.getMyPreference,
 );
 
-// GET /api/v1/user-preferences/matching-units — Get units matching user's preference
+/**
+ * @swagger
+ * /user-preferences/matching-units:
+ *   get:
+ *     summary: Get units matching user's preference
+ *     tags: [User Preferences]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Matching units retrieved
+ *       404:
+ *         description: No preferences set
+ */
 router.get(
   "/matching-units",
   Authenticate,
@@ -35,7 +89,25 @@ router.get(
   userPreferenceController.getMatchingUnits,
 );
 
-// PATCH /api/v1/user-preferences — Partially update preference
+/**
+ * @swagger
+ * /user-preferences:
+ *   patch:
+ *     summary: Partially update preference
+ *     tags: [User Preferences]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserPreference'
+ *     responses:
+ *       200:
+ *         description: Preference updated
+ *       403:
+ *         description: USER role required
+ */
 router.patch(
   "/",
   Authenticate,
@@ -44,7 +116,20 @@ router.patch(
   userPreferenceController.updatePreference,
 );
 
-// DELETE /api/v1/user-preferences — Delete preference
+/**
+ * @swagger
+ * /user-preferences:
+ *   delete:
+ *     summary: Delete preference
+ *     tags: [User Preferences]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Preference deleted
+ *       403:
+ *         description: USER role required
+ */
 router.delete(
   "/",
   Authenticate,

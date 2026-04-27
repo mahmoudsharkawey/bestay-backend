@@ -11,22 +11,150 @@ import { Authenticate } from "../../middlewares/authMiddleware.js";
 
 const router = Router();
 
-// GET  /api/v1/user/me — Get authenticated user's profile
+/**
+ * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Get the authenticated user's full profile
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ */
 router.get("/me", Authenticate, getMyProfile);
 
-// PUT  /api/v1/user/me — Update authenticated user's profile (name, phone, picture)
+/**
+ * @swagger
+ * /users/me:
+ *   put:
+ *     summary: Update the authenticated user's profile
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               picture:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ *       401:
+ *         description: Unauthorized
+ */
 router.put("/me", Authenticate, updateMyProfile);
 
-// DELETE /api/v1/user/delete-profile — Soft-delete the authenticated user's account
+/**
+ * @swagger
+ * /users/me:
+ *   delete:
+ *     summary: Soft-delete the authenticated user's account
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile deleted successfully
+ *       401:
+ *         description: Unauthorized
+ */
 router.delete("/me", Authenticate, deleteMyAccount);
 
-// PATCH /api/v1/user/change-password — Change the authenticated user's password
+/**
+ * @swagger
+ * /users/change-password:
+ *   patch:
+ *     summary: Change the current user's password
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [oldPassword, newPassword]
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ *       400:
+ *         description: Invalid old password
+ *       401:
+ *         description: Unauthorized
+ */
 router.patch("/change-password", Authenticate, changeMyPassword);
 
-// GET  /api/v1/user/preferences — Get the authenticated user's preferences
+/**
+ * @swagger
+ * /users/me/preferences:
+ *   get:
+ *     summary: Retrieve user preferences
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User preferences retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/UserPreference'
+ *       401:
+ *         description: Unauthorized
+ */
 router.get("/me/preferences", Authenticate, getMyPreferences);
 
-// POST /api/v1/user/preferences — Create or update the authenticated user's preferences
+/**
+ * @swagger
+ * /users/me/preferences:
+ *   post:
+ *     summary: Create or update user preferences (upsert)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserPreference'
+ *     responses:
+ *       200:
+ *         description: Preferences saved successfully
+ *       401:
+ *         description: Unauthorized
+ */
 router.post("/me/preferences", Authenticate, saveMyPreferences);
 
 export default router;
