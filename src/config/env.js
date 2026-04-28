@@ -5,7 +5,6 @@ dotenv.config();
 // Validate required environment variables
 const requiredEnvVars = [
   "NODE_ENV",
-  "PORT",
   "DATABASE_URL",
   "JWT_SECRET",
   "STRIPE_SECRET_KEY",
@@ -17,22 +16,19 @@ const requiredEnvVars = [
 const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
 
 if (missingVars.length > 0) {
-  console.error("❌ Missing required environment variables:");
-  missingVars.forEach((varName) => {
-    console.error(`   - ${varName}`);
-  });
-  console.error(
-    "\nPlease check your .env file and ensure all required variables are set.",
-  );
-  console.error("See .env.example for reference.\n");
-  process.exit(1);
+  const message = `❌ Missing required environment variables: ${missingVars.join(", ")}. Please check your .env file / Vercel environment variables.`;
+  console.error(message);
+  // Don't use process.exit() — it kills Vercel serverless functions
+  if (!process.env.VERCEL) {
+    process.exit(1);
+  }
 }
 
 export const env = {
   NODE_ENV: process.env.NODE_ENV,
   APP_VERSION: process.env.APP_VERSION,
   INFO_LEVEL: process.env.INFO_LEVEL,
-  PORT: process.env.PORT,
+  PORT: process.env.PORT || 3000,
   // Database
   DATABASE_URL: process.env.DATABASE_URL,
   // JWT
