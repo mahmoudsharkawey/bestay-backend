@@ -258,29 +258,40 @@ export async function refundPayment(paymentId) {
 }
 
 // ─── READ: Get all payments for the authenticated user or landlord ───
-export async function getMyPayments(userId, role) {
+export async function getMyPayments(userId, role, page = 1, limit = 10) {
   const where =
     role === "LANDLORD"
       ? { visit: { unit: { ownerId: userId } } } // payments on the landlord's units
       : { userId }; // user's own payments
 
-  const payments = await prisma.payment.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-    include: {
-      visit: {
-        select: {
-          id: true,
-          proposedDate: true,
-          status: true,
-          unit: { select: { id: true, title: true, city: true } },
+  const [payments, total] = await Promise.all([
+    prisma.payment.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        visit: {
+          select: {
+            id: true,
+            proposedDate: true,
+            status: true,
+            unit: { select: { id: true, title: true, city: true } },
+          },
         },
+        user: { select: { id: true, name: true, email: true } },
       },
-      user: { select: { id: true, name: true, email: true } },
-    },
-  });
+    }),
+    prisma.payment.count({ where }),
+  ]);
 
-  return payments;
+  return {
+    payments,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
 }
 
 

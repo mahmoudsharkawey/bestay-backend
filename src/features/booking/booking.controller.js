@@ -7,9 +7,13 @@ import { getErrorStatusCode } from "../../utils/errorStatusCode.js";
 export async function getAllBookings(req, res, next) {
   try {
     const userId = req.user.id;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const bookings = await bookingService.getAllBookingsService(
       userId,
       req.user.role,
+      page,
+      limit,
     );
 
     httpResponse(req, res, 200, "Bookings fetched successfully", bookings);

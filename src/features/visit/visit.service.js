@@ -818,24 +818,35 @@ export const confirmVisit = async (visitId, ownerId, startDate, endDate) => {
 };
 
 // ─── READ: Get all visits for the authenticated user or landlord ───
-export const getMyVisits = async (userId, role) => {
+export const getMyVisits = async (userId, role, page = 1, limit = 10) => {
   const where =
     role === "LANDLORD"
       ? { unit: { ownerId: userId } } // owner sees visits on their units
       : { userId }; // user sees their own visit requests
 
-  const visits = await prisma.visit.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-    include: {
-      unit: { select: { id: true, title: true, city: true, images: true } },
-      user: { select: { id: true, name: true, email: true } },
-      payment: { select: { id: true, status: true, amount: true } },
-      booking: { select: { id: true, status: true } },
-    },
-  });
+  const [visits, total] = await Promise.all([
+    prisma.visit.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        unit: { select: { id: true, title: true, city: true, images: true } },
+        user: { select: { id: true, name: true, email: true } },
+        payment: { select: { id: true, status: true, amount: true } },
+        booking: { select: { id: true, status: true } },
+      },
+    }),
+    prisma.visit.count({ where }),
+  ]);
 
-  return visits;
+  return {
+    visits,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
 };
 
 // ─── READ: Get a single visit by ID ───

@@ -75,14 +75,11 @@ export const getReviewById = async (req, res, next) => {
 export const updateReviewById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { userId, rating, comment } = req.body;
+    const { rating, comment } = req.body;
+    const userId = req.user.id; // Always use authenticated user's ID
 
     if (!id) {
       throw new Error("Review ID is required");
-    }
-
-    if (!userId) {
-      throw new Error("User ID is required for authorization");
     }
 
     const updateData = {};

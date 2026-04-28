@@ -2,6 +2,8 @@ import express from "express";
 import * as favoriteController from "./favorite.controller.js";
 import { Authenticate } from "../../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../../middlewares/roleMiddleware.js";
+import { validate } from "../../middlewares/validateMiddleware.js";
+import { addFavoriteSchema, removeFavoriteSchema } from "./favorite.validation.js";
 
 const router = express.Router();
 
@@ -37,6 +39,7 @@ router.post(
   "/",
   Authenticate,
   authorizeRoles("USER", "LANDLORD"),
+  validate(addFavoriteSchema),
   favoriteController.addFavorite,
 );
 
@@ -75,6 +78,7 @@ router.delete(
   "/:unitId",
   Authenticate,
   authorizeRoles("USER", "LANDLORD"),
+  validate(removeFavoriteSchema),
   favoriteController.removeFavorite,
 );
 

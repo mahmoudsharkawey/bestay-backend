@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("../../../prisma/client.js", () => ({
   default: {
-    favorite: { findUnique: vi.fn(), create: vi.fn(), delete: vi.fn(), findMany: vi.fn() },
+    favorite: { findUnique: vi.fn(), create: vi.fn(), delete: vi.fn(), findMany: vi.fn(), count: vi.fn() },
     unit: { findUnique: vi.fn() },
     user: { findUnique: vi.fn() },
   },
@@ -73,7 +73,7 @@ describe("favoriteService.removeFavorite", () => {
 });
 
 describe("favoriteService.getUserFavorites", () => {
-  it("returns user favorites with stats", async () => {
+  it("returns user favorites with stats (paginated)", async () => {
     prisma.user.findUnique.mockResolvedValue({ id: "usr1" });
     prisma.favorite.findMany.mockResolvedValue([
       {
@@ -81,10 +81,12 @@ describe("favoriteService.getUserFavorites", () => {
         unit: { id: "u1", reviews: [{ rating: 4 }, { rating: 5 }], owner: {} },
       },
     ]);
+    prisma.favorite.count.mockResolvedValue(1);
 
     const result = await favoriteService.getUserFavorites("usr1");
-    expect(result).toHaveLength(1);
-    expect(result[0].unit.averageRating).toBe(4.5);
+    expect(result.favorites).toHaveLength(1);
+    expect(result.favorites[0].unit.averageRating).toBe(4.5);
+    expect(result.total).toBe(1);
   });
 
   it("throws 404 when user not found", async () => {

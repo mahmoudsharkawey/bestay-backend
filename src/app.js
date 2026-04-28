@@ -1,12 +1,15 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import compression from "compression";
+import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger.js";
 import router from "./routes/v1/ApiRouter.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import page404Handler from "./middlewares/page404Handler.js";
 import { apiLimiter } from "./middlewares/rateLimiterMiddleware.js";
+import logger from "./utils/logger.js";
 import { stripeWebhook } from "./features/payment/payment.controller.js";
 
 // Initialize Express app
@@ -15,6 +18,13 @@ const app = express();
 // Middlewares setup
 // Security middleware
 app.use(helmet());
+// Compression middleware — gzip responses
+app.use(compression());
+// HTTP request logging
+const morganFormat = process.env.NODE_ENV === "production" ? "combined" : "dev";
+app.use(morgan(morganFormat, {
+  stream: { write: (message) => logger.info(message.trim()) },
+}));
 // CORS middleware
 app.use(
   cors({

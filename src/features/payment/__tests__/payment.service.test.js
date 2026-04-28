@@ -102,16 +102,19 @@ describe("paymentService.refundPayment", () => {
 });
 
 describe("paymentService.getMyPayments", () => {
-  it("returns user payments for USER role", async () => {
+  it("returns user payments for USER role (paginated)", async () => {
     prisma.payment.findMany.mockResolvedValue([{ id: "p1" }]);
+    prisma.payment.count.mockResolvedValue(1);
     const result = await paymentService.getMyPayments("usr1", "USER");
-    expect(result).toHaveLength(1);
+    expect(result.payments).toHaveLength(1);
+    expect(result.total).toBe(1);
   });
 
-  it("returns unit payments for LANDLORD role", async () => {
+  it("returns unit payments for LANDLORD role (paginated)", async () => {
     prisma.payment.findMany.mockResolvedValue([{ id: "p2" }]);
+    prisma.payment.count.mockResolvedValue(1);
     const result = await paymentService.getMyPayments("o1", "LANDLORD");
-    expect(result).toHaveLength(1);
+    expect(result.payments).toHaveLength(1);
   });
 });
 

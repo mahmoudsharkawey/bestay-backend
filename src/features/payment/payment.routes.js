@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { Authenticate } from "../../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../../middlewares/roleMiddleware.js";
+import { validate } from "../../middlewares/validateMiddleware.js";
+import { createPaymentIntentSchema } from "./payment.validation.js";
 import {
   createPaymentIntent,
   refundPayment,
@@ -59,6 +61,7 @@ router.post(
   "/intent",
   Authenticate,
   authorizeRoles("USER"),
+  validate(createPaymentIntentSchema),
   createPaymentIntent,
 );
 

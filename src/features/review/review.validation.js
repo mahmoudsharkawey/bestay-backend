@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const createReviewSchema = z.object({
-  unitId: z.string().uuid("Invalid unit ID format"),
   rating: z
     .number()
     .min(1, "Rating must be between 1 and 5")

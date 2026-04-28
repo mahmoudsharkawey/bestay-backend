@@ -69,7 +69,9 @@ export const getUserFavorites = async (req, res, next) => {
       throw new AppError("User ID is required", 400);
     }
 
-    const favorites = await favoriteService.getUserFavorites(userId);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const favorites = await favoriteService.getUserFavorites(userId, page, limit);
 
     httpResponse(req, res, 200, "Favorites retrieved successfully", favorites);
   } catch (error) {

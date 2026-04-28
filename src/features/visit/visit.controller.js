@@ -116,7 +116,9 @@ export const confirmVisit = async (req, res, next) => {
 // GET /visits/my — all visits for the authenticated user or landlord
 export const getMyVisits = async (req, res, next) => {
   try {
-    const visits = await Visits.getMyVisits(req.user.id, req.user.role);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const visits = await Visits.getMyVisits(req.user.id, req.user.role, page, limit);
     return httpResponse(req, res, 200, "Visits fetched successfully", visits);
   } catch (error) {
     const statusCode = error.statusCode || 500;

@@ -31,3 +31,36 @@ export const validate = (schema) => {
     }
   };
 };
+
+/**
+ * Validation middleware factory for query parameters
+ * Creates middleware that validates req.query against a Zod schema
+ */
+export const validateQuery = (schema) => {
+  return (req, res, next) => {
+    try {
+      const result = schema.safeParse(req.query);
+
+      if (!result.success) {
+        const errors = result.error.issues.map(
+          (err) => `${err.path.join(".")}: ${err.message}`,
+        );
+        return next(
+          new AppError(`Query validation failed: ${errors.join(", ")}`, 400),
+        );
+      }
+
+      // Replace req.query with validated and coerced data
+      req.query = result.data;
+      next();
+    } catch (error) {
+      return next(
+        new AppError(
+          `Query validation error: ${error.message || "Unknown error"}`,
+          400,
+        ),
+      );
+    }
+  };
+};
+

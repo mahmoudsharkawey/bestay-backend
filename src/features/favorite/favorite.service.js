@@ -112,7 +112,7 @@ export const removeFavorite = async (userId, unitId) => {
  * @param {string} userId - User ID
  * @returns {Promise<Array>} Array of favorite units with details
  */
-export const getUserFavorites = async (userId) => {
+export const getUserFavorites = async (userId, page = 1, limit = 10) => {
   // Validate that the user exists
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -122,30 +122,37 @@ export const getUserFavorites = async (userId) => {
     throw new AppError("User not found", 404);
   }
 
-  const favorites = await prisma.favorite.findMany({
-    where: { userId, unit: { deletedAt: null } },
-    include: {
-      unit: {
-        include: {
-          owner: {
-            select: {
-              id: true,
-              name: true,
-              picture: true,
+  const where = { userId, unit: { deletedAt: null } };
+
+  const [favorites, total] = await Promise.all([
+    prisma.favorite.findMany({
+      where,
+      include: {
+        unit: {
+          include: {
+            owner: {
+              select: {
+                id: true,
+                name: true,
+                picture: true,
+              },
             },
-          },
-          reviews: {
-            select: {
-              rating: true,
+            reviews: {
+              select: {
+                rating: true,
+              },
             },
           },
         },
       },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.favorite.count({ where }),
+  ]);
 
   // Calculate average rating and review count for each unit
   const favoritesWithStats = favorites.map((favorite) => {
@@ -172,7 +179,13 @@ export const getUserFavorites = async (userId) => {
     };
   });
 
-  return favoritesWithStats;
+  return {
+    favorites: favoritesWithStats,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
 };
 
 /**

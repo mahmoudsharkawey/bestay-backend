@@ -80,7 +80,7 @@ export const refundPayment = async (req, res, next) => {
  */
 export const getMyPayments = async (req, res, next) => {
   try {
-    const payments = await Payments.getMyPayments(req.user.id, req.user.role);
+    const payments = await Payments.getMyPayments(req.user.id, req.user.role, parseInt(req.query.page) || 1, parseInt(req.query.limit) || 10);
     return httpResponse(
       req,
       res,

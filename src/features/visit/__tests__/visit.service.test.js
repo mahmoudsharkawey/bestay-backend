@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("../../../prisma/client.js", () => ({
   default: {
-    visit: { findFirst: vi.fn(), findUnique: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn() },
+    visit: { findFirst: vi.fn(), findUnique: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), count: vi.fn() },
     unit: { findUnique: vi.fn() },
     user: { findUnique: vi.fn() },
     booking: { findUnique: vi.fn(), create: vi.fn() },
@@ -167,16 +167,19 @@ describe("visitService.cancelVisit", () => {
 // getMyVisits
 // ─────────────────────────────────────────────────────────
 describe("visitService.getMyVisits", () => {
-  it("returns visits for a USER", async () => {
+  it("returns visits for a USER (paginated)", async () => {
     prisma.visit.findMany.mockResolvedValue([{ id: "v1" }]);
+    prisma.visit.count.mockResolvedValue(1);
     const result = await visitService.getMyVisits("usr1", "USER");
-    expect(result).toHaveLength(1);
+    expect(result.visits).toHaveLength(1);
+    expect(result.total).toBe(1);
   });
 
-  it("returns visits for a LANDLORD", async () => {
+  it("returns visits for a LANDLORD (paginated)", async () => {
     prisma.visit.findMany.mockResolvedValue([{ id: "v2" }]);
+    prisma.visit.count.mockResolvedValue(1);
     const result = await visitService.getMyVisits("o1", "LANDLORD");
-    expect(result).toHaveLength(1);
+    expect(result.visits).toHaveLength(1);
   });
 });
 

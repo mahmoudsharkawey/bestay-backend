@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { Authenticate } from "../../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../../middlewares/roleMiddleware.js";
+import { validate } from "../../middlewares/validateMiddleware.js";
+import { changeRoleSchema } from "./admin.validation.js";
 import {
   getOverviewStats,
   getVisitsStats,
@@ -55,7 +57,7 @@ router.get("/users", adminGetUsers);
 router.get("/users/:id", adminGetUserById);
 router.patch("/users/:id/block", adminBlockUser);
 router.patch("/users/:id/unblock", adminUnblockUser);
-router.patch("/users/:id/role", adminChangeUserRole);
+router.patch("/users/:id/role", validate(changeRoleSchema), adminChangeUserRole);
 
 // 6. Bookings Monitoring
 router.get("/bookings", adminGetBookings);
