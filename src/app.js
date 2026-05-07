@@ -63,16 +63,9 @@ app.use(
 // but the handler uses req.rawBody (not req.body) for signature verification.
 app.post("/api/v1/payments/webhook", stripeWebhook);
 
-const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui.min.css";
-
 // Swagger API Documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customCss: '.swagger-ui .topbar { display: none }',
-  customCssUrl: CSS_URL,
-  customJs: [
-    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-bundle.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.0/swagger-ui-standalone-preset.min.js'
-  ],
   customSiteTitle: "BeStay API Documentation",
 }));
 
