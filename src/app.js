@@ -17,7 +17,19 @@ const app = express();
 
 // Middlewares setup
 // Security middleware
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
+        imgSrc: ["'self'", "data:", "validator.swagger.io", "https://res.cloudinary.com"],
+        connectSrc: ["'self'"],
+      },
+    },
+  })
+);
 // Compression middleware — gzip responses
 app.use(compression());
 // HTTP request logging
